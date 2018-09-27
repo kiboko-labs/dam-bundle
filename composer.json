@@ -1,0 +1,81 @@
+{
+    "name": "oro/platform-application",
+    "description": "Oro Platform Empty Application",
+    "homepage": "https://github.com/oroinc/platform-application.git",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "classmap": [
+            "src/AppKernel.php",
+            "src/AppCache.php"
+        ],
+        "exclude-from-classmap": ["**/Tests/"]
+    },
+    "repositories": {
+        "composer": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+          "type": "composer",
+          "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "require": {
+        "oro/platform": "3.0.*",
+        "oro/platform-serialised-fields": "3.0.*"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "3.1.*",
+        "behat/behat": "3.4.*",
+        "behat/mink-extension": "2.3.*",
+        "behat/mink-selenium2-driver": "1.*",
+        "behat/symfony2-extension": "2.1.*",
+        "nelmio/alice": "2.3.*",
+        "phpunit/phpunit": "5.7.*",
+        "johnkary/phpunit-speedtrap": "1.1.*",
+        "mybuilder/phpunit-accelerator": "2.0.*",
+        "squizlabs/php_codesniffer": "2.8.*",
+        "phpmd/phpmd": "2.6.*",
+        "sebastian/phpcpd": "3.0.*",
+        "phpunit/phpcov": "3.1.*",
+        "symfony/phpunit-bridge": "3.4.*",
+        "friendsofphp/php-cs-fixer": "2.12.*"
+    },
+    "config": {
+        "component-dir": "public/bundles/components",
+        "bin-dir": "bin",
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony-web-dir": "public",
+        "symfony-var-dir": "var",
+        "symfony-bin-dir": "bin",
+        "symfony-tests-dir": "tests",
+        "incenteev-parameters": {
+            "file": "config/parameters.yml"
+        }
+    }
+}
