@@ -1,10 +1,13 @@
 {
-    "name": "oro/platform-application",
-    "description": "Oro Platform Empty Application",
-    "homepage": "https://github.com/oroinc/platform-application.git",
+    "name": "kiboko/dam",
+    "description": "Kiboko DAM application",
+    "homepage": "https://github.com/kiboko-labs/dam.git",
     "license": "MIT",
     "autoload": {
-        "psr-4": {"": "src/"},
+        "psr-4": {
+            "": "src/",
+            "Kiboko\\Bundle\\DMSBundle\\": "src/DMSBundle/"
+        },
         "classmap": [
             "src/AppKernel.php",
             "src/AppCache.php"
@@ -23,7 +26,9 @@
     },
     "require": {
         "oro/platform": "3.0.*",
-        "oro/platform-serialised-fields": "3.0.*"
+        "oro/platform-serialised-fields": "3.0.*",
+        "league/flysystem": "^1.0",
+        "ramsey/uuid-doctrine": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
