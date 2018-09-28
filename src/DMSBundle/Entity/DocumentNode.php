@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Kiboko\Bundle\DMSBundle\Model\AuthorizationInterface;
 use Kiboko\Bundle\DMSBundle\Model\Behavior;
 use Kiboko\Bundle\DMSBundle\Model\DocumentInterface;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
@@ -30,6 +31,7 @@ use Ramsey\Uuid\UuidInterface;
 class DocumentNode implements DocumentNodeInterface,
     Behavior\SluggableInterface,
     Behavior\MovableInterface,
+    Behavior\AuthorizableInterface,
     DatesAwareInterface,
     UpdatedByAwareInterface
 {
@@ -128,6 +130,26 @@ class DocumentNode implements DocumentNodeInterface,
     private $metas;
 
     /**
+     * @var Collection|AuthorizationInterface[]
+     *
+     * @ORM\ManyToMany(
+     *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentNodeAuthorization",
+     *      cascade={"ALL"},
+     *      orphanRemoval=true
+     * )
+     * @ORM\JoinTable(
+     *      name="kiboko_dms_node_authorization",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="node_id", referencedColumnName="id", onDelete="CASCADE")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="authorization_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
+     *      }
+     * )
+     */
+    private $authorizations;
+
+    /**
      * @var int
      *
      * @Gedmo\TreeLeft
@@ -191,6 +213,7 @@ class DocumentNode implements DocumentNodeInterface,
         $this->metas = new ArrayCollection();
         $this->nodes = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->authorizations = new ArrayCollection();
     }
 
     public function setId(UuidInterface $id): void
@@ -232,6 +255,56 @@ class DocumentNode implements DocumentNodeInterface,
     public function removeName(LocalizedFallbackValue $name): void
     {
         $this->names->removeElement($name);
+    }
+
+    /**
+     * @param Collection|AuthorizationInterface[] $authorizations
+     */
+    public function setAuthorizations(Collection $authorizations)
+    {
+        $this->authorizations = $authorizations->filter(
+            function (DocumentNodeAuthorization $authorization) {
+                return true;
+            }
+        );
+    }
+
+    /**
+     * @return Collection|AuthorizationInterface[]
+     */
+    public function getAuthorizations(): Collection
+    {
+        return $this->authorizations;
+    }
+
+    public function addAuthorization(AuthorizationInterface $authorization): void
+    {
+        if (!$authorization instanceof DocumentAuthorization) {
+            throw new \InvalidArgumentException(strtr(
+                'Expected a %expected%, got a %actual%',
+                [
+                    '%expected%' => DocumentAuthorization::class,
+                    '%actual%' => get_class($authorization),
+                ]
+            ));
+        }
+
+        $this->authorizations->add($authorization);
+    }
+
+    public function removeAuthorization(AuthorizationInterface $authorization): void
+    {
+        if (!$authorization instanceof DocumentNodeAuthorization) {
+            throw new \InvalidArgumentException(strtr(
+                'Expected a %expected%, got a %actual%',
+                [
+                    '%expected%' => DocumentNodeAuthorization::class,
+                    '%actual%' => get_class($authorization),
+                ]
+            ));
+        }
+
+        $this->authorizations->removeElement($authorization);
     }
 
     public function getSlugs(): Collection

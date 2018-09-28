@@ -5,6 +5,7 @@ namespace Kiboko\Bundle\DMSBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Kiboko\Bundle\DMSBundle\Model\AuthorizationInterface;
 use Kiboko\Bundle\DMSBundle\Model\Behavior;
 use Kiboko\Bundle\DMSBundle\Model\DocumentInterface;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
@@ -30,6 +31,7 @@ class Document implements DocumentInterface,
     Behavior\ThumbnailedInterface,
     Behavior\SluggableInterface,
     Behavior\MetadatableInterface,
+    Behavior\AuthorizableInterface,
     Behavior\MovableInterface,
     DatesAwareInterface,
     UpdatedByAwareInterface
@@ -129,6 +131,26 @@ class Document implements DocumentInterface,
     private $metas;
 
     /**
+     * @var Collection|AuthorizationInterface[]
+     *
+     * @ORM\ManyToMany(
+     *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentAuthorization",
+     *      cascade={"ALL"},
+     *      orphanRemoval=true
+     * )
+     * @ORM\JoinTable(
+     *      name="kiboko_dms_document_authorization",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="authorization_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
+     *      }
+     * )
+     */
+    private $authorizations;
+
+    /**
      * @var DocumentNodeInterface
      *
      * @ORM\ManyToOne(targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface", inversedBy="documents", cascade={"persist"})
@@ -155,6 +177,7 @@ class Document implements DocumentInterface,
         $this->names = new ArrayCollection();
         $this->slugs = new ArrayCollection();
         $this->metas = new ArrayCollection();
+        $this->authorizations = new ArrayCollection();
     }
 
     public function setId(UuidInterface $id): void
@@ -196,6 +219,56 @@ class Document implements DocumentInterface,
     public function removeName(LocalizedFallbackValue $name): void
     {
         $this->names->removeElement($name);
+    }
+
+    /**
+     * @param Collection|AuthorizationInterface[] $authorizations
+     */
+    public function setAuthorizations(Collection $authorizations)
+    {
+        $this->authorizations = $authorizations->filter(
+            function (DocumentAuthorization $authorization) {
+                return true;
+            }
+        );
+    }
+
+    /**
+     * @return Collection|AuthorizationInterface[]
+     */
+    public function getAuthorizations(): Collection
+    {
+        return $this->authorizations;
+    }
+
+    public function addAuthorization(AuthorizationInterface $authorization): void
+    {
+        if (!$authorization instanceof DocumentAuthorization) {
+            throw new \InvalidArgumentException(strtr(
+                'Expected a %expected%, got a %actual%',
+                [
+                    '%expected%' => DocumentAuthorization::class,
+                    '%actual%' => get_class($authorization),
+                ]
+            ));
+        }
+
+        $this->authorizations->add($authorization);
+    }
+
+    public function removeAuthorization(AuthorizationInterface $authorization): void
+    {
+        if (!$authorization instanceof DocumentAuthorization) {
+            throw new \InvalidArgumentException(strtr(
+                'Expected a %expected%, got a %actual%',
+                [
+                    '%expected%' => DocumentAuthorization::class,
+                    '%actual%' => get_class($authorization),
+                ]
+            ));
+        }
+
+        $this->authorizations->removeElement($authorization);
     }
 
     public function getSlugs(): Collection

@@ -9,9 +9,16 @@ use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\MappedSuperclass
+ * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "document" = "Kiboko\Bundle\DMSBundle\Entity\DocumentMeta",
+ *     "node" = "Kiboko\Bundle\DMSBundle\Entity\DocumentNodeMeta"
+ * })
+ * @ORM\Table(name="kiboko_dms_metadata")
  */
-class Meta implements MetaInterface
+abstract class Meta implements MetaInterface
 {
     /**
      * @var UuidInterface
@@ -38,6 +45,13 @@ class Meta implements MetaInterface
      */
     private $localization;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="raw", type="json")
+     */
+    private $raw;
+
     public function setId(UuidInterface $id): void
     {
         $this->id = $id;
@@ -56,5 +70,21 @@ class Meta implements MetaInterface
     public function getLocalization(): ?Localization
     {
         return $this->localization;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRaw(): array
+    {
+        return $this->raw;
+    }
+
+    /**
+     * @param array $raw
+     */
+    public function setRaw(array $raw): void
+    {
+        $this->raw = $raw;
     }
 }
