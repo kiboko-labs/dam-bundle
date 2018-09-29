@@ -17,15 +17,47 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityBundle\EntityProperty\UpdatedByAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\UpdatedByAwareTrait;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\UserBundle\Entity\UserInterface;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="kiboko_dms_document")
+ * @ORM\HasLifecycleCallbacks()
+ * @Config(
+ *      defaultValues={
+ *          "entity"={
+ *              "icon"="fa-file"
+ *          },
+ *          "ownership"={
+ *              "owner_type"="USER",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          },
+ *          "security"={
+ *              "type"="ACL",
+ *              "category"="account_management"
+ *          },
+ *          "note"={
+ *              "immutable"=true
+ *          },
+ *          "comment"={
+ *              "immutable"=true
+ *          },
+ *          "activity"={
+ *              "immutable"=true
+ *          }
+ *      }
+ * )
  */
 class Document implements DocumentInterface,
     Behavior\ThumbnailedInterface,
@@ -48,6 +80,22 @@ class Document implements DocumentInterface,
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
+
+    /**
+     * @var UserInterface
+     *
+     * @ORM\ManyToOne(targetEntity="Symfony\Component\Security\Core\User\UserInterface")
+     * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
+
+    /**
+     * @var OrganizationInterface
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @var Collection|LocalizedFallbackValue[]
@@ -162,7 +210,9 @@ class Document implements DocumentInterface,
     /**
      * @var File
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\AttachmentBundle\Entity\File", cascade={"persist"})
+     * @Assert\Valid()
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\AttachmentBundle\Entity\File", cascade={"persist"})
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
     private $file;
 
@@ -186,20 +236,52 @@ class Document implements DocumentInterface,
         $this->id = $id;
     }
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
 
     /**
+     * @return UserInterface
+     */
+    public function getOwner(): ?UserInterface
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param UserInterface $owner
+     */
+    public function setOwner(UserInterface $owner): void
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization(OrganizationInterface $organization): void
+    {
+        $this->organization = $organization;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization(): ?OrganizationInterface
+    {
+        return $this->organization;
+    }
+
+    /**
      * @param Collection|LocalizedFallbackValue[] $names
      */
-    public function setNames(Collection $names)
+    public function setNames(Collection $names): void
     {
         $this->names = $names;
     }
 
-    public function getLocaleName(LocalizationHelper $helper, ?Localization $localization = null): LocalizedFallbackValue
+    public function getLocaleName(LocalizationHelper $helper, ?Localization $localization = null): ?LocalizedFallbackValue
     {
         return $helper->getLocalizedValue($this->names, $localization);
     }
@@ -225,7 +307,7 @@ class Document implements DocumentInterface,
     /**
      * @param Collection|AuthorizationInterface[] $authorizations
      */
-    public function setAuthorizations(Collection $authorizations)
+    public function setAuthorizations(Collection $authorizations): void
     {
         $this->authorizations = $authorizations->filter(
             function (DocumentAuthorization $authorization) {
@@ -277,7 +359,7 @@ class Document implements DocumentInterface,
         return $this->slugs;
     }
 
-    public function getLocaleSlug(LocalizationHelper $helper, ?Localization $localization = null): LocalizedFallbackValue
+    public function getLocaleSlug(LocalizationHelper $helper, ?Localization $localization = null): ?LocalizedFallbackValue
     {
         return $helper->getLocalizedValue($this->slugs, $localization);
     }
@@ -332,7 +414,7 @@ class Document implements DocumentInterface,
         $this->metas->removeElement($meta);
     }
 
-    public function getNode(): DocumentNodeInterface
+    public function getNode(): ?DocumentNodeInterface
     {
         return $this->node;
     }
@@ -352,7 +434,7 @@ class Document implements DocumentInterface,
         $this->file = $file;
     }
 
-    public function getFile(): File
+    public function getFile(): ?File
     {
         return $this->file;
     }

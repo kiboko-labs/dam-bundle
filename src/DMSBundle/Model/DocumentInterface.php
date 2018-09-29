@@ -12,9 +12,9 @@ interface DocumentInterface extends NamedInterface, IdentifiableInterface
 {
     public function setFile(File $file): void;
 
-    public function getFile(): File;
+    public function getFile(): ?File;
 
-    public function getNode(): DocumentNodeInterface;
+    public function getNode(): ?DocumentNodeInterface;
 
     public function getMimeType(): string;
 

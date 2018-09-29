@@ -1,0 +1,30 @@
+services:
+    kiboko_dms.form.type.document:
+        class: Kiboko\Bundle\DMSBundle\Form\Type\DocumentType
+        arguments:
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: form.type }
+
+    kiboko_dms.form.document:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - 'kiboko_dms_document_form'
+            - Kiboko\Bundle\DMSBundle\Form\Type\DocumentType
+
+    kiboko_dms.form.handler.document:
+        class: Kiboko\Bundle\DMSBundle\Form\Handler\DocumentHandler
+        arguments:
+            - '@kiboko_dms.form.document'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    kiboko_dms.controller.document:
+        class: Kiboko\Bundle\DMSBundle\Controller\DocumentController
+        arguments:
+            - '@kiboko_dms.form.document'
+            - '@kiboko_dms.form.handler.document'
+            - '@translator'
+            - '@oro_ui.router'
+            - '@session'

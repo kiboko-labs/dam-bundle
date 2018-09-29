@@ -7,12 +7,12 @@ use Kiboko\Bundle\DMSBundle\Form\Type\DocumentNodeType;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class NodeController extends Controller
+class DocumentNodeController extends Controller
 {
     /**
      * @Route("/", name="kiboko_dms_index")
@@ -25,7 +25,7 @@ class NodeController extends Controller
 
     /**
      * @Route("/create", name="kiboko_dms_create")
-     * @Template("KibokoDMSBundle:Node:update.html.twig")
+     * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -41,7 +41,7 @@ class NodeController extends Controller
      *         "map_method_signature" = true,
      *     }
      * )
-     * @Template("KibokoDMSBundle:Node:update.html.twig")
+     * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
      */
     public function editAction(Request $request, DocumentNodeInterface $node)
     {

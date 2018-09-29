@@ -1,0 +1,37 @@
+{% if saved is defined and saved %}
+    {% set messageText = update|default(false) ? 'Document updated successfully' : 'Document created successfully' %}
+    {% set widgetResponse = {
+        widget: {
+            message: messageText|trans,
+            triggerSuccess: true,
+            remove: true
+        }
+    } %}
+
+    {{ widgetResponse|json_encode|raw }}
+{% else %}
+<div class="widget-content">
+    {% form_theme form with ['OroFormBundle:Form:fields.html.twig', _self] %}
+
+    <div class="form-container">
+        <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ formAction }}" method="post">
+            <fieldset class="form form-horizontal">
+                <div class="span6">
+                    {{ form_row(form.names) }}
+                    {{ form_row(form.slugs) }}
+                    {{ form_row(form.file) }}
+                    {% if form.owner is defined %}
+                        {{ form_row(form.owner) }}
+                    {% endif %}
+                    {{ form_rest(form) }}
+                </div>
+                <div class="widget-actions form-actions" style="display: none;">
+                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                </div>
+            </fieldset>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    </div>
+</div>
+{% endif %}
