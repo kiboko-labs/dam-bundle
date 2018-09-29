@@ -1,0 +1,88 @@
+datagrids:
+    kiboko-dms-nodes-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - node.id
+                    - name.string AS localeName
+                    - slug.string AS localeSlug
+                from:
+                    - { table: KibokoDMSBundle:DocumentNode, alias: node }
+                join:
+                    left:
+                        - { join: node.names, alias: name }
+                        - { join: node.slugs, alias: slug }
+                where:
+                    and:
+                        - name.localization IS NULL
+                        - slug.localization IS NULL
+        columns:
+            id:
+                label: ID
+            name:
+                label: Name
+                data_name: localeName
+            slug:
+                label: Slug
+                data_name: localeSlug
+        sorters:
+            columns:
+                id:
+                    data_name: node.id
+                name:
+                    data_name: localeName
+                slug:
+                    data_name: localeSlug
+        filters:
+            columns:
+                id:
+                    type: string
+                    data_name: task.id
+                name:
+                    type: string
+                    data_name: localeName
+                slug:
+                    type: string
+                    data_name: localeSlug
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: kiboko_dms_browse
+                params:
+                    node: id
+            update_link:
+                type: url
+                route: kiboko_dms_update
+                params:
+                    node: id
+        actions:
+            view:
+                type: navigate
+                label: Edit
+                link: view_link
+                icon: eye
+            edit:
+                type: navigate
+                label: Edit
+                link: update_link
+                icon: edit
+
+    kiboko-dms-root-nodes-grid:
+        extends: kiboko-dms-nodes-grid
+        source:
+            query:
+                where:
+                    and:
+                        - node.parent IS NULL
+
+    kiboko-dms-child-nodes-grid:
+        extends: kiboko-dms-nodes-grid
+        source:
+            query:
+                where:
+                    and:
+                        - node.parent = :parent
+            bind_parameters:
+                parent: parent

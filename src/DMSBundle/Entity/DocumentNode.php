@@ -24,7 +24,7 @@ use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Entity(repositoryClass="Kiboko\Bundle\DMSBundle\Repository\DocumentNodeRepository")
  * @ORM\Table(name="kiboko_dms_node")
  * @Gedmo\Tree(type="nested")
  */
@@ -135,7 +135,8 @@ class DocumentNode implements DocumentNodeInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentNodeAuthorization",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      orphanRemoval=true,
+     *      inversedBy="nodes",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_node_authorization",
@@ -153,7 +154,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @var int
      *
      * @Gedmo\TreeLeft
-     * @ORM\Column(name="left", type="integer")
+     * @ORM\Column(name="tree_left", type="integer")
      */
     private $left;
 
@@ -161,7 +162,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @var int
      *
      * @Gedmo\TreeRight
-     * @ORM\Column(name="right", type="integer")
+     * @ORM\Column(name="tree_right", type="integer")
      */
     private $right;
 
@@ -169,7 +170,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @var int
      *
      * @Gedmo\TreeLevel
-     * @ORM\Column(name="level", type="integer")
+     * @ORM\Column(name="tree_level", type="integer")
      */
     private $level;
 

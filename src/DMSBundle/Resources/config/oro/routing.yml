@@ -1,0 +1,4 @@
+kiboko_dms_bundle:
+    resource: "@KibokoDMSBundle/Controller"
+    type:     annotation
+    prefix:   /dms

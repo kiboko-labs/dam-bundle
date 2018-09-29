@@ -136,7 +136,8 @@ class Document implements DocumentInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentAuthorization",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      orphanRemoval=true,
+     *      inversedBy="nodes",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_document_authorization",
