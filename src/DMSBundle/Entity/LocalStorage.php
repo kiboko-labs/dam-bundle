@@ -24,7 +24,6 @@ class LocalStorage extends Transport
      * @var int
      *
      * @ORM\Column(name="kiboko_oms_local_lock", type="boolean", nullable=true)
-     * @Assert\NotNull()
      */
     private $lock;
 

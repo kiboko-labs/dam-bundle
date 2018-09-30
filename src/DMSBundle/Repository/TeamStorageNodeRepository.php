@@ -5,21 +5,27 @@ namespace Kiboko\Bundle\DMSBundle\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
 
-class DocumentNodeRepository extends NestedTreeRepository
+class TeamStorageNodeRepository extends DocumentNodeRepository
 {
-    public function findByPath(string $rootSlug, string $nodePath): DocumentNodeInterface
+    public function findBySlug(string $slug, ?Localization $localization = null): DocumentNodeInterface
     {
         $qb = $this->getRootNodesQueryBuilder();
 
         $qb->innerJoin('node.slugs', 'slug')
             ->where($qb->expr()->eq('slug.string', ':slug'))
-            ->andWhere($qb->expr()->isNull('slug.localization'))
             ->setMaxResults(1)
         ;
 
+        if ($localization === null) {
+            $qb->andWhere($qb->expr()->isNull('slug.localization'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('slug.localization', $localization));
+        }
+
         $result = new ArrayCollection($qb->getQuery()->execute([
-            'slug' => $rootSlug,
+            'slug' => $slug,
         ]));
 
         return $result->first();

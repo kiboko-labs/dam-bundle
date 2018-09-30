@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Kiboko\Bundle\DMSBundle\Entity\Document;
 use Kiboko\Bundle\DMSBundle\Model\DocumentInterface;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

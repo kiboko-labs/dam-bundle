@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Translation\DataCollectorTranslator;
 
 /**
- * @Route(service="kiboko_dms.controller.document")
+ * @Route("/document", service="kiboko_dms.controller.document")
  */
-class DocumentController extends Controller
+final class DocumentController extends Controller
 {
     /**
      * @var Form
@@ -68,11 +68,16 @@ class DocumentController extends Controller
     }
 
     /**
-     * @Route("/{node}/upload", name="kiboko_dms_upload")
+     * @param Request $request
+     * @param DocumentNodeInterface $node
+     *
+     * @return array|Request
+     *
+     * @Route("/{uuid}/upload", name="kiboko_dms_document_upload")
      * @ParamConverter("node",
      *     class="KibokoDMSBundle:DocumentNode",
      *     options={
-     *         "mapping": {"node": "id"},
+     *         "mapping": {"uuid": "id"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -89,7 +94,16 @@ class DocumentController extends Controller
         return $this->updateWidget($request, $node, new Document(), $request->getUri());
     }
 
-    protected function updateWidget(
+    /**
+     * @param Request               $request
+     * @param DocumentNodeInterface $node
+     * @param Document              $document
+     * @param string                $formAction
+     * @param bool                  $update
+     *
+     * @return array
+     */
+    private function updateWidget(
         Request $request,
         DocumentNodeInterface $node,
         Document $document,
@@ -128,7 +142,7 @@ class DocumentController extends Controller
         if ($this->handler->process($document, $node)) {
             $this->session->getFlashBag()->add(
                 'success',
-                $this->translator->trans('oro.organization.controller.message.saved')
+                $this->translator->trans('The file has been successfully uploaded.')
             );
 
             return $this->router->redirect($document);

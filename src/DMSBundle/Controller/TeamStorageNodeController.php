@@ -2,9 +2,10 @@
 
 namespace Kiboko\Bundle\DMSBundle\Controller;
 
-use Kiboko\Bundle\DMSBundle\Entity\DocumentNode;
+use Kiboko\Bundle\DMSBundle\Entity\TeamStorageNode;
 use Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
+use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,9 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\DataCollectorTranslator;
 
 /**
- * @Route("/node", service="kiboko_dms.controller.document_node")
+ * @Route(service="kiboko_dms.controller.team_storage")
  */
-final class DocumentNodeController extends Controller
+final class TeamStorageNodeController extends Controller
 {
     /**
      * @var Form
@@ -53,27 +54,35 @@ final class DocumentNodeController extends Controller
     /**
      * @return array|Request
      *
-     * @Route("/{uuid}", name="kiboko_dms_node_browse")
-     * @ParamConverter("node",
-     *     class="KibokoDMSBundle:DocumentNode",
-     *     options={
-     *         "mapping": {"uuid": "id"},
-     *         "map_method_signature" = true,
-     *     }
-     * )
+     * @Route("/", name="kiboko_dms_index")
      * @Acl(
-     *      id="kiboko_dms_node_view",
+     *      id="kiboko_dms_storage_view",
      *      type="entity",
-     *      class="KibokoDMSBundle:DocumentNode",
+     *      class="KibokoDMSBundle:TeamStorageNode",
      *      permission="VIEW"
      * )
      * @Template()
      */
+    public function indexAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/{slug}/", name="kiboko_dms_storage_browse")
+     * @ParamConverter("node",
+     *     class="KibokoDMSBundle:TeamStorageNode",
+     *     options={
+     *         "repository_method" = "findBySlug",
+     *         "mapping": {"slug": "slug"},
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Template("KibokoDMSBundle:DocumentNode:browse.html.twig")
+     */
     public function browseAction(DocumentNodeInterface $node)
     {
-        return [
-            'node' => $node
-        ];
+        return ['node' => $node];
     }
 
     /**
@@ -81,18 +90,18 @@ final class DocumentNodeController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/create", name="kiboko_dms_node_create")
+     * @Route("/create", name="kiboko_dms_storage_create")
      * @Acl(
-     *      id="kiboko_dms_node_create",
+     *      id="kiboko_dms_storage_create",
      *      type="entity",
-     *      class="KibokoDMSBundle:DocumentNode",
+     *      class="KibokoDMSBundle:TeamStorageNode",
      *      permission="CREATE"
      * )
-     * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
+     * @Template("KibokoDMSBundle:TeamStorageNode:update.html.twig")
      */
     public function createAction(Request $request)
     {
-        return $this->update($request, new DocumentNode());
+        return $this->update($request, new TeamStorageNode());
     }
 
     /**
@@ -101,23 +110,23 @@ final class DocumentNodeController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/{uuid}/update", name="kiboko_dms_node_update")
+     * @Route("/{uuid}/update", name="kiboko_dms_storage_update")
      * @ParamConverter("node",
-     *     class="KibokoDMSBundle:DocumentNode",
+     *     class="KibokoDMSBundle:TeamStorageNode",
      *     options={
      *         "mapping": {"uuid": "id"},
      *         "map_method_signature" = true,
      *     }
      * )
      * @Acl(
-     *      id="kiboko_dms_node_edit",
+     *      id="kiboko_dms_storage_update",
      *      type="entity",
-     *      class="KibokoDMSBundle:DocumentNode",
+     *      class="KibokoDMSBundle:TeamStorageNode",
      *      permission="UPDATE"
      * )
-     * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
+     * @Template("KibokoDMSBundle:TeamStorageNode:update.html.twig")
      */
-    public function editAction(Request $request, DocumentNodeInterface $node)
+    public function updateAction(Request $request, DocumentNodeInterface $node)
     {
         return $this->update($request, $node);
     }
@@ -133,7 +142,7 @@ final class DocumentNodeController extends Controller
         return $this->handler->update(
             $node,
             $this->form,
-            $this->translator->trans('The Node has been properly created.'),
+            $this->translator->trans('The Team Storage has been properly created'),
             $request
         );
     }

@@ -1,22 +1,5 @@
 datagrids:
     kiboko-dms-nodes-grid:
-        source:
-            type: orm
-            query:
-                select:
-                    - node.id
-                    - name.string AS localeName
-                    - slug.string AS localeSlug
-                from:
-                    - { table: KibokoDMSBundle:DocumentNode, alias: node }
-                join:
-                    left:
-                        - { join: node.names, alias: name }
-                        - { join: node.slugs, alias: slug }
-                where:
-                    and:
-                        - name.localization IS NULL
-                        - slug.localization IS NULL
         columns:
             id:
                 label: ID
@@ -45,18 +28,6 @@ datagrids:
                 slug:
                     type: string
                     data_name: localeSlug
-        properties:
-            id: ~
-            view_link:
-                type: url
-                route: kiboko_dms_browse
-                params:
-                    node: id
-            update_link:
-                type: url
-                route: kiboko_dms_update
-                params:
-                    node: id
         actions:
             view:
                 type: navigate
@@ -69,20 +40,70 @@ datagrids:
                 link: update_link
                 icon: edit
 
-    kiboko-dms-root-nodes-grid:
+    kiboko-dms-team-storages-nodes-grid:
         extends: kiboko-dms-nodes-grid
         source:
+            type: orm
             query:
+                select:
+                    - node.id
+                    - name.string AS localeName
+                    - slug.string AS localeSlug
+                from:
+                    - { table: KibokoDMSBundle:TeamStorageNode, alias: node }
+                join:
+                    left:
+                        - { join: node.names, alias: name }
+                        - { join: node.slugs, alias: slug }
                 where:
                     and:
+                        - name.localization IS NULL
+                        - slug.localization IS NULL
                         - node.parent IS NULL
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: kiboko_dms_storage_browse
+                params:
+                    slug: localeSlug
+            update_link:
+                type: url
+                route: kiboko_dms_storage_update
+                params:
+                    uuid: id
 
-    kiboko-dms-child-nodes-grid:
+    kiboko-dms-document-nodes-grid:
         extends: kiboko-dms-nodes-grid
         source:
+            type: orm
             query:
+                select:
+                    - node.id
+                    - name.string AS localeName
+                    - slug.string AS localeSlug
+                from:
+                    - { table: KibokoDMSBundle:DocumentNode, alias: node }
+                join:
+                    left:
+                        - { join: node.names, alias: name }
+                        - { join: node.slugs, alias: slug }
                 where:
                     and:
+                        - name.localization IS NULL
+                        - slug.localization IS NULL
                         - node.parent = :parent
             bind_parameters:
                 parent: parent
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: kiboko_dms_node_browse
+                params:
+                    uuid: id
+            update_link:
+                type: url
+                route: kiboko_dms_node_update
+                params:
+                    uuid: id

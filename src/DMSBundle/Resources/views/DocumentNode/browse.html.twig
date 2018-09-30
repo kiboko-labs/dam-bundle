@@ -1,18 +1,18 @@
 {% extends 'OroUIBundle:actions:index.html.twig' %}
 
-{% set gridName = 'kiboko-dms-child-nodes-grid' %}
+{% set gridName = 'kiboko-dms-document-nodes-grid' %}
 {% set params = {'parent': node.id} %}
 {% set pageTitle = node.names|localized_value %}
 
 {% block navButtons %}
 
     <div class="btn-group">
-        {% if is_granted('kiboko_dms_upload') %}
+        {% if is_granted('kiboko_dms_document_upload') %}
             {{ UI.clientButton({
-                'dataUrl': path('kiboko_dms_upload', {node: node.id}),
+                'dataUrl': path('kiboko_dms_document_upload', {uuid: node.id}),
                 'aCss': 'no-hash',
                 'iCss': 'fa-paperclip',
-                'label': 'Upload a new file',
+                'label': 'Upload a new file'|trans,
                 'widget': {
                     'type': 'dialog',
                     'multiple': false,
@@ -26,7 +26,7 @@
                             'modal': true,
                             'dblclick': 'maximize',
                             'maximizedHeightDecreaseBy': 'minimize-bar',
-                            'width': 550
+                            'width': 1000
                         }
                     }
                 },
@@ -34,15 +34,15 @@
         {% endif %}
     </div>
 
-    {% if is_granted('kiboko_dms_upload') and is_granted('kiboko_dms_create') %}
+    {% if is_granted('kiboko_dms_document_upload') and is_granted('kiboko_dms_node_create') %}
         {{ UI.buttonSeparator() }}
     {% endif %}
 
     <div class="btn-group">
-        {% if is_granted('kiboko_dms_create') %}
+        {% if is_granted('kiboko_dms_node_create') %}
             {{ UI.addButton({
-                'path': path('kiboko_dms_create'),
-                'entity_label': 'Folder',
+                'path': path('kiboko_dms_node_create'),
+                'entity_label': 'Folder'|trans,
             }) }}
         {% endif %}
     </div>

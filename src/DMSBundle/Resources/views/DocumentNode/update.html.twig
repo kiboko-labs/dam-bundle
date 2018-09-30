@@ -5,9 +5,9 @@
 {% set node = form.vars.value %}
 
 {% if node.id %}
-    {% set formAction = path('kiboko_dms_update', { 'node': node.id }) %}
+    {% set formAction = path('kiboko_dms_node_update', { 'uuid': node.id }) %}
 {% else %}
-    {% set formAction = path('kiboko_dms_create') %}
+    {% set formAction = path('kiboko_dms_node_create') %}
 {% endif %}
 
 {% block navButtons %}
@@ -23,12 +23,12 @@
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dms_index'),
-            'indexLabel': 'Team Storage',
+            'indexLabel': 'Team Storage'|trans,
             'entityTitle': node.names|localized_value
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'Team Storage' }) %}
+        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'Team Storage'|trans }) %}
         {{ include('OroUIBundle::page_title_block.html.twig', { title: title }) }}
     {% endif %}
 {% endblock pageHeader %}
@@ -43,6 +43,7 @@
             'data': [
                 form_row(form.names),
                 form_row(form.slugs),
+                form_rest(form),
             ]
         }]
     }] %}
