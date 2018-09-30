@@ -37,7 +37,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
  *      }
  * )
  */
-class TeamStorageNode extends AbstractNode
+class TeamStorageNode extends DocumentNode
 {
     /**
      * @var Integration
@@ -50,7 +50,7 @@ class TeamStorageNode extends AbstractNode
     /**
      * @var string
      *
-     * @ORM\Column(name="description", )
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 

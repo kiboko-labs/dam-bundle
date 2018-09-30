@@ -14,6 +14,10 @@ class DocumentNodeType extends AbstractType
     {
         $builder
             ->add(
+                'parent',
+                DocumentNodeUuidType::class
+            )
+            ->add(
                 'names',
                 LocalizedFallbackValueCollectionType::class
             )

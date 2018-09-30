@@ -53,7 +53,10 @@ final class DocumentNodeController extends Controller
     /**
      * @return array|Request
      *
-     * @Route("/{uuid}", name="kiboko_dms_node_browse")
+     * @Route("/{uuid}/browse",
+     *     name="kiboko_dms_node_browse",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
      * @ParamConverter("node",
      *     class="KibokoDMSBundle:DocumentNode",
      *     options={
@@ -72,7 +75,7 @@ final class DocumentNodeController extends Controller
     public function browseAction(DocumentNodeInterface $node)
     {
         return [
-            'node' => $node
+            'entity' => $node
         ];
     }
 
@@ -81,7 +84,17 @@ final class DocumentNodeController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/create", name="kiboko_dms_node_create")
+     * @Route("/{uuid}/create",
+     *     name="kiboko_dms_node_create",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
+     * @ParamConverter("parent",
+     *     class="KibokoDMSBundle:DocumentNode",
+     *     options={
+     *         "mapping": {"uuid": "id"},
+     *         "map_method_signature" = true,
+     *     }
+     * )
      * @Acl(
      *      id="kiboko_dms_node_create",
      *      type="entity",
@@ -90,9 +103,12 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, DocumentNodeInterface $parent)
     {
-        return $this->update($request, new DocumentNode());
+        $node = new DocumentNode();
+        $node->setParent($parent);
+
+        return $this->update($request, $node);
     }
 
     /**
@@ -101,7 +117,10 @@ final class DocumentNodeController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/{uuid}/update", name="kiboko_dms_node_update")
+     * @Route("/{uuid}/update",
+     *     name="kiboko_dms_node_update",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
      * @ParamConverter("node",
      *     class="KibokoDMSBundle:DocumentNode",
      *     options={

@@ -1,0 +1,18 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+
+{% set gridName = 'kiboko-dms-document-nodes-grid' %}
+{% set params = {'parent': node.id} %}
+{% set pageTitle = node.names|localized_value %}
+
+{% block navButtons %}
+
+    <div class="btn-group">
+        {% if is_granted('kiboko_dms_node_create') %}
+            {{ UI.addButton({
+                'path': path('kiboko_dms_node_create', { uuid: node.id }),
+                'entity_label': 'Folder'|trans,
+            }) }}
+        {% endif %}
+    </div>
+
+{% endblock %}

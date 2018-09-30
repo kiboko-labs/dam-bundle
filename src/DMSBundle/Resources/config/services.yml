@@ -26,7 +26,6 @@ services:
             - '@kiboko_dms.form.document'
             - '@kiboko_dms.form.handler.document'
             - '@translator'
-            - '@oro_locale.helper.localization'
             - '@oro_ui.router'
             - '@session'
 
@@ -47,10 +46,9 @@ services:
     kiboko_dms.controller.document_node:
         class: Kiboko\Bundle\DMSBundle\Controller\DocumentNodeController
         arguments:
-            - '@kiboko_dms.form.document'
+            - '@kiboko_dms.form.document_node'
             - '@oro_form.update_handler'
             - '@translator'
-            - '@oro_locale.helper.localization'
 
     kiboko_dms.form.type.team_storage:
         class: Kiboko\Bundle\DMSBundle\Form\Type\TeamStorageNodeType
@@ -72,4 +70,3 @@ services:
             - '@kiboko_dms.form.team_storage'
             - '@oro_form.update_handler'
             - '@translator'
-            - '@oro_locale.helper.localization'

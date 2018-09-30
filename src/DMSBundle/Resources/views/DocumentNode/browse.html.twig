@@ -1,15 +1,50 @@
-{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% set gridName = 'kiboko-dms-document-nodes-grid' %}
-{% set params = {'parent': node.id} %}
-{% set pageTitle = node.names|localized_value %}
+{% oro_title_set({params : {"%project.name%": entity.names|localized_value} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('kiboko_dms_index'),
+        'indexLabel': 'Documents'|trans,
+        'entityTitle': entity.names|localized_value
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set dataBlocks = [
+        {
+            'title': 'Directories'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    dataGrid.renderGrid('kiboko-dms-document-nodes-grid', {parent: entity.id})
+                ]},
+            ]
+        }, {
+            'title': 'Documents'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    dataGrid.renderGrid('kiboko-dms-documents-grid', {parent: entity.id})
+                ]},
+            ]
+        },
+    ] %}
+    {% set id = 'projectView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}
 
 {% block navButtons %}
 
     <div class="btn-group">
         {% if is_granted('kiboko_dms_document_upload') %}
             {{ UI.clientButton({
-                'dataUrl': path('kiboko_dms_document_upload', {uuid: node.id}),
+                'dataUrl': path('kiboko_dms_document_upload', {uuid: entity.id}),
                 'aCss': 'no-hash',
                 'iCss': 'fa-paperclip',
                 'label': 'Upload a new file'|trans,
@@ -41,10 +76,11 @@
     <div class="btn-group">
         {% if is_granted('kiboko_dms_node_create') %}
             {{ UI.addButton({
-                'path': path('kiboko_dms_node_create'),
+                'path': path('kiboko_dms_node_create', { uuid: entity.id }),
                 'entity_label': 'Folder'|trans,
             }) }}
         {% endif %}
     </div>
 
 {% endblock %}
+

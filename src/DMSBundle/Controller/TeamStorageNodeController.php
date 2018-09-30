@@ -54,7 +54,10 @@ final class TeamStorageNodeController extends Controller
     /**
      * @return array|Request
      *
-     * @Route("/", name="kiboko_dms_index")
+     * @Route("/",
+     *     name="kiboko_dms_index",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
      * @Acl(
      *      id="kiboko_dms_storage_view",
      *      type="entity",
@@ -69,7 +72,7 @@ final class TeamStorageNodeController extends Controller
     }
 
     /**
-     * @Route("/{slug}/", name="kiboko_dms_storage_browse")
+     * @Route("/browse/{slug}/", name="kiboko_dms_storage_browse")
      * @ParamConverter("node",
      *     class="KibokoDMSBundle:TeamStorageNode",
      *     options={
@@ -78,11 +81,13 @@ final class TeamStorageNodeController extends Controller
      *         "map_method_signature" = true,
      *     }
      * )
-     * @Template("KibokoDMSBundle:DocumentNode:browse.html.twig")
+     * @Template()
      */
     public function browseAction(DocumentNodeInterface $node)
     {
-        return ['node' => $node];
+        return [
+            'node' => $node
+        ];
     }
 
     /**
@@ -110,7 +115,10 @@ final class TeamStorageNodeController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/{uuid}/update", name="kiboko_dms_storage_update")
+     * @Route("/{uuid}/update",
+     *     name="kiboko_dms_storage_update",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
      * @ParamConverter("node",
      *     class="KibokoDMSBundle:TeamStorageNode",
      *     options={

@@ -107,3 +107,53 @@ datagrids:
                 route: kiboko_dms_node_update
                 params:
                     uuid: id
+
+    kiboko-dms-documents-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - document.id
+                    - name.string AS localeName
+                    - slug.string AS localeSlug
+                from:
+                    - { table: KibokoDMSBundle:Document, alias: document }
+                join:
+                    left:
+                        - { join: document.names, alias: name }
+                        - { join: document.slugs, alias: slug }
+                where:
+                    and:
+                        - name.localization IS NULL
+                        - slug.localization IS NULL
+                        - document.node = :parent
+            bind_parameters:
+                parent: parent
+        columns:
+            id:
+                label: ID
+            name:
+                label: Name
+                data_name: localeName
+            slug:
+                label: Slug
+                data_name: localeSlug
+        sorters:
+            columns:
+                id:
+                    data_name: node.id
+                name:
+                    data_name: localeName
+                slug:
+                    data_name: localeSlug
+        filters:
+            columns:
+                id:
+                    type: string
+                    data_name: task.id
+                name:
+                    type: string
+                    data_name: localeName
+                slug:
+                    type: string
+                    data_name: localeSlug
