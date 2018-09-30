@@ -2,16 +2,15 @@
 
 namespace Kiboko\Bundle\DMSBundle\Form\Type;
 
-use Kiboko\Bundle\DMSBundle\Entity\LocalStorage;
+use Kiboko\Bundle\DMSBundle\Entity\FlyimgStorage;
 use Kiboko\Bundle\DMSBundle\Form\Listener\ConnectorSubscriber;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocalAdapterType extends AbstractType
+class FlyimgAdapterType extends AbstractType
 {
     /**
      * @var TypesRegistry
@@ -30,12 +29,16 @@ class LocalAdapterType extends AbstractType
     {
         $builder
             ->add(
-                'path',
+                'url',
                 TextType::class
             )
             ->add(
-                'lock',
-                CheckboxType::class
+                'client',
+                TextType::class
+            )
+            ->add(
+                'secret',
+                TextType::class
             )
         ;
     }
@@ -43,7 +46,7 @@ class LocalAdapterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => LocalStorage::class,
+            'data_class' => FlyimgStorage::class,
         ]);
     }
 }
