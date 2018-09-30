@@ -1,0 +1,20 @@
+services:
+    kiboko_dms.integration.channel:
+        class: Kiboko\Bundle\DMSBundle\Integration\Channel
+        tags:
+            - { name: oro_integration.channel, type: kiboko_dms }
+
+    kiboko_dms.integration.transport.local:
+        class: Kiboko\Bundle\DMSBundle\Integration\LocalTransport
+        tags:
+            - { name: oro_integration.transport, channel_type: kiboko_dms, type: local }
+
+#    kiboko_dms.integration.transport.dropbox:
+#        class: Kiboko\Bundle\DMSBundle\Integration\Dropbox\Transport
+#        tags:
+#            - { name: oro_integration.transport, channel_type: kiboko_dms, type: dropbox }
+
+#    kiboko_dms.integration.transport.sftp:
+#        class: Kiboko\Bundle\DMSBundle\Integration\SFTP\Transport
+#        tags:
+#            - { name: oro_integration.transport, channel_type: kiboko_dms, type: sftp }
