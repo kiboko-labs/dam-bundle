@@ -10,6 +10,9 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 /**
  * @ORM\Entity(repositoryClass="Kiboko\Bundle\DMSBundle\Repository\TeamStorageNodeRepository")
  * @Config(
+ *      routeName="kiboko_dms_node_browse",
+ *      routeCreate="kiboko_dms_storage_create",
+ *      routeUpdate="kiboko_dms_storage_update",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-file"

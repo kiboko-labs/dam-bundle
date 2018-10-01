@@ -18,8 +18,8 @@ class DocumentNodeAuthorization extends Authorization
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface",
      *      cascade={"ALL"},
-     *      orphanRemoval=true,
-     *      mappedBy="authorizations"
+     *      mappedBy="authorizations",
+     *      fetch="EXTRA_LAZY",
      * )
      */
     private $nodes;

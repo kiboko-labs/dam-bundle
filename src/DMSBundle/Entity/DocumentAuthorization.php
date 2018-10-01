@@ -18,8 +18,8 @@ class DocumentAuthorization extends Authorization
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentInterface",
      *      cascade={"ALL"},
-     *      orphanRemoval=true,
-     *      mappedBy="authorizations"
+     *      mappedBy="authorizations",
+     *      fetch="EXTRA_LAZY",
      * )
      */
     private $documents;
@@ -32,7 +32,7 @@ class DocumentAuthorization extends Authorization
     /**
      * @return Collection|DocumentInterface[]
      */
-    public function getNodes()
+    public function getDocuments()
     {
         return $this->documents;
     }
@@ -40,7 +40,7 @@ class DocumentAuthorization extends Authorization
     /**
      * @param Collection|DocumentInterface[] $documents
      */
-    public function setNodes(Collection $documents): void
+    public function setDocuments(Collection $documents): void
     {
         $this->documents = $documents;
     }
@@ -48,7 +48,7 @@ class DocumentAuthorization extends Authorization
     /**
      * @param DocumentInterface $document
      */
-    public function addNodes(DocumentInterface $document): void
+    public function addDocument(DocumentInterface $document): void
     {
         $this->documents->add($document);
     }
@@ -56,7 +56,7 @@ class DocumentAuthorization extends Authorization
     /**
      * @param DocumentInterface $document
      */
-    public function removeNodes(DocumentInterface $document): void
+    public function removeDocument(DocumentInterface $document): void
     {
         $this->documents->removeElement($document);
     }

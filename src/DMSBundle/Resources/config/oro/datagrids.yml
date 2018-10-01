@@ -64,9 +64,9 @@ datagrids:
             id: ~
             view_link:
                 type: url
-                route: kiboko_dms_storage_browse
+                route: kiboko_dms_node_browse
                 params:
-                    slug: localeSlug
+                    uuid: id
             update_link:
                 type: url
                 route: kiboko_dms_storage_update

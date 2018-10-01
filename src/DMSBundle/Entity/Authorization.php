@@ -28,6 +28,18 @@ abstract class Authorization implements AuthorizationInterface
      */
     private $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="authorizations", type="array")
+     */
+    private $rawAuthorizations;
+
+    /**
+     * @var DocumentActionInterface[]
+     */
+    private $authorizations;
+
     public function setId(UuidInterface $id): void
     {
         $this->id = $id;

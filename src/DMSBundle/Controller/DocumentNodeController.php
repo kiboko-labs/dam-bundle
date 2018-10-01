@@ -51,7 +51,7 @@ final class DocumentNodeController extends Controller
     }
 
     /**
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/{uuid}/browse",
      *     name="kiboko_dms_node_browse",
@@ -74,15 +74,22 @@ final class DocumentNodeController extends Controller
      */
     public function browseAction(DocumentNodeInterface $node)
     {
+        $path = [];
+        $parent = $node;
+        while (($parent = $parent->getParent()) !== null) {
+            $path[] = $parent;
+        }
+
         return [
-            'entity' => $node
+            'entity' => $node,
+            'path' => $path,
         ];
     }
 
     /**
      * @param Request $request
      *
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/{uuid}/create",
      *     name="kiboko_dms_node_create",
@@ -115,7 +122,7 @@ final class DocumentNodeController extends Controller
      * @param Request               $request
      * @param DocumentNodeInterface $node
      *
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/{uuid}/update",
      *     name="kiboko_dms_node_update",
@@ -132,13 +139,42 @@ final class DocumentNodeController extends Controller
      *      id="kiboko_dms_node_edit",
      *      type="entity",
      *      class="KibokoDMSBundle:DocumentNode",
-     *      permission="UPDATE"
+     *      permission="EDIT,SHARE"
      * )
      * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
      */
     public function editAction(Request $request, DocumentNodeInterface $node)
     {
         return $this->update($request, $node);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array|Response
+     *
+     * @Route("/{uuid}/delete",
+     *     name="kiboko_dms_node_delete",
+     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     * )
+     * @ParamConverter("parent",
+     *     class="KibokoDMSBundle:DocumentNode",
+     *     options={
+     *         "mapping": {"uuid": "id"},
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Acl(
+     *      id="kiboko_dms_node_create",
+     *      type="entity",
+     *      class="KibokoDMSBundle:DocumentNode",
+     *      permission="CREATE"
+     * )
+     * @Template("KibokoDMSBundle:DocumentNode:update.html.twig")
+     */
+    public function deleteAction(Request $request, DocumentNodeInterface $parent)
+    {
+        return new Response(null, 403);
     }
 
     /**

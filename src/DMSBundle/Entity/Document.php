@@ -103,7 +103,7 @@ class Document implements DocumentInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_document_name",
@@ -130,7 +130,7 @@ class Document implements DocumentInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_document_slug",
@@ -157,7 +157,7 @@ class Document implements DocumentInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Model\MetaInterface",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_document_metadata",
@@ -184,8 +184,8 @@ class Document implements DocumentInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentAuthorization",
      *      cascade={"ALL"},
-     *      orphanRemoval=true,
-     *      inversedBy="nodes",
+     *      inversedBy="documents",
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_document_authorization",

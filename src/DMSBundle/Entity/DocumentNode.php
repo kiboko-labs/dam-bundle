@@ -33,6 +33,9 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @Gedmo\Tree(type="nested")
  * @Config(
+ *      routeName="kiboko_dms_index",
+ *      routeCreate="kiboko_dms_node_create",
+ *      routeUpdate="kiboko_dms_node_update",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-file"
@@ -102,7 +105,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_node_name",
@@ -129,7 +132,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_node_slug",
@@ -156,7 +159,7 @@ class DocumentNode implements DocumentNodeInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Model\MetaInterface",
      *      cascade={"ALL"},
-     *      orphanRemoval=true
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_node_metadata",
@@ -183,8 +186,8 @@ class DocumentNode implements DocumentNodeInterface,
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Entity\DocumentNodeAuthorization",
      *      cascade={"ALL"},
-     *      orphanRemoval=true,
      *      inversedBy="nodes",
+     *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
      *      name="kiboko_dms_node_authorization",
@@ -243,7 +246,7 @@ class DocumentNode implements DocumentNodeInterface,
     /**
      * @var DocumentNodeInterface
      *
-     * @ORM\OneToMany(targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentNodeInterface", mappedBy="parent", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"left" = "ASC"})
      */
     private $nodes;
@@ -251,7 +254,7 @@ class DocumentNode implements DocumentNodeInterface,
     /**
      * @var DocumentInterface
      *
-     * @ORM\OneToMany(targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentInterface", mappedBy="node")
+     * @ORM\OneToMany(targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentInterface", mappedBy="node", fetch="EXTRA_LAZY")
      */
     private $documents;
 

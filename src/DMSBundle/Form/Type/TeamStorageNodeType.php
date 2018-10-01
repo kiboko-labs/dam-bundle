@@ -20,6 +20,7 @@ class TeamStorageNodeType extends AbstractType
                     'allowed_types' => ['kiboko_dms']
                 ]
             )
+            ->remove('parent')
         ;
     }
 

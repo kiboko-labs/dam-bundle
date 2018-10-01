@@ -5,11 +5,22 @@
 {% oro_title_set({params : {"%project.name%": entity.names|localized_value} }) %}
 
 {% block pageHeader %}
+
+    {% set additional = [] %}
+
+    {% for node in path %}
+        {% set additional = [{
+            'indexLabel': node.names|localized_value,
+            'indexPath': path('kiboko_dms_node_browse', {uuid: node.id})
+        }]|merge(additional) %}
+    {% endfor %}
+
     {% set breadcrumbs = {
         'entity': entity,
         'indexPath': path('kiboko_dms_index'),
-        'indexLabel': 'Documents'|trans,
-        'entityTitle': entity.names|localized_value
+        'indexLabel': 'Team Storages'|trans,
+        'entityTitle': entity.names|localized_value,
+        'additional': additional
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
@@ -55,7 +66,7 @@
                     'options': {
                         'alias': 'attachment-dialog',
                         'dialogOptions' : {
-                            'title': 'oro.attachment.action.add'|trans,
+                            'title': 'Upload a new file'|trans,
                             'allowMaximize': false,
                             'allowMinimize': false,
                             'modal': true,
@@ -69,18 +80,41 @@
         {% endif %}
     </div>
 
-    {% if is_granted('kiboko_dms_document_upload') and is_granted('kiboko_dms_node_create') %}
+    {% if is_granted('kiboko_dms_document_upload') and (is_granted('kiboko_dms_node_create') or is_granted('kiboko_dms_node_delete')) %}
         {{ UI.buttonSeparator() }}
     {% endif %}
 
-    <div class="btn-group">
         {% if is_granted('kiboko_dms_node_create') %}
-            {{ UI.addButton({
-                'path': path('kiboko_dms_node_create', { uuid: entity.id }),
+            {{ UI.deleteButton({
+                'aCss': 'btn-danger',
+                'path': path('kiboko_dms_node_delete', { uuid: entity.id }),
                 'entity_label': 'Folder'|trans,
             }) }}
+
+            {{ UI.clientButton({
+                'dataUrl': path('kiboko_dms_node_create', {uuid: entity.id}),
+                'aCss': 'no-hash',
+                'iCss': 'fa-folder',
+                'label': 'Create a new folder'|trans,
+                'widget': {
+                    'type': 'dialog',
+                    'multiple': false,
+                    'reload-grid-name': 'attachment-grid',
+                    'options': {
+                        'alias': 'attachment-dialog',
+                        'dialogOptions' : {
+                            'title': 'Create a new folder'|trans,
+                            'allowMaximize': false,
+                            'allowMinimize': false,
+                            'modal': true,
+                            'dblclick': 'maximize',
+                            'maximizedHeightDecreaseBy': 'minimize-bar',
+                            'width': 1000
+                        }
+                    }
+                },
+            }) }}
         {% endif %}
-    </div>
 
 {% endblock %}
 

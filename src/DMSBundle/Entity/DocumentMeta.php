@@ -18,8 +18,8 @@ class DocumentMeta extends Meta
      * @ORM\ManyToMany(
      *      targetEntity="Kiboko\Bundle\DMSBundle\Model\DocumentInterface",
      *      cascade={"ALL"},
-     *      orphanRemoval=true,
-     *      mappedBy="metas"
+     *      mappedBy="metas",
+     *      fetch="EXTRA_LAZY",
      * )
      */
     private $documents;
