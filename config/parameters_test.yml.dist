@@ -28,6 +28,7 @@ parameters:
 
     locale:                 en
     secret:                 ThisTokenIsNotSoSecretChangeIt
+    web_backend_prefix:     /admin
     installed:              ~
     assets_version:         ~
     assets_version_strategy: time_hash

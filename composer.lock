@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c298e937787e6fb6de5fa1830cab9603",
+    "content-hash": "22d301e9fe105c7a16a645410d88d624",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -162,131 +162,6 @@
                 "transliterator"
             ],
             "time": "2017-04-04T11:38:05+00:00"
-        },
-        {
-            "name": "besimple/soap-client",
-            "version": "v0.2.6",
-            "target-dir": "BeSimple/SoapClient",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BeSimple/BeSimpleSoapClient.git",
-                "reference": "50f186fd3e9fafc4ce2d194d5d18e3987d5fbf41"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapClient/zipball/50f186fd3e9fafc4ce2d194d5d18e3987d5fbf41",
-                "reference": "50f186fd3e9fafc4ce2d194d5d18e3987d5fbf41",
-                "shasum": ""
-            },
-            "require": {
-                "ass/xmlsecurity": "~1.0",
-                "besimple/soap-common": "0.2.*",
-                "ext-curl": "*",
-                "ext-soap": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "~1.0",
-                "symfony/filesystem": "~2.0",
-                "symfony/process": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapClient": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
-                },
-                {
-                    "name": "Christian Kerl",
-                    "email": "christian-kerl@web.de"
-                },
-                {
-                    "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com"
-                }
-            ],
-            "description": "Build and consume SOAP Client based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapClient",
-            "keywords": [
-                "soap",
-                "soap-client"
-            ],
-            "time": "2014-08-18T09:45:53+00:00"
-        },
-        {
-            "name": "besimple/soap-common",
-            "version": "v0.2.6",
-            "target-dir": "BeSimple/SoapCommon",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "08aa78c7f1cae4b23cce5e8928dca7243ca4e4fa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/08aa78c7f1cae4b23cce5e8928dca7243ca4e4fa",
-                "reference": "08aa78c7f1cae4b23cce5e8928dca7243ca4e4fa",
-                "shasum": ""
-            },
-            "require": {
-                "ass/xmlsecurity": "~1.0",
-                "ext-soap": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "ext-mcrypt": "*",
-                "mikey179/vfsstream": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\SoapCommon": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
-                },
-                {
-                    "name": "Christian Kerl",
-                    "email": "christian-kerl@web.de"
-                },
-                {
-                    "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com"
-                }
-            ],
-            "description": "Build and consume SOAP Common based web services",
-            "homepage": "https://github.com/BeSimple/BeSimpleSoapCommon",
-            "keywords": [
-                "soap",
-                "soap-common"
-            ],
-            "time": "2014-08-14T19:40:13+00:00"
         },
         {
             "name": "bower-asset/autobahnjs",
@@ -538,25 +413,6 @@
             ]
         },
         {
-            "name": "bower-asset/elevatezoom3",
-            "version": "3.0.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qodeboy-forks/elevatezoom.git",
-                "reference": "e02b7785a3598254842219b02a6208f4e29eae3a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qodeboy-forks/elevatezoom/zipball/e02b7785a3598254842219b02a6208f4e29eae3a",
-                "reference": "e02b7785a3598254842219b02a6208f4e29eae3a",
-                "shasum": null
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "bower-asset/flotr2",
             "version": "dev-master",
             "source": {
@@ -592,29 +448,6 @@
                 "OFL-1.1",
                 "MIT",
                 "CC-BY-3.0"
-            ]
-        },
-        {
-            "name": "bower-asset/fullcalendar",
-            "version": "v3.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fullcalendar/fullcalendar.git",
-                "reference": "447ab267528a211b253058dfb5d898b7a2296492"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/447ab267528a211b253058dfb5d898b7a2296492",
-                "reference": "447ab267528a211b253058dfb5d898b7a2296492",
-                "shasum": null
-            },
-            "require": {
-                "bower-asset/jquery": ">=2,<4.0",
-                "bower-asset/moment": ">=2.9.0,<3.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
             ]
         },
         {
@@ -689,28 +522,6 @@
                 "bower-asset/jquery": ">=1.2"
             },
             "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery-creditcardvalidator",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PawelDecowski/jquery-creditcardvalidator.git",
-                "reference": "0a534d201566b5a63eb6dd4d1918f111ce1a5858"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PawelDecowski/jquery-creditcardvalidator/zipball/0a534d201566b5a63eb6dd4d1918f111ce1a5858",
-                "reference": "0a534d201566b5a63eb6dd4d1918f111ce1a5858",
-                "shasum": null
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "bower-asset/jquery-form",
@@ -949,25 +760,6 @@
             "type": "bower-asset"
         },
         {
-            "name": "bower-asset/prism",
-            "version": "v1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PrismJS/prism.git",
-                "reference": "22df673c472d52fbd1f9ab2656c7186fcbc47c0b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PrismJS/prism/zipball/22df673c472d52fbd1f9ab2656c7186fcbc47c0b",
-                "reference": "22df673c472d52fbd1f9ab2656c7186fcbc47c0b",
-                "shasum": null
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "bower-asset/select2",
             "version": "3.4.1",
             "source": {
@@ -1055,74 +847,6 @@
                 "shasum": null
             },
             "type": "bower-asset"
-        },
-        {
-            "name": "box/spout",
-            "version": "v2.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/box/spout.git",
-                "reference": "3681a3421a868ab9a65da156c554f756541f452b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/box/spout/zipball/3681a3421a868ab9a65da156c554f756541f452b",
-                "reference": "3681a3421a868ab9a65da156c554f756541f452b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xmlreader": "*",
-                "ext-zip": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.0"
-            },
-            "suggest": {
-                "ext-iconv": "To handle non UTF-8 CSV files (if \"php-intl\" is not already installed or is too limited)",
-                "ext-intl": "To handle non UTF-8 CSV files (if \"iconv\" is not already installed)"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.8.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Box\\Spout\\": "src/Spout"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Adrien Loison",
-                    "email": "adrien@box.com"
-                }
-            ],
-            "description": "PHP Library to read and write spreadsheet files (CSV, XLSX and ODS), in a fast and scalable way",
-            "homepage": "https://www.github.com/box/spout",
-            "keywords": [
-                "OOXML",
-                "csv",
-                "excel",
-                "memory",
-                "odf",
-                "ods",
-                "office",
-                "open",
-                "php",
-                "read",
-                "scale",
-                "spreadsheet",
-                "stream",
-                "write",
-                "xlsx"
-            ],
-            "time": "2017-09-25T19:44:35+00:00"
         },
         {
             "name": "brick/math",
@@ -5254,54 +4978,6 @@
             "time": "2017-02-24T16:06:33+00:00"
         },
         {
-            "name": "myclabs/deep-copy",
-            "version": "1.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
-            },
-            "require-dev": {
-                "doctrine/collections": "^1.0",
-                "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^7.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                },
-                "files": [
-                    "src/DeepCopy/deep_copy.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Create deep copies (clones) of your objects",
-            "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
-            ],
-            "time": "2018-06-11T23:09:50+00:00"
-        },
-        {
             "name": "nelmio/api-doc-bundle",
             "version": "2.13.3",
             "target-dir": "Nelmio/ApiDocBundle",
@@ -5592,185 +5268,6 @@
             "time": "2015-08-09T04:28:19+00:00"
         },
         {
-            "name": "oro/calendar-bundle",
-            "version": "3.1.0-beta",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "38ede35e677811362678719d2833869749f4945a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/38ede35e677811362678719d2833869749f4945a",
-                "reference": "38ede35e677811362678719d2833869749f4945a",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/fullcalendar": "3.4.0",
-                "oro/platform": "3.1.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\CalendarBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Calendar Bundle",
-            "homepage": "https://github.com/oroinc/OroCalendarBundle.git",
-            "keywords": [
-                "Calendar",
-                "Oro"
-            ],
-            "support": {
-                "source": "https://github.com/oroinc/OroCalendarBundle/tree/master",
-                "issues": "https://github.com/oroinc/OroCalendarBundle/issues"
-            },
-            "time": "2018-08-23T16:51:38+00:00"
-        },
-        {
-            "name": "oro/commerce",
-            "version": "3.1.0-beta",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oroinc/orocommerce.git",
-                "reference": "78aa03a9b667fa0b9d67c67f244d5f7ada3363b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/orocommerce/zipball/78aa03a9b667fa0b9d67c67f244d5f7ada3363b5",
-                "reference": "78aa03a9b667fa0b9d67c67f244d5f7ada3363b5",
-                "shasum": ""
-            },
-            "require": {
-                "besimple/soap-client": "^0.2.6",
-                "bower-asset/elevatezoom3": "3.0.8.1",
-                "bower-asset/jquery-creditcardvalidator": "1.0",
-                "box/spout": "2.7.*",
-                "myclabs/deep-copy": "1.8.*",
-                "oro/calendar-bundle": "3.1.*",
-                "oro/customer-portal": "3.1.*",
-                "oro/marketing": "3.1.*",
-                "oro/platform": "3.1.*",
-                "oro/platform-serialised-fields": "3.1.*"
-            },
-            "require-dev": {
-                "behat/behat": "3.2.2",
-                "behat/mink-extension": "2.2.*",
-                "behat/mink-selenium2-driver": "1.*",
-                "behat/symfony2-extension": "2.1.1",
-                "friendsofphp/php-cs-fixer": "2.1.*",
-                "johnkary/phpunit-speedtrap": "1.0.*",
-                "mybuilder/phpunit-accelerator": "1.2.*",
-                "nelmio/alice": "2.2.*",
-                "phpmd/phpmd": "2.6.*",
-                "phpunit/phpcov": "3.1.*",
-                "phpunit/phpunit": "5.7.*",
-                "sebastian/phpcpd": "dev-master#cff7f36c2ae89d59987de25d14fd41a72dd4a703 as 3.1.0",
-                "sensio/generator-bundle": "3.1.2",
-                "squizlabs/php_codesniffer": "2.8.*",
-                "symfony/phpunit-bridge": "3.4.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocommerce.com"
-                }
-            ],
-            "description": "OroCommerce - an open-source Business to Business Commerce application. \\nThis package contains bundles and needs to be added as a dependency in an OroCommerce application.",
-            "homepage": "https://github.com/orocommerce/orocommerce",
-            "support": {
-                "source": "https://github.com/oroinc/orocommerce/tree/3.1",
-                "issues": "https://github.com/oroinc/orocommerce/issues"
-            },
-            "time": "2018-09-26T09:41:26+00:00"
-        },
-        {
-            "name": "oro/customer-portal",
-            "version": "3.1.0-beta",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oroinc/customer-portal.git",
-                "reference": "07386edaed0574c813b90f961ed191ec6770b8b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/customer-portal/zipball/07386edaed0574c813b90f961ed191ec6770b8b0",
-                "reference": "07386edaed0574c813b90f961ed191ec6770b8b0",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/prism": "1.6.0",
-                "oro/calendar-bundle": "3.1.*",
-                "oro/commerce": "3.1.*",
-                "oro/marketing": "3.1.*",
-                "oro/platform": "3.1.*",
-                "oro/platform-serialised-fields": "3.1.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocommerce.com"
-                }
-            ],
-            "homepage": "https://github.com/oroinc/customer-portal",
-            "support": {
-                "source": "https://github.com/oroinc/customer-portal/tree/3.1",
-                "issues": "https://github.com/oroinc/customer-portal/issues"
-            },
-            "time": "2018-09-26T09:41:26+00:00"
-        },
-        {
             "name": "oro/doctrine-extensions",
             "version": "1.2.1",
             "source": {
@@ -5824,56 +5321,6 @@
                 "type"
             ],
             "time": "2018-08-15T09:13:39+00:00"
-        },
-        {
-            "name": "oro/marketing",
-            "version": "3.1.0-beta",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oroinc/OroCRMMarketingBundle.git",
-                "reference": "048e10850dc3c955920a5c73dacfa71b27818a6d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCRMMarketingBundle/zipball/048e10850dc3c955920a5c73dacfa71b27818a6d",
-                "reference": "048e10850dc3c955920a5c73dacfa71b27818a6d",
-                "shasum": ""
-            },
-            "require": {
-                "oro/platform": "3.1.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro": "src/"
-                }
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Marketing Bundles",
-            "homepage": "https://github.com/oroinc/OroCRMMarketingBundle.git",
-            "keywords": [
-                "Campaign",
-                "Marketing",
-                "Oro",
-                "Tracking"
-            ],
-            "support": {
-                "source": "https://github.com/oroinc/OroCRMMarketingBundle/tree/master"
-            },
-            "time": "2018-08-27T15:01:21+00:00"
         },
         {
             "name": "oro/platform",
@@ -10640,6 +10087,54 @@
                 "property"
             ],
             "time": "2017-06-21T07:43:12+00:00"
+        },
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "time": "2018-06-11T23:09:50+00:00"
         },
         {
             "name": "nelmio/alice",
