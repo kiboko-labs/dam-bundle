@@ -17,13 +17,13 @@ services:
             - { name: oro_integration.transport, channel_type: kiboko_dms, type: local }
 
     kiboko_dms.integration.form.flyimg:
-        class: Kiboko\Bundle\DMSBundle\Form\Type\FlyimgAdapterType
+        class: Kiboko\Bundle\DMSBundle\Form\Type\CDPAdapterType
         arguments:
             - "@oro_integration.manager.types_registry"
         tags:
             - { name: form.type }
 
     kiboko_dms.integration.transport.flyimg:
-        class: Kiboko\Bundle\DMSBundle\Integration\FlyimgTransport
+        class: Kiboko\Bundle\DMSBundle\Integration\CDPTransport
         tags:
             - { name: oro_integration.transport, channel_type: kiboko_dms, type: flyimg }

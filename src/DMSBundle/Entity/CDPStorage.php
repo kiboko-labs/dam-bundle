@@ -10,12 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class FlyimgStorage extends Transport
+class CDPStorage extends Transport
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="kiboko_oms_flyimg_url", type="string", nullable=true)
+     * @ORM\Column(name="kiboko_oms_cdp_url", type="string", nullable=true)
      * @Assert\NotBlank()
      * @Assert\Url()
      */
@@ -24,7 +24,7 @@ class FlyimgStorage extends Transport
     /**
      * @var int
      *
-     * @ORM\Column(name="kiboko_oms_flyimg_client", type="string", nullable=true)
+     * @ORM\Column(name="kiboko_oms_cdp_client", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $client;
@@ -32,7 +32,7 @@ class FlyimgStorage extends Transport
     /**
      * @var int
      *
-     * @ORM\Column(name="kiboko_oms_flyimg_secret", type="string", nullable=true)
+     * @ORM\Column(name="kiboko_oms_cdp_secret", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $secret;

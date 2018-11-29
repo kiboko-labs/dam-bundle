@@ -2,7 +2,7 @@
 
 namespace Kiboko\Bundle\DMSBundle\Form\Type;
 
-use Kiboko\Bundle\DMSBundle\Entity\FlyimgStorage;
+use Kiboko\Bundle\DMSBundle\Entity\CDPStorage;
 use Kiboko\Bundle\DMSBundle\Form\Listener\ConnectorSubscriber;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FlyimgAdapterType extends AbstractType
+class CDPAdapterType extends AbstractType
 {
     /**
      * @var TypesRegistry
@@ -46,7 +46,7 @@ class FlyimgAdapterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => FlyimgStorage::class,
+            'data_class' => CDPStorage::class,
         ]);
     }
 }

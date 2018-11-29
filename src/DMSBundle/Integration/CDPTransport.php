@@ -2,14 +2,14 @@
 
 namespace Kiboko\Bundle\DMSBundle\Integration;
 
-use Kiboko\Bundle\DMSBundle\Entity\FlyimgStorage;
-use Kiboko\Bundle\DMSBundle\Form\Type\FlyimgAdapterType;
+use Kiboko\Bundle\DMSBundle\Entity\CDPStorage;
+use Kiboko\Bundle\DMSBundle\Form\Type\CDPAdapterType;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Transport as BaseTransport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
-class FlyimgTransport implements TransportInterface
+class CDPTransport implements TransportInterface
 {
     /**
      * @var AdapterInterface
@@ -18,11 +18,11 @@ class FlyimgTransport implements TransportInterface
 
     public function init(BaseTransport $transportEntity)
     {
-        if (!$transportEntity instanceof FlyimgStorage) {
+        if (!$transportEntity instanceof CDPStorage) {
             throw new \InvalidArgumentException(strtr(
                 'The transport should be an instance of %expected%, got %actual%.',
                 [
-                    '%expected%' => FlyimgStorage::class,
+                    '%expected%' => CDPStorage::class,
                     '%actual%' => get_class($transportEntity),
                 ]
             ));
@@ -36,16 +36,16 @@ class FlyimgTransport implements TransportInterface
 
     public function getLabel()
     {
-        return 'Flyimg CDN Storage';
+        return 'Kiboko CDP Storage';
     }
 
     public function getSettingsFormType()
     {
-        return FlyimgAdapterType::class;
+        return CDPAdapterType::class;
     }
 
     public function getSettingsEntityFQCN()
     {
-        return FlyimgStorage::class;
+        return CDPStorage::class;
     }
 }
