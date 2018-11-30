@@ -1,0 +1,29 @@
+services:
+    kiboko_dam.integration.channel:
+        class: Kiboko\Bundle\DAMBundle\Integration\Channel
+        tags:
+            - { name: oro_integration.channel, type: kiboko_dam }
+
+    kiboko_dam.integration.form.local:
+        class: Kiboko\Bundle\DAMBundle\Form\Type\LocalAdapterType
+        arguments:
+            - "@oro_integration.manager.types_registry"
+        tags:
+            - { name: form.type }
+
+    kiboko_dam.integration.transport.local:
+        class: Kiboko\Bundle\DAMBundle\Integration\LocalTransport
+        tags:
+            - { name: oro_integration.transport, channel_type: kiboko_dam, type: local }
+
+    kiboko_dam.integration.form.flyimg:
+        class: Kiboko\Bundle\DAMBundle\Form\Type\CDPAdapterType
+        arguments:
+            - "@oro_integration.manager.types_registry"
+        tags:
+            - { name: form.type }
+
+    kiboko_dam.integration.transport.flyimg:
+        class: Kiboko\Bundle\DAMBundle\Integration\CDPTransport
+        tags:
+            - { name: oro_integration.transport, channel_type: kiboko_dam, type: flyimg }

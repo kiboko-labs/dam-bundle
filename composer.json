@@ -6,10 +6,10 @@
     "autoload": {
         "psr-4": {
             "": "src/",
-            "Kiboko\\Bundle\\DMSBundle\\": "src/DMSBundle/",
-            "Kiboko\\Bridge\\DMSAmazonBridge\\": "src/DMSAmazonBridge/",
-            "Kiboko\\Bridge\\DMSAzureBridge\\": "src/DMSAzureBridge/",
-            "Kiboko\\Bridge\\DMSGoogleBridge\\": "src/DMSGoogleBridge/"
+            "Kiboko\\Bundle\\DAMBundle\\": "src/DAMBundle/",
+            "Kiboko\\Bridge\\DAMAmazonBridge\\": "src/DAMAmazonBridge/",
+            "Kiboko\\Bridge\\DAMAzureBridge\\": "src/DAMAzureBridge/",
+            "Kiboko\\Bridge\\DAMGoogleBridge\\": "src/DAMGoogleBridge/"
         },
         "classmap": [
             "src/AppKernel.php",
@@ -28,10 +28,10 @@
         }
     },
     "require": {
-        "oro/platform": "3.1.*",
-        "oro/platform-serialised-fields": "3.1.*",
+        "oro/platform": "3.1.0-rc",
         "league/flysystem": "^1.0",
-        "ramsey/uuid-doctrine": "^1.5"
+        "ramsey/uuid-doctrine": "^1.5",
+        "oro/platform-serialised-fields": "3.1.0-rc"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",

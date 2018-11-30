@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  mail:
+    image: schickling/mailcatcher:latest
+    ports:
+      - 1080:1080
+
+  sql:
+    environment:
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432:5432
+
+  http:
+    ports:
+      - 8000:80
+    volumes:
+      - ./.docker/nginx@1.15/config/vhost-dev.conf:/etc/nginx/conf.d/100-default.conf
+
+  fpm:
+    volumes:
+      - ./.docker/php@7.1/fpm/dev/config/pool.ini:/usr/local/etc/php/pool.d/default.ini:ro
+      - ./.docker/php@7.1/fpm/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./.docker/php@7.1/fpm/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+
+  ws:
+    command: ["bin/console", "gos:websocket:server", "--env=prod"]
+    ports:
+      - 8080:8080
+    volumes:
+      - ./.docker/php@7.1/cli/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+
+  mq:
+    command: ["bin/console", "oro:message-queue:consume", "--env=prod", "-vv"]
+    volumes:
+      - ./.docker/php@7.1/cli/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+
+  cli:
+    volumes:
+      - ./.docker/php@7.1/cli/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro

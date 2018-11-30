@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  sql:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: "kiboko"
+      POSTGRES_DB: "kiboko"
+    volumes:
+      - ./.docker/postgres@9.6/sql/uuid-ossp.sql:/docker-entrypoint-initdb.d/00-uuid-ossp.sql:ro
+    restart: on-failure
+
+  http:
+    image: nginx:alpine
+    volumes:
+      - ./.docker/nginx@1.15/config/options.conf:/etc/nginx/conf.d/000-options.conf
+      - ./:/var/www/html
+    restart: on-failure
+
+  fpm:
+    build:
+      context: .docker/php@7.1/fpm/dev
+    user: docker:docker
+    volumes:
+      - ./:/var/www/html
+    restart: on-failure
+
+  ws:
+    build:
+      context: .docker/php@7.1/cli
+    user: docker:docker
+    volumes:
+      - ./:/var/www/html
+    restart: on-failure
+
+  mq:
+    build:
+      context: .docker/php@7.1/cli
+    user: docker:docker
+    volumes:
+      - ./:/var/www/html
+    restart: on-failure
+
+  cli:
+    build:
+      context: .docker/php@7.1/cli/prod
+    user: docker:docker
+    volumes:
+      - /home/kiboko/.composer:/opt/docker/.composer
+      - ./:/var/www/html
+

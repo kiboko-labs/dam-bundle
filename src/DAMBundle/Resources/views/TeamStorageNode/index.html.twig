@@ -1,0 +1,14 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+
+{% set gridName = 'kiboko-dam-team-storages-nodes-grid' %}
+{% set params = { localeId: localization.id|default(null) } %}
+{% set pageTitle = 'Team Storages'|trans %}
+
+{% block navButtons %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path': path('kiboko_dam_storage_create'),
+            'entity_label': 'Team Storage'|trans,
+        }) }}
+    </div>
+{% endblock %}

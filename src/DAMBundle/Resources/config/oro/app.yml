@@ -1,0 +1,11 @@
+doctrine:
+ dbal:
+   types:
+     uuid:  Ramsey\Uuid\Doctrine\UuidType
+
+ orm:
+   resolve_target_entities:
+     Kiboko\Bundle\DAMBundle\Model\AuthorizationInterface: Kiboko\Bundle\DAMBundle\Entity\Authorization
+     Kiboko\Bundle\DAMBundle\Model\DocumentInterface: Kiboko\Bundle\DAMBundle\Entity\Document
+     Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface: Kiboko\Bundle\DAMBundle\Entity\DocumentNode
+     Kiboko\Bundle\DAMBundle\Model\MetaInterface: Kiboko\Bundle\DAMBundle\Entity\Meta

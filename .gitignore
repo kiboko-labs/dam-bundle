@@ -43,3 +43,4 @@ phpunit.xml
 /public/uploads/behat
 /.web-server-pid
 /.vagrant
+/docker-compose.override.yml

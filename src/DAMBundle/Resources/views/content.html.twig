@@ -1,0 +1,236 @@
+{% import 'OroSyncBundle:Include:contentTags.html.twig' as syncMacro %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+<div class="layout-content"
+        {% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}
+>
+    <div class="container-fluid page-title">
+        {% block workflowStepListContainer %}
+            {% placeholder page_title_before with {entity: entity} %}
+        {% endblock  %}
+        <div class="navigation clearfix navbar-extra navbar-extra-right">
+            <div class="row">
+                <div class="pull-left-extra">
+                    {% block pageHeader %}
+                        <div class="customer-info well-small{% if avatar is not defined %} customer-simple{% endif %}">
+                            {% if avatar is defined %}
+                                <div class="visual">
+                                    <img src="{{ avatar ? avatar : asset('bundles/oroui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                                </div>
+                            {% endif %}
+                            <div class="customer-content">
+                                <div class="top-row">
+                                    {% block breadcrumbs %}
+                                        {% if breadcrumbs is defined %}
+                                            <div class="pull-left">
+                                                {% if breadcrumbs.indexLabel is defined %}
+                                                    <div class="sub-title">
+                                                        {%- if breadcrumbs.indexPath is defined -%}
+                                                            <a href="{{ oro_url_add_query(breadcrumbs.indexPath) }}">{{ breadcrumbs.indexLabel }}</a>
+                                                        {%- else -%}
+                                                            {{ breadcrumbs.indexLabel }}
+                                                        {%- endif -%}
+                                                    </div>
+                                                    <span class="separator">/</span>
+                                                {% endif %}
+                                                {% if breadcrumbs.additional is defined %}
+                                                    {% for breadcrumb in breadcrumbs.additional %}
+                                                        <div class="sub-title">
+                                                            {%- if breadcrumb.indexPath is defined -%}
+                                                                <a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel }}</a>
+                                                            {%- else -%}
+                                                                {{ breadcrumb.indexLabel }}
+                                                            {%- endif -%}
+                                                        </div>
+                                                        <span class="separator">/</span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {% if breadcrumbs.rawEntityTitle is defined and breadcrumbs.rawEntityTitle %}
+                                                    <h1 class="user-name">{{ breadcrumbs.entityTitle|raw }}</h1>
+                                                {% else %}
+                                                    <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
+                                                {% endif %}
+                                            </div>
+                                            {% block after_breadcrumbs %}{% endblock %}
+                                        {% endif %}
+                                        {% block breadcrumbMessage %}{% endblock breadcrumbMessage %}
+                                    {% endblock breadcrumbs %}
+                                </div>
+                                <div>
+                                    <ul class="inline">
+                                        {% placeholder page_header_stats_before with {entity: entity} %}
+                                        {% block stats %}
+                                            {% if  is_granted('VIEW', entity, 'createdAt') %}
+                                                <li>{{ 'oro.ui.created_at'|trans }}: {{ breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                            {% endif %}
+                                            {% if  is_granted('VIEW', entity, 'updatedAt') %}
+                                                <li>{{ 'oro.ui.updated_at'|trans }}: {{ breadcrumbs.entity.updatedAt is defined and breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+                                            {% endif %}
+                                        {% endblock stats %}
+                                        {% placeholder page_header_stats_after with {entity: entity} %}
+
+                                        {% if isMobileVersion() and entity is not null %}
+                                            {% set ownerLink = UI.entityOwnerLink(entity) %}
+                                            <li>{{ ownerLink }}{% placeholder additional_owner_info with {entity: entity} %}</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock pageHeader %}
+                </div>
+                {% set actionButtons %}
+                    <div class="pull-right">
+                        <div class="pull-right title-buttons-container">
+                            {% block navButtonContainer %}
+                                {% placeholder view_navButtons_before with {entity: entity} %}
+                                {% block navButtons %}{% placeholder view_navButtons with {entity: entity} %}{% endblock navButtons %}
+                                {% placeholder view_navButtons_after with {entity: entity} %}
+                            {% endblock navButtonContainer%}
+                        </div>
+                        <div class="pull-right user-info-state">
+                            <div class="inline-decorate-container">
+                                <ul class="inline-decorate">
+                                    {% block pageActions %}
+                                        {% placeholder view_pageActions_before with {entity: entity} %}
+
+                                        {% block ownerLink %}
+                                            {% if isDesktopVersion() and entity is not null %}
+                                                {% set ownerLink = UI.entityOwnerLink(entity) %}
+                                                <li>{{ ownerLink }}{% placeholder additional_owner_info with {entity: entity} %}</li>
+                                            {% endif %}
+                                        {% endblock ownerLink %}
+
+                                        {% set audit_entity_id = audit_entity_id is defined ? audit_entity_id : entity.id|default %}
+                                        {% if audit_entity_id %}
+                                            {% placeholder change_history_block with {
+                                                'entity': entity,
+                                                'entity_class': audit_entity_class|default(null),
+                                                'id': audit_entity_id,
+                                                'title': audit_title|default(entity.__toString is defined ? entity.__toString : null),
+                                                'audit_path': audit_path|default('oro_dataaudit_history'),
+                                                'audit_show_change_history': audit_show_change_history|default(false)
+                                            } %}
+                                        {% endif %}
+
+                                        {% placeholder view_pageActions_after with {entity: entity} %}
+                                    {% endblock pageActions %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endset %}
+                {%  if not isMobileVersion() %}
+                    {{ actionButtons }}
+                {%  endif %}
+                {%  if isMobileVersion() %}
+                    {{ actionButtons }}
+                {%  endif %}
+            </div>
+        </div>
+        {% placeholder page_title_after with {entity: entity} %}
+    </div>
+
+    <div class="layout-content scrollable-container">
+        {% block content_data %}
+            {% if data is defined and data.dataBlocks is defined %}
+                {% set data = oro_view_process(data, entity) %}
+                {% set dataBlocks = data.dataBlocks %}
+
+                {%- set activitiesData -%}
+                    {% placeholder view_content_data_activities with {entity: entity} %}
+                {%- endset -%}
+
+                {% if activitiesData is not empty %}
+                    {% set dataBlocks = dataBlocks|merge([{
+                        'title': 'oro.activity.sections.activities'|trans,
+                        'priority' : 1000,
+                        'subblocks': [
+                            {
+                                'spanClass': 'empty activities-container',
+                                'data': [activitiesData]
+                            }
+                        ]
+                    }]) %}
+                {% endif %}
+
+                {%- set marketingActivitiesData -%}
+                    {% placeholder view_content_data_marketing_activities with {entity: entity} %}
+                {%- endset -%}
+
+                {% if marketingActivitiesData is not empty %}
+                    {% set dataBlocks = dataBlocks|merge([{
+                        'title': 'oro.marketingactivity.sections.marketingactivities'|trans,
+                        'priority' : 1050,
+                        'subblocks': [
+                            {
+                                'spanClass': 'empty marketing-activities-container',
+                                'data': [marketingActivitiesData]
+                            }
+                        ]
+                    }]) %}
+                {% endif %}
+
+                {%- set communicationsData -%}
+                    {% placeholder view_content_data_communications with {entity: entity} %}
+                {%- endset -%}
+
+                {% if communicationsData is not empty %}
+                    {% set dataBlocks = dataBlocks|merge([{
+                        'title': 'Communications'|trans,
+                        'priority' : 1100,
+                        'subblocks': [
+                            {
+                                'spanClass': 'empty',
+                                'data': [communicationsData]
+                            }
+                        ]
+                    }]) %}
+                {% endif %}
+
+                {%- set additionalInformationData -%}
+                    {% placeholder view_content_data_additional_information with {entity: entity} %}
+                {%- endset -%}
+
+                {% if additionalInformationData is not empty %}
+                    {% set dataBlocks = dataBlocks|merge([{
+                        'title': 'Additional Information'|trans,
+                        'priority' : 1200,
+                        'subblocks': [
+                            {
+                                'spanClass': 'empty',
+                                'data': [additionalInformationData]
+                            }
+                        ]
+                    }]) %}
+                {% endif %}
+
+                {%- set commentsData  -%}
+                    {% placeholder view_content_data_comments with {entity: entity} %}
+                {%- endset -%}
+
+                {% if commentsData is not empty %}
+                    {% set dataBlocks = dataBlocks|merge([{
+                        'title': 'oro.comment.entity_plural_label'|trans,
+                        'priority' : 1300,
+                        'subblocks': [
+                            {
+                                'spanClass': 'responsive-cell activity-list-widget',
+                                'data': [commentsData]
+                            }
+                        ]
+                    }]) %}
+                {% endif  %}
+
+                {% set data = data|merge({'dataBlocks': dataBlocks}) %}
+            {% endif %}
+            {#{ UI.scrollData(id, data, entity) }#}
+        {% endblock content_data %}
+    </div>
+
+    {% block sync_content_tags %}
+        {# block added just for possibility to disable it in child templates if needed #}
+        {{ syncMacro.syncContentTags(entity) }}
+        {% placeholder view_entity_sync_content_tags with {entity: entity} %}
+    {% endblock %}
+</div>

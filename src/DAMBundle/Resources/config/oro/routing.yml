@@ -1,0 +1,4 @@
+kiboko_dam_bundle:
+    resource: "@KibokoDAMBundle/Controller"
+    type:     annotation
+    prefix:   /dam
