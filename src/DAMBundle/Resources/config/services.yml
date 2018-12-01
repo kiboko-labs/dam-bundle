@@ -70,3 +70,15 @@ services:
             - '@kiboko_dam.form.team_storage'
             - '@oro_form.update_handler'
             - '@translator'
+
+    kiboko_dam.listener.navigation_listener:
+        class: Kiboko\Bundle\DAMBundle\EventListener\NavigationListener
+        arguments:
+            - '@oro_locale.helper.localization'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity_config.provider.entity'
+            - '@oro_security.token_accessor'
+            - '@oro_security.acl_helper'
+            - '@oro_featuretoggle.checker.feature_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }

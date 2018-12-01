@@ -2,22 +2,22 @@ navigation:
     menu_config:
         items:
             kiboko_dam_tab:
-                label: Documents
+                label: Assets
                 uri:   '#'
                 attributes:
                     class: 'mobile-hide'
                 position: 300
                 extras:
                     icon: fa-image
-            kiboko_dam_browse:
-                label: Browse
+            kiboko_dam_team_storages:
+                label: Team storages
                 route: kiboko_dam_index
         tree:
             application_menu:
                 children:
                     kiboko_dam_tab:
                         children:
-                            kiboko_dam_browse: ~
+                            kiboko_dam_team_storages: ~
 
     titles:
         acme_link: My link page title

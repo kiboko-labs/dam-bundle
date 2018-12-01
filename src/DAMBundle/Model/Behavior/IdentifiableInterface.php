@@ -6,7 +6,7 @@ use Ramsey\Uuid\UuidInterface;
 
 interface IdentifiableInterface
 {
-    public function setId(UuidInterface $id): void;
+    public function setUuid(UuidInterface $id): void;
 
-    public function getId(): ?UuidInterface;
+    public function getUuid(): ?UuidInterface;
 }

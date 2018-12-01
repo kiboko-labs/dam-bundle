@@ -47,7 +47,7 @@
                         {% for node in path %}
                             {% set additional = [{
                                 'indexLabel': node.names|localized_value,
-                                'indexPath': path('kiboko_dam_node_browse', {uuid: node.id})
+                                'indexPath': path('kiboko_dam_node_browse', {uuid: node.uuid})
                             }]|merge(additional) %}
                         {% endfor %}
 
@@ -68,7 +68,7 @@
                                 'class': 'active',
                                 'subblocks': [{
                                 'data': [
-                                    dataGrid.renderGrid('kiboko-dam-document-nodes-grid', {parent: entity.id})
+                                    dataGrid.renderGrid('kiboko-dam-document-nodes-grid', {parent: entity.uuid})
                                 ]},
                             ]
                             }, {
@@ -90,7 +90,7 @@
 
                         {% if is_granted('kiboko_dam_document_upload') %}
                             {{ UI.clientButton({
-                                'dataUrl': path('kiboko_dam_document_upload', {uuid: entity.id}),
+                                'dataUrl': path('kiboko_dam_document_upload', {uuid: entity.uuid}),
                                 'aCss': 'no-hash',
                                 'iCss': 'fa-paperclip',
                                 'label': 'Upload a new file'|trans,
@@ -121,12 +121,12 @@
                         {% if is_granted('kiboko_dam_node_create') %}
                             {{ UI.deleteButton({
                                 'aCss': 'btn-danger',
-                                'path': path('kiboko_dam_node_delete', { uuid: entity.id }),
+                                'path': path('kiboko_dam_node_delete', { uuid: entity.uuid }),
                                 'entity_label': 'Folder'|trans,
                             }) }}
 
                             {{ UI.clientButton({
-                                'dataUrl': path('kiboko_dam_node_create', {uuid: entity.id}),
+                                'dataUrl': path('kiboko_dam_node_create', {uuid: entity.uuid}),
                                 'aCss': 'no-hash',
                                 'iCss': 'fa-folder',
                                 'label': 'Create a new folder'|trans,

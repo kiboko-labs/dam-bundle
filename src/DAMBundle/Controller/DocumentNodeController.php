@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\DataCollectorTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/node", service="kiboko_dam.controller.document_node")
@@ -31,19 +31,19 @@ final class DocumentNodeController extends Controller
     private $handler;
 
     /**
-     * @var DataCollectorTranslator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @param Form                    $form
-     * @param UpdateHandlerFacade     $handler
-     * @param DataCollectorTranslator $translator
+     * @param Form                $form
+     * @param UpdateHandlerFacade $handler
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         Form $form,
         UpdateHandlerFacade $handler,
-        DataCollectorTranslator $translator
+        TranslatorInterface $translator
     ) {
         $this->form = $form;
         $this->handler = $handler;
@@ -55,12 +55,12 @@ final class DocumentNodeController extends Controller
      *
      * @Route("/{uuid}/browse",
      *     name="kiboko_dam_node_browse",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -93,12 +93,12 @@ final class DocumentNodeController extends Controller
      *
      * @Route("/{uuid}/create",
      *     name="kiboko_dam_node_create",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("parent",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -126,12 +126,12 @@ final class DocumentNodeController extends Controller
      *
      * @Route("/{uuid}/update",
      *     name="kiboko_dam_node_update",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -155,12 +155,12 @@ final class DocumentNodeController extends Controller
      *
      * @Route("/{uuid}/delete",
      *     name="kiboko_dam_node_delete",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("parent",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )

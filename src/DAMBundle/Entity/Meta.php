@@ -3,9 +3,11 @@
 namespace Kiboko\Bundle\DAMBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\IdentifiableInterface;
 use Kiboko\Bundle\DAMBundle\Model\MetaInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -18,17 +20,23 @@ use Ramsey\Uuid\UuidInterface;
  * })
  * @ORM\Table(name="kiboko_dam_metadata")
  */
-abstract class Meta implements MetaInterface
+abstract class Meta implements MetaInterface, IdentifiableInterface
 {
+    /**
+     * @var int
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="integer", unique=true)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @var UuidInterface
      *
-     * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var Localization|null
@@ -52,14 +60,38 @@ abstract class Meta implements MetaInterface
      */
     private $raw;
 
-    public function setId(UuidInterface $id): void
+    /**
+     * Meta constructor.
+     */
+    public function __construct()
+    {
+        $this->uuid = (new UuidFactory())->uuid4();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getId(): UuidInterface
+    public function setUuid(UuidInterface $uuid): void
     {
-        return $this->id;
+        $this->uuid = $uuid;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function setLocalization(Localization $localization): void

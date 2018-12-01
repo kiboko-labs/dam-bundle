@@ -4,6 +4,8 @@ namespace Kiboko\Bundle\DAMBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kiboko\Bundle\DAMBundle\Model\AuthorizationInterface;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\IdentifiableInterface;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -16,17 +18,23 @@ use Ramsey\Uuid\UuidInterface;
  * })
  * @ORM\Table(name="kiboko_dam_authorization")
  */
-abstract class Authorization implements AuthorizationInterface
+abstract class Authorization implements AuthorizationInterface, IdentifiableInterface
 {
+    /**
+     * @var int
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="integer", unique=true)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @var UuidInterface
      *
-     * @ORM\Id()
      * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -40,13 +48,37 @@ abstract class Authorization implements AuthorizationInterface
      */
     private $authorizations;
 
-    public function setId(UuidInterface $id): void
+    /**
+     * Authorization constructor.
+     */
+    public function __construct()
+    {
+        $this->uuid = (new UuidFactory())->uuid4();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getId(): UuidInterface
+    public function setUuid(UuidInterface $uuid): void
     {
-        return $this->id;
+        $this->uuid = $uuid;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 }

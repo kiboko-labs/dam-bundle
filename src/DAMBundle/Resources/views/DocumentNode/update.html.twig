@@ -5,9 +5,9 @@
 {% set node = form.vars.value %}
 
 {% if node.id %}
-    {% set formAction = path('kiboko_dam_node_update', { uuid: node.id }) %}
+    {% set formAction = path('kiboko_dam_node_update', { uuid: node.uuid }) %}
 {% else %}
-    {% set formAction = path('kiboko_dam_node_create', { uuid: node.parent.id }) %}
+    {% set formAction = path('kiboko_dam_node_create', { uuid: node.parent.uuid }) %}
 {% endif %}
 
 {% block navButtons %}

@@ -17,7 +17,7 @@ class DocumentNodeUuidType extends AbstractType
     {
         $builder->add(
             $builder->create(
-                'id',
+                'uuid',
                 TextType::class,
                 [
                     'attr' => [

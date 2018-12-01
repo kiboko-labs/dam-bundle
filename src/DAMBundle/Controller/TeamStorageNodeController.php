@@ -5,7 +5,6 @@ namespace Kiboko\Bundle\DAMBundle\Controller;
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
-use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\DataCollectorTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service="kiboko_dam.controller.team_storage")
@@ -32,19 +31,19 @@ final class TeamStorageNodeController extends Controller
     private $handler;
 
     /**
-     * @var DataCollectorTranslator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @param Form                    $form
-     * @param UpdateHandlerFacade     $handler
-     * @param DataCollectorTranslator $translator
+     * @param Form                $form
+     * @param UpdateHandlerFacade $handler
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         Form $form,
         UpdateHandlerFacade $handler,
-        DataCollectorTranslator $translator
+        TranslatorInterface $translator
     ) {
         $this->form = $form;
         $this->handler = $handler;
@@ -56,7 +55,7 @@ final class TeamStorageNodeController extends Controller
      *
      * @Route("/",
      *     name="kiboko_dam_index",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @Acl(
      *      id="kiboko_dam_storage_view",
@@ -117,12 +116,12 @@ final class TeamStorageNodeController extends Controller
      *
      * @Route("/{uuid}/update",
      *     name="kiboko_dam_storage_update",
-     *     requirements={"uuid"="[\da-z]{8}-[\da-z]{4}-[\da-z]{4}-[\da-z]{4}-[\da-z]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )

@@ -17,9 +17,9 @@ interface DocumentNodeInterface extends NamedInterface, IdentifiableInterface
      */
     public function getNodes(): Collection;
 
-    public function addNode(self $node): void;
+    public function addNode(DocumentNodeInterface $node): void;
 
-    public function removeNode(self $node): void;
+    public function removeNode(DocumentNodeInterface $node): void;
 
     /**
      * @return Collection|DocumentInterface[]

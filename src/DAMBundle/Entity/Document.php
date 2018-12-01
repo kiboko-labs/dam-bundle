@@ -24,6 +24,7 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\UserInterface;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -72,14 +73,20 @@ class Document implements DocumentInterface,
     use UpdatedByAwareTrait;
 
     /**
-     * @var UuidInterface
+     * @var int
      *
      * @ORM\Id()
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Column(type="integer", unique=true)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid", unique=true)
+     */
+    private $uuid;
 
     /**
      * @var UserInterface
@@ -225,20 +232,37 @@ class Document implements DocumentInterface,
 
     public function __construct()
     {
+        $this->uuid = (new UuidFactory())->uuid4();
         $this->names = new ArrayCollection();
         $this->slugs = new ArrayCollection();
         $this->metas = new ArrayCollection();
         $this->authorizations = new ArrayCollection();
     }
 
-    public function setId(UuidInterface $id): void
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getId(): ?UuidInterface
+    public function setUuid(UuidInterface $uuid): void
     {
-        return $this->id;
+        $this->uuid = $uuid;
+    }
+
+    public function getUuid(): ?UuidInterface
+    {
+        return $this->uuid;
     }
 
     /**

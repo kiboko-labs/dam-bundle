@@ -24,6 +24,7 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\UserInterface;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -74,14 +75,20 @@ class DocumentNode implements DocumentNodeInterface,
     use UpdatedByAwareTrait;
 
     /**
-     * @var UuidInterface
+     * @var int
      *
      * @ORM\Id()
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Column(type="integer", unique=true)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid", unique=true)
+     */
+    private $uuid;
 
     /**
      * @var UserInterface
@@ -260,6 +267,7 @@ class DocumentNode implements DocumentNodeInterface,
 
     public function __construct()
     {
+        $this->uuid = (new UuidFactory())->uuid4();
         $this->names = new ArrayCollection();
         $this->slugs = new ArrayCollection();
         $this->metas = new ArrayCollection();
@@ -268,14 +276,30 @@ class DocumentNode implements DocumentNodeInterface,
         $this->authorizations = new ArrayCollection();
     }
 
-    public function setId(UuidInterface $id): void
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getId(): ?UuidInterface
+    public function getUuid(): ?UuidInterface
     {
-        return $this->id;
+        return $this->uuid;
+    }
+
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 
     /**

@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\DataCollectorTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/document", service="kiboko_dam.controller.document")
@@ -32,7 +32,7 @@ final class DocumentController extends Controller
     private $handler;
 
     /**
-     * @var DataCollectorTranslator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -47,16 +47,16 @@ final class DocumentController extends Controller
     private $session;
 
     /**
-     * @param Form                    $form
-     * @param DocumentHandler         $handler
-     * @param DataCollectorTranslator $translator
-     * @param Router                  $router
-     * @param Session                 $session
+     * @param Form                $form
+     * @param DocumentHandler     $handler
+     * @param TranslatorInterface $translator
+     * @param Router              $router
+     * @param Session             $session
      */
     public function __construct(
         Form $form,
         DocumentHandler $handler,
-        DataCollectorTranslator $translator,
+        TranslatorInterface $translator,
         Router $router,
         Session $session
     ) {
@@ -77,7 +77,7 @@ final class DocumentController extends Controller
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "id"},
+     *         "mapping": {"uuid": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )

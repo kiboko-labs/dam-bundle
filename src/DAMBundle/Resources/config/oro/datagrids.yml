@@ -1,7 +1,7 @@
 datagrids:
     kiboko-dam-nodes-grid:
         columns:
-            id:
+            uuid:
                 label: ID
             name:
                 label: Name
@@ -11,17 +11,17 @@ datagrids:
                 data_name: localeSlug
         sorters:
             columns:
-                id:
-                    data_name: node.id
+                uuid:
+                    data_name: node.uuid
                 name:
                     data_name: localeName
                 slug:
                     data_name: localeSlug
         filters:
             columns:
-                id:
+                uuid:
                     type: string
-                    data_name: task.id
+                    data_name: task.uuid
                 name:
                     type: string
                     data_name: localeName
@@ -46,7 +46,7 @@ datagrids:
             type: orm
             query:
                 select:
-                    - node.id
+                    - node.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
                 from:
@@ -61,17 +61,17 @@ datagrids:
                         - slug.localization IS NULL
                         - node.parent IS NULL
         properties:
-            id: ~
+            uuid: ~
             view_link:
                 type: url
                 route: kiboko_dam_node_browse
                 params:
-                    uuid: id
+                    uuid: uuid
             update_link:
                 type: url
                 route: kiboko_dam_storage_update
                 params:
-                    uuid: id
+                    uuid: uuid
 
     kiboko-dam-document-nodes-grid:
         extends: kiboko-dam-nodes-grid
@@ -79,7 +79,7 @@ datagrids:
             type: orm
             query:
                 select:
-                    - node.id
+                    - node.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
                 from:
@@ -96,24 +96,24 @@ datagrids:
             bind_parameters:
                 parent: parent
         properties:
-            id: ~
+            uuid: ~
             view_link:
                 type: url
                 route: kiboko_dam_node_browse
                 params:
-                    uuid: id
+                    uuid: uuid
             update_link:
                 type: url
                 route: kiboko_dam_node_update
                 params:
-                    uuid: id
+                    uuid: uuid
 
     kiboko-dam-documents-grid:
         source:
             type: orm
             query:
                 select:
-                    - document.id
+                    - document.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
                 from:
@@ -130,7 +130,7 @@ datagrids:
             bind_parameters:
                 parent: parent
         columns:
-            id:
+            uuid:
                 label: ID
             name:
                 label: Name
@@ -140,17 +140,17 @@ datagrids:
                 data_name: localeSlug
         sorters:
             columns:
-                id:
-                    data_name: node.id
+                uuid:
+                    data_name: node.uuid
                 name:
                     data_name: localeName
                 slug:
                     data_name: localeSlug
         filters:
             columns:
-                id:
+                uuid:
                     type: string
-                    data_name: task.id
+                    data_name: task.uuid
                 name:
                     type: string
                     data_name: localeName
