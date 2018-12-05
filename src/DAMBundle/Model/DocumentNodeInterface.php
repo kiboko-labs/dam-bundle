@@ -13,7 +13,7 @@ interface DocumentNodeInterface extends NamedInterface, IdentifiableInterface
     public function getPath(): PathInterface;
 
     /**
-     * @return Collection|self[]
+     * @return Collection|DocumentNodeInterface[]
      */
     public function getNodes(): Collection;
 

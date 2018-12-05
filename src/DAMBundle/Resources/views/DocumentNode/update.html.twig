@@ -4,7 +4,7 @@
 
 {% set node = form.vars.value %}
 
-{% if node.id %}
+{% if node.uuid %}
     {% set formAction = path('kiboko_dam_node_update', { uuid: node.uuid }) %}
 {% else %}
     {% set formAction = path('kiboko_dam_node_create', { uuid: node.parent.uuid }) %}
@@ -19,7 +19,7 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if node.id %}
+    {% if node.uuid %}
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dam_index'),

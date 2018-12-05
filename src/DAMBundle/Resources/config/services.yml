@@ -43,12 +43,19 @@ services:
             - 'kiboko_dam_document_form'
             - Kiboko\Bundle\DAMBundle\Form\Type\DocumentNodeType
 
+    kiboko_dam.tree.document_node_update_tree_handler:
+        class: Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler
+        arguments:
+        - '@translator'
+        - '@oro_locale.helper.localization'
+
     kiboko_dam.controller.document_node:
         class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeController
         arguments:
             - '@kiboko_dam.form.document_node'
             - '@oro_form.update_handler'
             - '@translator'
+            - '@kiboko_dam.tree.document_node_update_tree_handler'
 
     kiboko_dam.form.type.team_storage:
         class: Kiboko\Bundle\DAMBundle\Form\Type\TeamStorageNodeType
@@ -70,6 +77,13 @@ services:
             - '@kiboko_dam.form.team_storage'
             - '@oro_form.update_handler'
             - '@translator'
+            - '@kiboko_dam.tree.document_node_update_tree_handler'
+
+    kiboko_dam.controller.team_storage_node_tree:
+        class: Kiboko\Bundle\DAMBundle\Controller\TeamStorageNodeTreeController
+        arguments:
+            - '@oro_scope.context_normalizer'
+            - '@kiboko_dam.tree.document_node_update_tree_handler'
 
     kiboko_dam.listener.navigation_listener:
         class: Kiboko\Bundle\DAMBundle\EventListener\NavigationListener

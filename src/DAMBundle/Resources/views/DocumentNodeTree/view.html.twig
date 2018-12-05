@@ -1,0 +1,12 @@
+{% extends 'KibokoDAMBundle:tree:view.html.twig' %}
+
+{% set routePrefix = 'kiboko_dam_document_node_tree_' %}
+
+{% oro_title_set({ params : { "%title%": entity.names|localized_value } }) %}
+
+{% set breadcrumbs = {
+    'entity': entity,
+    'indexPath': path('kiboko_dam_index'),
+    'indexLabel': 'kiboko.dam.teamstoragenode.entity_plural_label'|trans,
+    'entityTitle': entity.names|localized_value
+} %}

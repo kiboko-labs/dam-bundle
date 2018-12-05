@@ -1,22 +1,13 @@
 {% extends bap.layout %}
 
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% from _self import resetButton %}
 {% set reloadLink -%}
     <a href="#" onclick="window.location.reload(false);return false;">
-        {{- 'oro.navigation.menuupdate.reload_link.label'|trans -}}
+        {{- 'kiboko.dam.documentnode.reload_link.label'|trans -}}
     </a>
 {%- endset %}
-
 {% block content %}
-    {% set routePrefix = 'kiboko_dam_document_node_tree_' %}
-
-    {% set breadcrumbs = {
-        'entity': entity,
-        'indexPath': path('kiboko_dam_index'),
-        'indexLabel': 'kiboko.dam.teamstoragenode.entity_plural_label'|trans,
-        'entityTitle': entity.names|localized_value
-    } %}
-
     <div class="layout-content"{% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}>
         <div class="container-fluid page-title">
             <div class="navigation navbar-extra navbar-extra-right">
@@ -27,6 +18,16 @@
                         {% endblock pageHeader %}
                     </div>
                     <div class="pull-right">
+                        {{ resetButton({
+                            'dataUrl': path(routePrefix ~ 'ajax_reset', { uuid: entity.uuid }),
+                            'dataRedirect': path(routePrefix ~ 'view', { node: entity.uuid }),
+                            'menuKey': entity.uuid,
+                            'data': {
+                                'success-message': resetedMessage|default('kiboko.dam.documentnode.reset_message')|trans({ '%menuKey%' : entity.names|localized_value, '%reload_link%': reloadLink }),
+                            }
+                        }) }}
+
+                        {{ UI.buttonSeparator() }}
 
                         {% set html = UI.button({
                             'path' : path(routePrefix ~ 'create', { uuid: entity.uuid }),
@@ -73,15 +74,13 @@
         <div class="scrollable-container sidebar-container clearfix">
             {% block content_data %}
                 {% set treeOptions = {
-                    'data' : tree,
-                    'menu' : entity.uuid,
-                    'nodeId': entity.uuid,
-                    'updateAllowed' : true,
-                    'view' : 'kibokodam/js/app/views/tree-manage-view',
-                    'onRootSelectRoute' : routePrefix ~ 'view',
-                    'onSelectRoute' : routePrefix ~ 'update',
-                    'onMoveRoute' : routePrefix ~ 'ajax_move',
-                    'successMessage': movedMessage|default('oro.navigation.menuupdate.moved_success_message')
+                    'data': tree,
+                    'nodeId': entity.id,
+                    'updateAllowed': true,
+                    'view': 'kibokodam/js/app/views/tree-manage-view',
+                    'onSelectRoute': routePrefix ~ 'view',
+                    'onMoveRoute': routePrefix ~ 'ajax_move',
+                    'successMessage': movedMessage|default('kiboko.dam.documentnode.moved_success_message'),
                 } %}
 
                 {% embed "OroUIBundle::content_sidebar.html.twig" with {options: {
@@ -97,7 +96,7 @@
                                 'move': {
                                     'view': 'oroui/js/app/views/jstree/move-action-view',
                                     'routeName': routePrefix ~ 'move',
-                                    'routeParams': {menuName: entity.uuid}
+                                    'routeParams': { uuid: entity.uuid }
                                 }
                             }
                         ) }}
@@ -106,7 +105,7 @@
                     {% block content %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                                {{ 'oro.navigation.menuupdate.select_existing_or_create_new'|trans }}
+                                {{ 'kiboko.dam.documentnode.empty_node'|trans }}
                             </div>
                         </div>
                     {% endblock content %}
@@ -115,3 +114,33 @@
         </div>
     </div>
 {% endblock content %}
+
+{% macro resetButton(parameters) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set url = parameters.dataUrl is defined ? parameters.dataUrl : '' %}
+
+    {% set parametersData = parameters.data|merge({
+        'message': 'kiboko.dam.documentnode.reset_confirm'|trans({ '%menuKey%' : parameters.menuKey }),
+        'ok-text': 'kiboko.dam.documentnode.reset_ok_text'|trans,
+        'title': 'kiboko.dam.documentnode.reset_title'|trans,
+        'url': url
+    }) %}
+
+    {% set parameters = parameters|merge({
+        'data': parametersData,
+        'title': 'kiboko.dam.documentnode.reset'|trans,
+        'label': 'kiboko.dam.documentnode.reset'|trans,
+        'aCss': ' btn icons-holder-text no-hash remove-button',
+        'path': 'javascript:void(0);'
+    }) %}
+
+    {% if parameters.dataRedirect is defined %}
+        {% set data = parameters.data|merge({ 'redirect': parameters.dataRedirect }) %}
+        {% set parameters = parameters|merge({ 'data': data }) %}
+    {% endif %}
+
+    <div class="pull-left btn-group icons-holder">
+        {{ UI.link(parameters) }}
+    </div>
+{% endmacro %}

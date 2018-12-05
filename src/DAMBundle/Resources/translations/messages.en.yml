@@ -1,0 +1,22 @@
+kiboko:
+  dam:
+    teamstoragenode:
+      entity_label: Team Storage
+      entity_plural_label: Team Storages
+      owner:
+        label: Owner
+      message:
+        success: The Team Storage has been properly created
+
+    documentnode:
+      entity_label: Folder
+      entity_plural_label: Folder
+      reset: Reset
+      empty_node: This node is empty, you can drag and drop files in this space to upload new assets.
+
+    document:
+      entity_label: Asset
+      entity_plural_label: Asset
+
+    updload: 'Upload %entityName%'
+    updload_batch: 'Upload %entityName% batch'

@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -36,18 +37,26 @@ final class DocumentNodeController extends Controller
     private $translator;
 
     /**
-     * @param Form                $form
-     * @param UpdateHandlerFacade $handler
-     * @param TranslatorInterface $translator
+     * @var DocumentNodeUpdateTreeHandler
+     */
+    private $treeHandler;
+
+    /**
+     * @param Form                          $form
+     * @param UpdateHandlerFacade           $handler
+     * @param TranslatorInterface           $translator
+     * @param DocumentNodeUpdateTreeHandler $treeHandler
      */
     public function __construct(
         Form $form,
         UpdateHandlerFacade $handler,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        DocumentNodeUpdateTreeHandler $treeHandler
     ) {
         $this->form = $form;
         $this->handler = $handler;
         $this->translator = $translator;
+        $this->treeHandler = $treeHandler;
     }
 
     /**
@@ -60,7 +69,9 @@ final class DocumentNodeController extends Controller
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )
@@ -83,6 +94,7 @@ final class DocumentNodeController extends Controller
         return [
             'entity' => $node,
             'path' => $path,
+            'tree' => $this->treeHandler->createTree($node, true),
         ];
     }
 

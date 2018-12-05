@@ -64,9 +64,9 @@ datagrids:
             uuid: ~
             view_link:
                 type: url
-                route: kiboko_dam_node_browse
+                route: kiboko_dam_document_node_tree_view
                 params:
-                    uuid: uuid
+                    storage: uuid
             update_link:
                 type: url
                 route: kiboko_dam_storage_update

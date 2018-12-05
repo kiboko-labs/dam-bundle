@@ -22,7 +22,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataInterface;
 use Oro\Bundle\UserBundle\Entity\UserInterface;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
@@ -69,7 +71,8 @@ class DocumentNode implements DocumentNodeInterface,
     Behavior\MovableInterface,
     Behavior\AuthorizableInterface,
     DatesAwareInterface,
-    UpdatedByAwareInterface
+    UpdatedByAwareInterface,
+    OrganizationAwareInterface
 {
     use DatesAwareTrait;
     use UpdatedByAwareTrait;
