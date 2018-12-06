@@ -27,18 +27,43 @@ define(function(require) {
 
         treeEvents: {
             'create_node.jstree': 'onCreate',
+            'set_text.jstree': 'onNodeNameChange',
+            'delete_node.jstree': 'onNodeDelete',
         },
-
 
         /**
-         * Triggers after node selection in tree
+         * Triggers after node deleted in tree
          *
          * @param {Event} e
-         * @param {Object} selected
+         * @param {Object} data
          */
-        onCreate: function(e, selected) {
-            alert('ddd');
+        onNodeDelete: function(e, data) {
+            console.log('parent= ' + data.parent);
+            console.log('node deleted= ' + data.node.name);
         },
+
+        /**
+         * Triggers after node creation in tree
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onCreate: function(e, data) {
+            console.log('parent= ' + data.parent);
+            //Trop en amont => Pas encore de nom
+        },
+
+        /**
+         * Triggers after node change name
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeNameChange: function(e, data) {
+            console.log(data.text);
+        },
+
+
 
         /**
          * Triggers after node selection in tree
