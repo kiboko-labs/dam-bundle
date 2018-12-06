@@ -25,6 +25,21 @@ define(function(require) {
             TreeManageView.__super__.constructor.apply(this, arguments);
         },
 
+        treeEvents: {
+            'create_node.jstree': 'onCreate',
+        },
+
+
+        /**
+         * Triggers after node selection in tree
+         *
+         * @param {Event} e
+         * @param {Object} selected
+         */
+        onCreate: function(e, selected) {
+            alert('ddd');
+        },
+
         /**
          * Triggers after node selection in tree
          *
@@ -32,6 +47,7 @@ define(function(require) {
          * @param {Object} selected
          */
         onSelect: function(e, selected) {
+
             BaseTreeManageView.__super__.onSelect.apply(this, arguments);
 
             if (this.initialization || !this.updateAllowed) {
@@ -61,7 +77,6 @@ define(function(require) {
          */
         customizeTreeConfig: function(options, config) {
 
-            console.log(this.checkboxEnabled);
             if (this.checkboxEnabled) {
                 config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
