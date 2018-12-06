@@ -8,6 +8,8 @@ define(function(require) {
     var messenger = require('oroui/js/messenger');
     var mediator = require('oroui/js/mediator');
     var routing = require('routing');
+    var tools = require('oroui/js/tools');
+
     var BaseTreeManageView = require('oroui/js/app/views/jstree/base-tree-manage-view');
 
     /**
@@ -48,6 +50,48 @@ define(function(require) {
                 });
             }
             mediator.execute('redirectTo', {url: url});
+        },
+
+        /**
+         * Customize jstree config to add plugins, callbacks etc.
+         *
+         * @param {Object} options
+         * @param {Object} config
+         * @returns {Object}
+         */
+        customizeTreeConfig: function(options, config) {
+
+            console.log(this.checkboxEnabled);
+            if (this.checkboxEnabled) {
+                config.plugins.push('checkbox');
+                config.plugins.push('contextmenu');
+                config.checkbox = {
+                    whole_node: false,
+                    tie_selection: false,
+                    three_state: false
+                };
+
+                this.$('[data-role="jstree-checkall"]').show();
+            }
+
+            if (this.$searchField.length) {
+                config.plugins.push('search');
+                config.search = {
+                    close_opened_onclear: true,
+                    show_only_matches: true,
+                    show_only_matches_children: false,
+                    case_sensitive: false,
+                    search_callback: _.bind(this.searchCallback, this)
+                };
+            }
+
+            if (_.isUndefined(options.autohideNeighbors)) {
+                config.autohideNeighbors = tools.isMobile();
+            } else {
+                config.autohideNeighbors = options.autohideNeighbors;
+            }
+
+            return config;
         },
     });
 
