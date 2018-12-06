@@ -8,7 +8,7 @@
     {% set formAction = path('kiboko_dam_node_update', { 'uuid': node.uuid }) %}
 {% else %}
     {% if node.uuid  %}
-        {% set formAction = path('kiboko_dam_node_create', { uuid: node.parent.uuid }) %}
+        {% set formAction = path('kiboko_dam_node_create', { 'uuid': node.parent.uuid }) %}
     {% endif %}
 {% endif %}
 

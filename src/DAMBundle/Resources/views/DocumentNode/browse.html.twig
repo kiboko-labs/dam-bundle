@@ -41,7 +41,7 @@
                             'title': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
                             'dataMethod': 'POST',
                             'dataRedirect': app.request.uri,
-                            'dataUrl': path(routePrefix ~ create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
+                            'dataUrl': path(routePrefix ~ 'create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
                             'successMessage': dividerCreatedMessage|default('kiboko.dam.documentnode.divider_created')|trans({'%reload_link%': reloadLink})
                         }) %}
 
