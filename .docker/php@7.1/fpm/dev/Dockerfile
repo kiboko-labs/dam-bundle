@@ -12,6 +12,7 @@ RUN set -ex\
     && apk upgrade \
     && echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
     && apk add \
+        nodejs \
         shadow@testing \
         ca-certificates \
         wget \
