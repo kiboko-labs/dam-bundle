@@ -38,8 +38,31 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeDelete: function(e, data) {
-            console.log('parent= ' + data.parent);
-            console.log('node deleted= ' + data.node.name);
+
+
+            console.log(data.parent);
+
+
+            var formattedUuid = data.node.id.substring(5,data.node.id.length);
+            console.log(formattedUuid);
+
+
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: formattedUuid});
+
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: url,
+                data: {
+                    parent: data.parent,
+                },
+                success: function(result) {
+                    console.log('yes')
+                }
+            });
+
+
         },
 
         /**
