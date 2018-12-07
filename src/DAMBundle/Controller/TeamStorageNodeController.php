@@ -108,7 +108,7 @@ final class TeamStorageNodeController extends Controller
      *     name="kiboko_dam_storage_update",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      * )
-     * @ParamConverter("node",
+     * @ParamConverter("uuid",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
