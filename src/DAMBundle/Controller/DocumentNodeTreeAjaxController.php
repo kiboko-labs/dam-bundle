@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\NavigationBundle\Event\MenuUpdateChangeEvent;
 use Oro\Bundle\NavigationBundle\Manager\MenuUpdateManager;
@@ -29,7 +30,7 @@ class DocumentNodeTreeAjaxController extends Controller
 
 
     /**
-     * @Route("/delete/{uuid}",
+     * @Route("/{uuid}",
      *     name="kiboko_dam_document_node_tree_ajax_delete",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      *     options={
@@ -45,15 +46,19 @@ class DocumentNodeTreeAjaxController extends Controller
      *         "map_method_signature" = true,
      *     }
      * )
-     * @Method({"POST"})
+     * @Method({"DELETE"})
      *
      * {@inheritdoc}
      */
     public function deleteAction(Request $request, DocumentNodeInterface $node)
     {
 
-        var_dump($node->getUuid());
-        die;
+        $em = $this->getDoctrine()->getManagerForClass(DocumentNode::class);
+
+        $em->remove($node);
+        $em->flush();
+
+        return new JsonResponse('deleted',200);
 
     }
 

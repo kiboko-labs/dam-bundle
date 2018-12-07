@@ -40,25 +40,23 @@ define(function(require) {
         onNodeDelete: function(e, data) {
 
 
-            console.log(data.parent);
+            console.log(data.node.original.uuid);
 
 
-            var formattedUuid = data.node.id.substring(5,data.node.id.length);
-            console.log(formattedUuid);
+            var uuid = data.node.original.uuid;
 
 
-            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: formattedUuid});
-
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
 
             $.ajax({
                 async: false,
-                type: 'POST',
+                type: 'DELETE',
                 url: url,
                 data: {
                     parent: data.parent,
                 },
                 success: function(result) {
-                    console.log('yes')
+                    console.log('deleted')
                 }
             });
 
