@@ -85,6 +85,7 @@ final class DocumentNodeController extends Controller
      */
     public function browseAction(DocumentNodeInterface $node)
     {
+
         $path = [];
         $parent = $node;
         while (($parent = $parent->getParent()) !== null) {
