@@ -2,6 +2,11 @@
 
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
+
+{% set formAction =
+     path('kiboko_dam_index')
+%}
+
 {% set node = form.vars.value %}
 
 {% if node.uuid and node.id %}
@@ -15,9 +20,20 @@
 {% block navButtons %}
     {{ UI.cancelButton(path('kiboko_dam_index')) }}
 
-    {{ UI.dropdownSaveButton({
-        'html': UI.saveAndCloseButton() ~ UI.saveAndStayButton()
-    }) }}
+    {% set html = UI.saveAndCloseButton({'route': 'kiboko_dam_index'}) %}
+    {% if resource_granted('kiboko_dam_storage_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'kiboko_project_create'
+        }) %}
+    {% endif %}
+    {% if form.vars.value.id or resource_granted('kiboko_dam_storage_update') %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'kiboko_dam_storage_update',
+            'params': {'uuid': '$uuid'}
+        }) %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+
 {% endblock navButtons %}
 
 {% block pageHeader %}
