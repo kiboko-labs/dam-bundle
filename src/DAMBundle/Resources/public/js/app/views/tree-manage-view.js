@@ -105,6 +105,7 @@ define(function(require) {
             if (this.checkboxEnabled) {
                 config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
+                config.plugins.push('dnd');
                 config.checkbox = {
                     whole_node: false,
                     tie_selection: false,
