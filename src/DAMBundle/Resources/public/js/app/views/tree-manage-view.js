@@ -29,6 +29,7 @@ define(function(require) {
             'create_node.jstree': 'onCreate',
             'rename_node.jstree': 'onNodeNameChange',
             'delete_node.jstree': 'onNodeDelete',
+            'move_node.jstree': 'onNodeMove',
         },
 
         /**
@@ -50,16 +51,27 @@ define(function(require) {
         },
 
         /**
-         * Triggers after node creation in tree
+         * Triggers after node deleted in tree
          *
          * @param {Event} e
          * @param {Object} data
          */
-        onCreate: function(e, data) {
-            console.log('parent= ' + data.parent);
-            //Trop en amont => Pas encore de nom
-        },
+        onNodeMove: function(e, data) {
+            var newParent = data.parent;
+            var oldParent = data.old_parent;
+            var uuidParent = this.$tree.jstree(true).get_node(data.parent).original.uuid;
 
+            var uuid = data.node.original.uuid;
+                var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid});
+                $.ajax({
+                    async: false,
+                    type: 'POST',
+                    data: {
+                        'newParent': uuidParent
+                    },
+                    url: url
+                });
+        },
         /**
          * Triggers after node change name
          *
@@ -67,11 +79,10 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeNameChange: function(e, data) {
-
-            var uuid = data.node.original.uuid;
-            var name = data.text;
+        var uuid = data.node.original.uuid;
+        var name = data.text;
+        if (data.node.original.uuid === '') {
             var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
-
             $.ajax({
                 async: false,
                 type: 'POST',
@@ -80,9 +91,8 @@ define(function(require) {
                 },
                 url: url
             });
+        }
         },
-
-
 
         /**
          * Triggers after node selection in tree

@@ -115,10 +115,8 @@ class DocumentNodeTreeAjaxController extends Controller
             $oldNode = $this->em->getRepository(DocumentNode::class)
                 ->findOneBy(['uuid'=> $node->getUuid()]);
 
-
             $oldName = $oldNode->getLocaleName($this->localizationHelper);
             $oldName->setString($newName);
-
 
             $collection = new ArrayCollection();
             $collection->add($oldName);
@@ -131,13 +129,37 @@ class DocumentNodeTreeAjaxController extends Controller
             }
             catch (ORMException $e) {
                 return new JsonResponse($e->getMessage(),500);
-
             }
 
-
             return new JsonResponse('renamed',200);
-
         }
 
+    /**
+     * @Route("/move/{uuid}",
+     *     name="kiboko_dam_document_node_tree_ajax_move",
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     options={
+     *         "expose"=true,
+     *     },
+     * )
+     * @ParamConverter("node",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Method({"POST"})
+     *
+     * {@inheritdoc}
+     */
+    public function moveAction(Request $request, DocumentNodeInterface $node)
+    {
+        $newparent= $request->get('newParent');
+
+        var_dump($newparent);die;
+    }
 
 }
