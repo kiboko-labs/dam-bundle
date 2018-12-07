@@ -1,0 +1,9 @@
+services:
+  kiboko_dam.controller.document_node_tree_ajax_controller:
+    class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeTreeAjaxController
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@oro_locale.helper.localization'
+    calls:
+      - [setContainer, ["@service_container"]]
+

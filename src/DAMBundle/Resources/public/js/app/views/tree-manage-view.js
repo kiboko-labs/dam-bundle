@@ -27,7 +27,7 @@ define(function(require) {
 
         treeEvents: {
             'create_node.jstree': 'onCreate',
-            'set_text.jstree': 'onNodeNameChange',
+            'rename_node.jstree': 'onNodeNameChange',
             'delete_node.jstree': 'onNodeDelete',
         },
 
@@ -38,15 +38,14 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeDelete: function(e, data) {
+
             var uuid = data.node.original.uuid;
             var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
+
             $.ajax({
                 async: false,
                 type: 'DELETE',
-                url: url,
-                data: {
-                    parent: data.parent,
-                },
+                url: url
             });
         },
 
@@ -68,7 +67,19 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeNameChange: function(e, data) {
-            console.log(data.text);
+
+
+            console.log('dddd');
+
+            var uuid = data.node.original.uuid;
+            var name = data.text;
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid, newName: name});
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: url
+            });
         },
 
 
