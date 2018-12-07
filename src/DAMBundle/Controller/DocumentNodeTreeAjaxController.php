@@ -86,7 +86,7 @@ class DocumentNodeTreeAjaxController extends Controller
     }
 
      /**
-     * @Route("/rename/{uuid}/{newname}",
+     * @Route("/rename/{uuid}",
      *     name="kiboko_dam_document_node_tree_ajax_rename",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      *     options={
@@ -106,8 +106,9 @@ class DocumentNodeTreeAjaxController extends Controller
      *
      * {@inheritdoc}
      */
-        public function renameAction(Request $request, DocumentNodeInterface $node,$newName)
+        public function renameAction(Request $request, DocumentNodeInterface $node)
         {
+            $newName = $request->get('newName');
 
             /** @var DocumentNode $oldNode */
 
@@ -120,7 +121,7 @@ class DocumentNodeTreeAjaxController extends Controller
 
 
             $collection = new ArrayCollection();
-            $collection->add($newName);
+            $collection->add($oldName);
 
             $oldNode->setNames($collection);
 

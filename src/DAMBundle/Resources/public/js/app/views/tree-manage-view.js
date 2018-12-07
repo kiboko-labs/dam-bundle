@@ -68,16 +68,16 @@ define(function(require) {
          */
         onNodeNameChange: function(e, data) {
 
-
-            console.log('dddd');
-
             var uuid = data.node.original.uuid;
             var name = data.text;
-            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid, newName: name});
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
 
             $.ajax({
                 async: false,
                 type: 'POST',
+                data: {
+                    'newName': name
+                },
                 url: url
             });
         },
