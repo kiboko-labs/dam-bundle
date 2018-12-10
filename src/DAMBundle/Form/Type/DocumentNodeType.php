@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Form\Type;
 
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Oro\Bundle\AttachmentBundle\Form\Type\FileType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,20 @@ class DocumentNodeType extends AbstractType
             ->add(
                 'slugs',
                 LocalizedFallbackValueCollectionType::class
+            )
+            ->add(
+                'test',
+                FileType::class,
+                [
+                    'mapped'=> false
+                ]
+            )
+            ->add(
+                'test',
+                \Symfony\Component\Form\Extension\Core\Type\FileType::class,
+                [
+                    'mapped'=> false
+                ]
             )
         ;
     }
