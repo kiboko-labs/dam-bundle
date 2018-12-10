@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\NavigationBundle\Event\MenuUpdateChangeEvent;
 use Oro\Bundle\NavigationBundle\Manager\MenuUpdateManager;
@@ -112,19 +113,16 @@ class DocumentNodeTreeAjaxController extends Controller
 
             /** @var DocumentNode $oldNode */
 
-            $oldNode = $this->em->getRepository(DocumentNode::class)
-                ->findOneBy(['uuid'=> $node->getUuid()]);
-
-            $oldName = $oldNode->getLocaleName($this->localizationHelper);
+            $oldName = $node->getLocaleName($this->localizationHelper);
             $oldName->setString($newName);
 
             $collection = new ArrayCollection();
             $collection->add($oldName);
 
-            $oldNode->setNames($collection);
+            $node->setNames($collection);
 
             try {
-                $this->em->persist($oldNode);
+                $this->em->persist($node);
                 $this->em->flush();
             }
             catch (ORMException $e) {
