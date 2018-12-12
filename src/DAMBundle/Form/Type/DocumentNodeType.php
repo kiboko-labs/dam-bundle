@@ -8,6 +8,7 @@ use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DocumentNodeType extends AbstractType
 {
@@ -16,30 +17,30 @@ class DocumentNodeType extends AbstractType
         $builder
             ->add(
                 'parent',
-                DocumentNodeUuidType::class
+                DocumentNodeUuidType::class,
+                [
+                    'required' => true,
+                ]
             )
             ->add(
                 'names',
-                LocalizedFallbackValueCollectionType::class
+                LocalizedFallbackValueCollectionType::class,
+                [
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]]
+
+                ]
             )
             ->add(
                 'slugs',
-                LocalizedFallbackValueCollectionType::class
-            )
-            ->add(
-                'test',
-                FileType::class,
+                LocalizedFallbackValueCollectionType::class,
                 [
-                    'mapped'=> false
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]]
+
                 ]
             )
-            ->add(
-                'test',
-                \Symfony\Component\Form\Extension\Core\Type\FileType::class,
-                [
-                    'mapped'=> false
-                ]
-            )
+
         ;
     }
 

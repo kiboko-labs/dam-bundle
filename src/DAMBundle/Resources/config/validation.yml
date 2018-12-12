@@ -1,0 +1,13 @@
+Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode:
+    properties:
+        integration:
+            - NotBlank: ~
+Kiboko\Bundle\DAMBundle\Entity\DocumentNode:
+    properties:
+        names:
+            - NotBlank: ~
+        slugs:
+            - NotBlank: ~
+
+
+
