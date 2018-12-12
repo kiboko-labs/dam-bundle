@@ -17,6 +17,7 @@ class TeamStorageNodeType extends AbstractType
                 'integration',
                 IntegrationSelectType::class,
                 [
+                    'required' => true,
                     'allowed_types' => ['kiboko_dam']
                 ]
             )

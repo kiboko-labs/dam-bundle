@@ -36,10 +36,6 @@ final class TeamStorageNodeController extends Controller
      */
     private $translator;
 
-    /**
-     * @var DocumentNodeUpdateTreeHandler
-     */
-    private $treeHandler;
 
     /**
      * @param Form                          $form
@@ -50,13 +46,11 @@ final class TeamStorageNodeController extends Controller
     public function __construct(
         Form $form,
         UpdateHandlerFacade $handler,
-        TranslatorInterface $translator,
-        DocumentNodeUpdateTreeHandler $treeHandler
+        TranslatorInterface $translator
     ) {
         $this->form = $form;
         $this->handler = $handler;
         $this->translator = $translator;
-        $this->treeHandler = $treeHandler;
     }
 
     /**

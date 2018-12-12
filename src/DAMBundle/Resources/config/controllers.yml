@@ -1,0 +1,16 @@
+services:
+  kiboko_dam.controller.document_node_tree_ajax_controller:
+    class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeTreeAjaxController
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@oro_locale.helper.localization'
+    calls:
+      - [setContainer, ["@service_container"]]
+
+  kiboko_dam.controller.asset_widget:
+    class: Kiboko\Bundle\DAMBundle\Controller\AssetWidgetController
+    arguments:
+      - '@oro_form.update_handler'
+      - '@translator'
+      - '@kiboko_dam.form.document.widget.upload_asset'
+      - '@doctrine.orm.entity_manager'

@@ -1,0 +1,16 @@
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', _self] %}
+
+<div class="widget-content">
+    <div class="form-container">
+        <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ formAction }}" method="post">
+            <fieldset class="form-horizontal">
+                {{ form_rest(form) }}
+                <div class="widget-actions form-actions" style="display: none;">
+                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'kiboko.project.ticket.create_label'|trans }}</button>
+                </div>
+            </fieldset>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    </div>
+</div>
