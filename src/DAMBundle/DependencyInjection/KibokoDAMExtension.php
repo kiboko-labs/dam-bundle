@@ -15,6 +15,6 @@ class KibokoDAMExtension extends Extension
         $loader->load('services.yml');
         $loader->load('integration.yml');
         $loader->load('controllers.yml');
-
+        $loader->load('forms.yml');
     }
 }

@@ -26,8 +26,9 @@
                             {{ include('KibokoDAMBundle:tree:pageHeader.html.twig') }}
                         {% endblock pageHeader %}
                     </div>
-                    <div class="pull-right">
 
+
+                    <div class="pull-right">
                         {% set html = UI.button({
                             'path' : path(routePrefix ~ 'create', { uuid: entity.uuid }),
                             'aCss': 'btn-primary',
@@ -36,13 +37,26 @@
                         }) %}
 
                         {# Create Divider button #}
-                        {% set html = html ~ UI.ajaxButton({
+                        {% set html = html ~ UI.clientButton({
+                            'dataUrl': path('kiboko_dam_upload_asset_widget', { uuid: entity.uuid}),
+                            'iCss': 'fa-plus',
                             'label': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
-                            'title': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
-                            'dataMethod': 'POST',
-                            'dataRedirect': app.request.uri,
-                            'dataUrl': path(routePrefix ~ 'create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
-                            'successMessage': dividerCreatedMessage|default('kiboko.dam.documentnode.divider_created')|trans({'%reload_link%': reloadLink})
+                            'widget': {
+                                'type': 'dialog',
+                                'multiple': false,
+                                'options': {
+                                    'alias': 'kiboko-dam-upload-asset-dialog',
+                                    'dialogOptions' : {
+                                        'title' : 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
+                                        'label': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
+                                        'allowMaximize': false,
+                                        'allowMinimize': false,
+                                        'modal': true,
+                                        'width': 550,
+                                        'height': 600
+                                    }
+                                }
+                            }
                         }) %}
 
                         {% set html = html ~ UI.ajaxButton({
@@ -70,7 +84,9 @@
             </div>
         </div>
 
+
         <div class="scrollable-container sidebar-container clearfix">
+
             {% block content_data %}
                 {% set treeOptions = {
                     'data' : tree,
