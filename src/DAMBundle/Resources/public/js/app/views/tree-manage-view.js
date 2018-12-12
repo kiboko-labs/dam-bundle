@@ -57,6 +57,7 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeMove: function(e, data) {
+
             var newParent = data.parent;
             var oldParent = data.old_parent;
             var uuidParent = this.$tree.jstree(true).get_node(data.parent).original.uuid;
@@ -79,9 +80,10 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeNameChange: function(e, data) {
+            alert('sfklmdjfdksf');
         var uuid = data.node.original.uuid;
         var name = data.text;
-        if (data.node.original.uuid === '') {
+        if (data.node.original.uuid !== '') {
             var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
             $.ajax({
                 async: false,
