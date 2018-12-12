@@ -13,11 +13,16 @@
 {% endif %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('kiboko_dam_index')) }}
 
-    {{ UI.dropdownSaveButton({
-        'html': UI.saveAndCloseButton() ~ UI.saveAndStayButton()
-    }) }}
+    {{ UI.cancelButton(path('kiboko_dam_node_browse', {uuid: node.uuid})) }}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': 'kiboko_dam_node_browse',
+        'params': {'uuid': node.parent.uuid}
+    }) %}
+
+    {{ UI.dropdownSaveButton({'html': html}) }}
+
 {% endblock navButtons %}
 
 {% block pageHeader %}
