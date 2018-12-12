@@ -81,19 +81,19 @@ define(function(require) {
          */
         onNodeNameChange: function(e, data) {
             alert('sfklmdjfdksf');
-        var uuid = data.node.original.uuid;
-        var name = data.text;
-        if (data.node.original.uuid !== '') {
-            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
-            $.ajax({
-                async: false,
-                type: 'POST',
-                data: {
-                    'newName': name
-                },
-                url: url
-            });
-        }
+            var uuid = data.node.original.uuid;
+            var name = data.text;
+            if (data.node.original.uuid !== '') {
+                var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
+                $.ajax({
+                    async: false,
+                    type: 'POST',
+                    data: {
+                        'newName': name
+                    },
+                    url: url
+                });
+            }
         },
 
         /**
@@ -137,6 +137,7 @@ define(function(require) {
                 config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
                 config.plugins.push('dnd');
+
                 config.checkbox = {
                     whole_node: false,
                     tie_selection: false,
@@ -162,6 +163,31 @@ define(function(require) {
             } else {
                 config.autohideNeighbors = options.autohideNeighbors;
             }
+
+            config.contextmenu = {
+                "items": (function ($node) {
+                    var tree = this.$tree.jstree(true);
+
+                    return {
+                        "Rename": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Rename",
+                            "action": (function (obj) {
+                                this.edit($node);
+                            }).bind(tree)
+                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Remove",
+                            "action": (function (obj) {
+                                this.delete_node($node);
+                            }).bind(tree)
+                        }
+                    };
+                }).bind(this)
+            };
 
             return config;
         },
