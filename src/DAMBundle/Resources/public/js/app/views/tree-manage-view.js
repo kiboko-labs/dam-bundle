@@ -79,7 +79,6 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeNameChange: function(e, data) {
-            alert('sfklmdjfdksf');
             var uuid = data.node.original.uuid;
             var name = data.text;
             if (data.node.original.uuid !== '') {
