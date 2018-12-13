@@ -102,6 +102,7 @@ final class DocumentNodeController extends Controller
     /**
      * @param Request $request
      *
+     * @param DocumentNodeInterface $parent
      * @return array|Response
      *
      * @Route("/{uuid}/create",

@@ -4,12 +4,10 @@
 
 {% set node = form.vars.value %}
 
-{% if node.uuid and node.id %}
+{% if node.id %}
     {% set formAction = path('kiboko_dam_node_update', { 'uuid': node.uuid }) %}
 {% else %}
-    {% if node.uuid  %}
         {% set formAction = path('kiboko_dam_node_create', { 'uuid': node.parent.uuid }) %}
-    {% endif %}
 {% endif %}
 
 {% block navButtons %}
@@ -48,7 +46,6 @@
         'subblocks': [{
             'title': '',
             'data': [
-                form_row(form.parent),
                 form_row(form.names),
                 form_row(form.slugs),
                 form_rest(form),
