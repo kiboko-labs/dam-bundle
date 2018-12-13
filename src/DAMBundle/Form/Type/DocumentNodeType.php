@@ -3,7 +3,6 @@
 namespace Kiboko\Bundle\DAMBundle\Form\Type;
 
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
-use Oro\Bundle\AttachmentBundle\Form\Type\FileType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -34,7 +34,7 @@ datagrids:
                 label: Edit
                 link: view_link
                 icon: eye
-                rowAction:     true
+                rowAction: true
             edit:
                 type: navigate
                 label: Edit

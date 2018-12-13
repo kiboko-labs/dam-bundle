@@ -5,7 +5,6 @@ define(function(require) {
 
     var _ = require('underscore');
     var $ = require('jquery');
-    var messenger = require('oroui/js/messenger');
     var mediator = require('oroui/js/mediator');
     var routing = require('routing');
     var tools = require('oroui/js/tools');

@@ -3,15 +3,11 @@
 namespace Kiboko\Bundle\DAMBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
-use Kiboko\Bundle\DAMBundle\Entity\Document;
-use Kiboko\Bundle\DAMBundle\Model\DocumentInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
-use Symfony\Component\CssSelector\Parser\Handler\HashHandler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class AssetHandler implements FormHandlerInterface
 {
