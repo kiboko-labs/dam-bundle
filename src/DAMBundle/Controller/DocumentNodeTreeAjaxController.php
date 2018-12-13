@@ -147,7 +147,6 @@ class DocumentNodeTreeAjaxController extends Controller
     {
         $newparent= $request->get('newParent');
 
-        var_dump($newparent);die;
     }
 
 }
