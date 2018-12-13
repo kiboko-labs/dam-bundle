@@ -268,8 +268,9 @@ class DocumentNode implements DocumentNodeInterface,
      */
     private $documents;
 
-    public function __construct()
-    {
+    public function __construct(
+        ?DocumentNodeInterface $root = null
+    ) {
         $this->uuid = (new UuidFactory())->uuid4();
         $this->names = new ArrayCollection();
         $this->slugs = new ArrayCollection();
@@ -277,6 +278,7 @@ class DocumentNode implements DocumentNodeInterface,
         $this->nodes = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->authorizations = new ArrayCollection();
+        $this->root = $root;
     }
 
     /**
