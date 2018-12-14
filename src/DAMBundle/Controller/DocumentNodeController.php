@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
 use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
@@ -60,6 +61,7 @@ final class DocumentNodeController extends Controller
     }
 
     /**
+     * @param DocumentNodeInterface $node
      * @return array|Response
      *
      * @Route("/{uuid}/browse",
@@ -96,6 +98,7 @@ final class DocumentNodeController extends Controller
             'entity' => $node,
             'path' => $path,
             'tree' => $this->treeHandler->createTree($node, true),
+            'files' => $this->treeHandler->getDocuments($node),
         ];
     }
 

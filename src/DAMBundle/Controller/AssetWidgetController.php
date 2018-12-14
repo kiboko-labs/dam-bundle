@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Form\Handler\AssetHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
@@ -12,8 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -102,7 +103,7 @@ class AssetWidgetController extends Controller
      * @param DocumentNode $node
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return Response
      *
      * @Route("/{uuid}/upload",
      *     name="kiboko_dam_upload_asset",
@@ -120,9 +121,8 @@ class AssetWidgetController extends Controller
      */
     public function uploadAction(DocumentNode $node, Request $request)
     {
-
-        $var = $this->formUpdateHandler->update(
-            $node,
+        $this->formUpdateHandler->update(
+            new Document(),
             $this->form,
             $this->translator->trans('kiboko.project.ticket.add'),
             $request,
@@ -131,8 +131,17 @@ class AssetWidgetController extends Controller
                 $this->em,
                 $node
             )
+
         );
-
-
+        return new Response([
+            'successful' => true,
+            'refreshGrid' => $this->get('oro_action.helper.context')->getActionData()->getRefreshGrid(),
+            'flashMessages' => $this->get('session')->getFlashBag()->all(),
+            'widget' => [
+                'message' => $this->get('translator')->trans('kiboko.project.ticket.form.message.success'),
+                'triggerSuccess' => true,
+                'remove' => true,
+            ],
+        ], 200);
     }
 }
