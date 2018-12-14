@@ -7,6 +7,8 @@ use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Form\Handler\AssetHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Kiboko\Bundle\DAMBundle\Provider\AssetProvider;
+use Oro\Bundle\ActionBundle\Helper\ContextHelper;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,6 +26,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  */
 class AssetWidgetController extends Controller
 {
+    /** @var ContextHelper */
+    private $helper;
+
     /** @var EntityManager $em */
     private $em;
 
@@ -43,23 +48,19 @@ class AssetWidgetController extends Controller
     private $form;
 
     /**
-     * ComposeController constructor.
-     *
+     * @param ContextHelper $helper
+     * @param EntityManager $em
      * @param UpdateHandlerFacade $formUpdateHandler
      * @param TranslatorInterface $translator
      * @param FormInterface $form
-     * @param EntityManager $em
      */
-    public function __construct(
-        UpdateHandlerFacade $formUpdateHandler,
-        TranslatorInterface $translator,
-        FormInterface $form, EntityManager $em
-    ) {
+    public function __construct(ContextHelper $helper, EntityManager $em, UpdateHandlerFacade $formUpdateHandler, TranslatorInterface $translator, FormInterface $form)
+    {
+        $this->helper = $helper;
+        $this->em = $em;
         $this->formUpdateHandler = $formUpdateHandler;
         $this->translator = $translator;
         $this->form = $form;
-        $this->em = $em;
-
     }
 
     /**
@@ -100,7 +101,7 @@ class AssetWidgetController extends Controller
     }
 
     /**
-     * @param DocumentNode $node
+     * @param DocumentNodeInterface $node
      * @param Request $request
      *
      * @return Response
@@ -119,29 +120,16 @@ class AssetWidgetController extends Controller
      *     }
      * )
      */
-    public function uploadAction(DocumentNode $node, Request $request)
+    public function uploadAction(DocumentNodeInterface $node, Request $request)
     {
-        $this->formUpdateHandler->update(
-            new Document(),
+        $document = new Document();
+        return $this->formUpdateHandler->update(
+            $document,
             $this->form,
-            $this->translator->trans('kiboko.project.ticket.add'),
+            $this->translator->trans('kiboko.document.save.ok'),
             $request,
-            new AssetHandler(
-                $this->form,
-                $this->em,
-                $node
-            )
-
+            new AssetHandler($this->form, $this->em, $node),
+            new AssetProvider($this->helper, $document, $this->form, $request)
         );
-        return new Response([
-            'successful' => true,
-            'refreshGrid' => $this->get('oro_action.helper.context')->getActionData()->getRefreshGrid(),
-            'flashMessages' => $this->get('session')->getFlashBag()->all(),
-            'widget' => [
-                'message' => $this->get('translator')->trans('kiboko.project.ticket.form.message.success'),
-                'triggerSuccess' => true,
-                'remove' => true,
-            ],
-        ], 200);
     }
 }
