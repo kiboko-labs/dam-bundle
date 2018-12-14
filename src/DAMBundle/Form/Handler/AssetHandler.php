@@ -3,6 +3,8 @@
 namespace Kiboko\Bundle\DAMBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
+use Kiboko\Bundle\DAMBundle\Entity\Document;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AssetHandler implements FormHandlerInterface
 {
+
     use RequestHandlerTrait;
 
     /** @var FormInterface */
@@ -41,23 +44,35 @@ class AssetHandler implements FormHandlerInterface
      * @param $data
      * @param FormInterface $form
      * @param Request $request
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @return bool True on successful processing, false otherwise
      */
     public function process($data, FormInterface $form, Request $request)
     {
-        $form->setData($data);
 
-        if (!in_array($request->getMethod(), ['POST', 'PUT'], true)) {
-            return false;
+        if (!$data instanceof MovableInterface) {
+            throw new \InvalidArgumentException('Argument data should be instance of Movable interface');
         }
 
-        $this->form->handleRequest($request);
+        $form->handleRequest($request);
 
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            return false;
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Document $document */
+            $document = $form->getData();
+
+            $this->node->addDocument($document);
+            $document->moveTo($this->node);
+            $this->em->persist($document);
+            $this->em->persist($this->node);
+
+            $this->em->flush();
+
+            return true;
         }
 
-        $file = $form->getData();
+        return false;
     }
 
 }

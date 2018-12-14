@@ -109,17 +109,22 @@ datagrids:
                 params:
                     uuid: uuid
 
+
+
     kiboko-dam-documents-grid:
         source:
             type: orm
             query:
                 select:
+                    - node.id as nodeId
                     - document.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
                 from:
                     - { table: KibokoDAMBundle:Document, alias: document }
                 join:
+                    inner:
+                        - { join: document.node, alias: node }
                     left:
                         - { join: document.names, alias: name }
                         - { join: document.slugs, alias: slug }
@@ -127,10 +132,12 @@ datagrids:
                     and:
                         - name.localization IS NULL
                         - slug.localization IS NULL
-                        - document.node = :parent
+                        - node.id = :nodeid
             bind_parameters:
-                parent: parent
+                - nodeid
         columns:
+            nodeId:
+                label: nodeId
             uuid:
                 label: ID
             name:

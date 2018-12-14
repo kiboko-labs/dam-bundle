@@ -1,6 +1,8 @@
 {% extends bap.layout %}
 
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
 {% set reloadLink -%}
     <a href="#" onclick="window.location.reload(false);return false;">
         {{- 'oro.navigation.menuupdate.reload_link.label'|trans -}}
@@ -44,6 +46,7 @@
                             'widget': {
                                 'type': 'dialog',
                                 'multiple': false,
+                                'reload-grid-name': 'kiboko-dam-documents-grid',
                                 'options': {
                                     'alias': 'kiboko-dam-upload-asset-dialog',
                                     'dialogOptions' : {
@@ -122,7 +125,7 @@
                     {% block content %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                                {{ 'oro.navigation.menuupdate.select_existing_or_create_new'|trans }}
+                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', {nodeid: entity.id }) }}
                             </div>
                         </div>
                     {% endblock content %}
