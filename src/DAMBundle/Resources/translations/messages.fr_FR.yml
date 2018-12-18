@@ -1,0 +1,24 @@
+kiboko:
+  dam:
+    teamstoragenode:
+      entity_label: Stockage d'équipe
+      entity_plural_label: Stockages d'équipe
+      owner:
+        label: Propriétaire
+      message:
+        success: Le stockage d'équipe a bien été déclaré
+
+    documentnode:
+      entity_label: Dossier
+      create_label: 'Créer un %entityName%'
+      entity_plural_label: Dossiers
+      reset: Reset
+      empty_node: Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots.
+
+    document:
+      entity_label: Média
+      create_label: Envoyer
+      entity_plural_label: Médias
+
+    updload: 'Envoyer un %entityName%'
+    updload_batch: 'Envoyer des %entityName% par lot'
