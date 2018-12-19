@@ -10,7 +10,9 @@ services:
   kiboko_dam.controller.asset_widget:
     class: Kiboko\Bundle\DAMBundle\Controller\AssetWidgetController
     arguments:
+      - '@oro_action.helper.context'
       - '@oro_form.update_handler'
       - '@translator'
       - '@kiboko_dam.form.document.widget.upload_asset'
       - '@doctrine.orm.entity_manager'
+      - %kernel.project_dir%

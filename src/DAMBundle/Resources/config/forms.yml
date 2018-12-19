@@ -4,5 +4,5 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - "kiboko_project_technology_form"
-            - 'Kiboko\Bundle\DAMBundle\Form\Type\UploadAssetWidgetType'
+            - 'Kiboko\Bundle\DAMBundle\Form\Type\DocumentType'
             - null

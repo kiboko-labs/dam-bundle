@@ -1,6 +1,8 @@
 {% extends bap.layout %}
 
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
 {% set reloadLink -%}
     <a href="#" onclick="window.location.reload(false);return false;">
         {{- 'oro.navigation.menuupdate.reload_link.label'|trans -}}
@@ -47,6 +49,7 @@
                             'widget': {
                                 'type': 'dialog',
                                 'multiple': false,
+                                'reload-grid-name': 'kiboko-dam-documents-grid',
                                 'options': {
                                     'alias': 'kiboko-dam-upload-asset-dialog',
                                     'dialogOptions' : {
@@ -99,6 +102,7 @@
                     'nodeId': entity.uuid,
                     'updateAllowed' : true,
                     'view' : 'kibokodam/js/app/views/tree-manage-view',
+                    'onRootSelectRoute' : routePrefix ~ 'view',
                     'onSelectRoute' : routePrefix ~ 'update',
                     'onMoveRoute' : routePrefix ~ 'move',
                     'successMessage': movedMessage|default('oro.navigation.menuupdate.moved_success_message')
@@ -124,11 +128,19 @@
                     {% endblock sidebar %}
 
                     {% block content %}
+                        {% if entity.documents.empty %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                                {{ 'oro.navigation.menuupdate.select_existing_or_create_new'|trans }}
+                                {{ 'kiboko.dam.documentnode.empty_node'|trans }}
                             </div>
                         </div>
+                        {% else %}
+                        <div class="category-data">
+                            <div class="tree-empty-content scrollable-container">
+                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', { parent: entity.uuid }) }}
+                            </div>
+                        </div>
+                        {% endif %}
                     {% endblock content %}
                 {% endembed %}
             {% endblock content_data %}
