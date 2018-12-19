@@ -109,17 +109,15 @@ datagrids:
                 params:
                     uuid: uuid
 
-
-
     kiboko-dam-documents-grid:
         source:
             type: orm
             query:
                 select:
-                    - node.id as nodeId
-                    - document.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
+                    - file.id AS fileId
+                    - file.filename AS fileName
                 from:
                     - { table: KibokoDAMBundle:Document, alias: document }
                 join:
@@ -128,37 +126,35 @@ datagrids:
                     left:
                         - { join: document.names, alias: name }
                         - { join: document.slugs, alias: slug }
+                        - { join: document.file, alias: file }
                 where:
                     and:
                         - name.localization IS NULL
                         - slug.localization IS NULL
-                        - node.id = :nodeid
+                        - node.uuid = :parent
             bind_parameters:
-                - nodeid
+                parent: parent
         columns:
-            nodeId:
-                label: nodeId
-            uuid:
-                label: ID
             name:
                 label: Name
                 data_name: localeName
             slug:
                 label: Slug
                 data_name: localeSlug
+            filename:
+                label: Thumbnail
+                data_name: filename
+                type: twig
+                frontend_type: html
+                template: KibokoDAMBundle:Document:Datagrid/Property/thumbnail.html.twig
         sorters:
             columns:
-                uuid:
-                    data_name: node.uuid
                 name:
                     data_name: localeName
                 slug:
                     data_name: localeSlug
         filters:
             columns:
-                uuid:
-                    type: string
-                    data_name: task.uuid
                 name:
                     type: string
                     data_name: localeName
