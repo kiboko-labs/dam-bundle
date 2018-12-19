@@ -16,6 +16,7 @@ kiboko:
 
     document:
       entity_label: Asset
+      create_label: Upload
       entity_plural_label: Asset
 
     updload: 'Upload %entityName%'

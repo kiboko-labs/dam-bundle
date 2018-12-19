@@ -31,17 +31,20 @@
 
 
                     <div class="pull-right">
-                        {% set html = UI.button({
+                        {{ UI.button({
                             'path' : path(routePrefix ~ 'create', { uuid: entity.uuid }),
-                            'aCss': 'btn-primary',
-                            'label': 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }),
-                            'title': 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans })
-                        }) %}
+                            'iCss': 'fa-folder',
+                            'label': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }),
+                            'title': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans })
+                        }) }}
+
+                        {{ UI.buttonSeparator() }}
 
                         {# Create Divider button #}
-                        {% set html = html ~ UI.clientButton({
+                        {% set html = UI.clientButton({
                             'dataUrl': path('kiboko_dam_upload_asset_widget', { uuid: entity.uuid}),
-                            'iCss': 'fa-plus',
+                            'aCss': 'btn-primary',
+                            'iCss': 'fa-image',
                             'label': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
                             'widget': {
                                 'type': 'dialog',
@@ -65,6 +68,8 @@
                         {% set html = html ~ UI.ajaxButton({
                             'label': 'kiboko.dam.updload_batch'|trans({ '%entityName%': 'kiboko.dam.document.entity_plural_label'|trans }),
                             'title': 'kiboko.dam.updload_batch'|trans({ '%entityName%': 'kiboko.dam.document.entity_plural_label'|trans }),
+                            'aCss': 'btn-primary',
+                            'iCss': 'fa-plus',
                             'dataMethod': 'POST',
                             'dataRedirect': app.request.uri,
                             'dataUrl': path(routePrefix ~ 'create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
@@ -123,11 +128,19 @@
                     {% endblock sidebar %}
 
                     {% block content %}
+                        {% if entity.documents.empty %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', {nodeid: entity.id }) }}
+                                {{ 'kiboko.dam.documentnode.empty_node'|trans }}
                             </div>
                         </div>
+                        {% else %}
+                        <div class="category-data">
+                            <div class="tree-empty-content scrollable-container">
+                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', { parent: entity.uuid }) }}
+                            </div>
+                        </div>
+                        {% endif %}
                     {% endblock content %}
                 {% endembed %}
             {% endblock content_data %}
