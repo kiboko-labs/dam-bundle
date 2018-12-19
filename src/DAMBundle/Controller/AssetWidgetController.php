@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,10 +27,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  */
 class AssetWidgetController extends Controller
 {
-    /** @var ContextHelper */
+    /**
+     * @var ContextHelper
+     */
     private $helper;
 
-    /** @var EntityManager $em */
+    /**
+     * @var EntityManager $em
+     */
     private $em;
 
     /**
@@ -49,18 +54,23 @@ class AssetWidgetController extends Controller
 
     /**
      * @param ContextHelper $helper
-     * @param EntityManager $em
      * @param UpdateHandlerFacade $formUpdateHandler
      * @param TranslatorInterface $translator
      * @param FormInterface $form
+     * @param EntityManager $em
      */
-    public function __construct(ContextHelper $helper, EntityManager $em, UpdateHandlerFacade $formUpdateHandler, TranslatorInterface $translator, FormInterface $form)
-    {
+    public function __construct(
+        ContextHelper $helper,
+        UpdateHandlerFacade $formUpdateHandler,
+        TranslatorInterface $translator,
+        FormInterface $form,
+        EntityManager $em
+    ) {
         $this->helper = $helper;
-        $this->em = $em;
         $this->formUpdateHandler = $formUpdateHandler;
         $this->translator = $translator;
         $this->form = $form;
+        $this->em = $em;
     }
 
     /**
@@ -87,7 +97,6 @@ class AssetWidgetController extends Controller
      */
     public function widgetAction(Request $request, DocumentNodeInterface $node)
     {
-
         return [
             'form' => $this->form->createView(),
             'formAction' => $this->generateUrl(
@@ -123,7 +132,7 @@ class AssetWidgetController extends Controller
     public function uploadAction(DocumentNodeInterface $node, Request $request)
     {
         $document = new Document();
-        return $this->formUpdateHandler->update(
+        $result = $this->formUpdateHandler->update(
             $document,
             $this->form,
             $this->translator->trans('kiboko.document.save.ok'),
@@ -131,5 +140,15 @@ class AssetWidgetController extends Controller
             new AssetHandler($this->form, $this->em, $node),
             new AssetProvider($this->helper, $document, $this->form, $request)
         );
+
+        if ($result instanceof Response) {
+            return $result;
+        }
+
+        if (!is_array($result)) {
+            throw new \RuntimeException();
+        }
+
+        return new JsonResponse($result);
     }
 }

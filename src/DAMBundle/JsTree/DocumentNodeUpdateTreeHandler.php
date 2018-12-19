@@ -168,11 +168,4 @@ class DocumentNodeUpdateTreeHandler
             }
         }
     }
-
-    public function getDocuments(TeamStorageNode $node)
-    {
-        $documents = $node->getDocuments()->toArray();
-
-        return $documents;
-    }
 }

@@ -5,6 +5,7 @@ namespace Kiboko\Bundle\DAMBundle\Form\Handler;
 use Doctrine\ORM\EntityManager;
 use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
+use Kiboko\Bundle\DAMBundle\Model\DocumentInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
@@ -50,29 +51,52 @@ class AssetHandler implements FormHandlerInterface
      */
     public function process($data, FormInterface $form, Request $request)
     {
-
-        if (!$data instanceof MovableInterface) {
-            throw new \InvalidArgumentException('Argument data should be instance of Movable interface');
+        if (!$data instanceof DocumentInterface) {
+            throw new \InvalidArgumentException(strtr(
+                'Argument %argument% should be instance of %expected%, got %actual%.',
+                [
+                    '%argument%' => '$data',
+                    '%expected%' => DocumentInterface::class,
+                    '%actual%' => is_object($data) ? get_class($data) : gettype($data),
+                ]
+            ));
         }
+        if (!$data instanceof MovableInterface) {
+            throw new \InvalidArgumentException(strtr(
+                'Argument %argument% should be instance of %expected%, got %actual%.',
+                [
+                    '%argument%' => '$data',
+                    '%expected%' => MovableInterface::class,
+                    '%actual%' => is_object($data) ? get_class($data) : gettype($data),
+                ]
+            ));
+        }
+
+        $form->setData($data);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return false;
+        }
 
-            /** @var Document $document */
-            $document = $form->getData();
+        /** @var DocumentInterface|MovableInterface $document */
+        $document = $form->getData();
 
-            $this->node->addDocument($document);
-            $document->moveTo($this->node);
+        $this->node->addDocument($document);
+
+        $document->moveTo($this->node);
+
+        try {
             $this->em->persist($document);
             $this->em->persist($this->node);
 
             $this->em->flush();
-
-            return true;
+        } catch (ORMException|OptimisticLockException $e) {
+            throw new \RuntimeException('Could not save the document to database, some error occurred while saving data.', null, $e);
         }
 
-        return false;
+        return true;
     }
 
 }

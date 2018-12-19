@@ -1,0 +1,8 @@
+<span class="nowrap">
+    <img src="{{ path('oro_resize_attachment', {
+        width: 50,
+        height: 50,
+        id: record.getValue('id'),
+        filename: record.getValue('filename'),
+    }) }}" />
+</span>

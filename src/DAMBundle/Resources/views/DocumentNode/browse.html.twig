@@ -127,11 +127,19 @@
                     {% endblock sidebar %}
 
                     {% block content %}
+                        {% if entity.documents.empty %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', {nodeid: entity.id }) }}
+                                {{ 'kiboko.dam.documentnode.empty_node'|trans }}
                             </div>
                         </div>
+                        {% else %}
+                        <div class="category-data">
+                            <div class="tree-empty-content scrollable-container">
+                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', { parent: entity.uuid }) }}
+                            </div>
+                        </div>
+                        {% endif %}
                     {% endblock content %}
                 {% endembed %}
             {% endblock content_data %}

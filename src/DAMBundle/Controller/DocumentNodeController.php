@@ -61,7 +61,7 @@ final class DocumentNodeController extends Controller
     }
 
     /**
-     * @param DocumentNodeInterface $node
+     * @param TeamStorageNode $node
      * @return array|Response
      *
      * @Route("/{uuid}/browse",
@@ -69,7 +69,7 @@ final class DocumentNodeController extends Controller
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
-     *     class="KibokoDAMBundle:DocumentNode",
+     *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
      *             "uuid": "uuid",
@@ -85,7 +85,7 @@ final class DocumentNodeController extends Controller
      * )
      * @Template()
      */
-    public function browseAction(DocumentNodeInterface $node)
+    public function browseAction(TeamStorageNode $node)
     {
 
         $path = [];
@@ -97,8 +97,7 @@ final class DocumentNodeController extends Controller
         return [
             'entity' => $node,
             'path' => $path,
-            'tree' => $this->treeHandler->createTree($node, true),
-            'files' => $this->treeHandler->getDocuments($node),
+            'tree' => $this->treeHandler->createTree($node),
         ];
     }
 
