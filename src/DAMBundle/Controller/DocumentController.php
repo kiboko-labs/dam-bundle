@@ -133,25 +133,4 @@ final class DocumentController extends Controller
             ]
         );
     }
-
-    private function update(
-        Request $request,
-        DocumentNodeInterface $node,
-        Document $document
-    ): array {
-        if ($this->handler->process($document, $node)) {
-            $this->session->getFlashBag()->add(
-                'success',
-                $this->translator->trans('The file has been successfully uploaded.')
-            );
-
-            return $this->router->redirect($document);
-        }
-
-        return [
-            'node' => $node,
-            'document' => $document,
-            'form' => $this->form->createView(),
-        ];
-    }
 }
