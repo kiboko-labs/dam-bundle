@@ -114,8 +114,6 @@ datagrids:
             type: orm
             query:
                 select:
-                    - name.string AS localeName
-                    - slug.string AS localeSlug
                     - file.id AS fileId
                     - file.filename AS fileName
                 from:
@@ -124,23 +122,26 @@ datagrids:
                     inner:
                         - { join: document.node, alias: node }
                     left:
-                        - { join: document.names, alias: name }
-                        - { join: document.slugs, alias: slug }
                         - { join: document.file, alias: file }
                 where:
                     and:
-                        - name.localization IS NULL
-                        - slug.localization IS NULL
                         - node.uuid = :parent
             bind_parameters:
                 parent: parent
+        properties:
+            name:
+                type: localized_value
+                data_name: names
+            slug:
+                type: localized_value
+                data_name: slugs
         columns:
             name:
                 label: Name
-                data_name: localeName
+                data_name: name
             slug:
                 label: Slug
-                data_name: localeSlug
+                data_name: slug
             filename:
                 label: Thumbnail
                 data_name: filename
@@ -150,14 +151,14 @@ datagrids:
         sorters:
             columns:
                 name:
-                    data_name: localeName
+                    data_name: name
                 slug:
-                    data_name: localeSlug
+                    data_name: slug
         filters:
             columns:
                 name:
                     type: string
-                    data_name: localeName
-                slug:
-                    type: string
-                    data_name: localeSlug
+                    data_name: name
+#                slug:
+#                    type: string
+#                    data_name: slug
