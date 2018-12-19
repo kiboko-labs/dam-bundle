@@ -8,6 +8,7 @@ use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DocumentType extends AbstractType
 {
@@ -16,15 +17,30 @@ class DocumentType extends AbstractType
         $builder
             ->add(
                 'names',
-                LocalizedFallbackValueCollectionType::class
+                LocalizedFallbackValueCollectionType::class,
+                [
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.document.fields.names.label'
+                ]
             )
             ->add(
                 'slugs',
-                LocalizedFallbackValueCollectionType::class
+                LocalizedFallbackValueCollectionType::class,
+                [
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.document.fields.slugs.label'
+                ]
             )
             ->add(
                 'file',
-                FileType::class
+                FileType::class,
+                [
+                    'checkEmptyFile' => true,
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.document.fields.file.label'
+                ]
             )
         ;
     }

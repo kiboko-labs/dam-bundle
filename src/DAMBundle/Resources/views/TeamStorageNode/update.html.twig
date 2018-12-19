@@ -30,7 +30,7 @@
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dam_index'),
-            'indexLabel': 'Team Storage',
+            'indexLabel': 'kiboko.dam.views.teamstorage.update.entity.label' | trans,
             'entityTitle': node.names|localized_value
         } %}
         {{ parent() }}
@@ -44,7 +44,7 @@
     {% set id = 'document-node-edit' %}
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'kiboko.dam.views.teamstorage.update.general.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
@@ -55,7 +55,7 @@
             ]
         },
         {
-            'title': 'Backend'|trans,
+            'title': 'kiboko.dam.views.teamstorage.update.backend.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
@@ -65,7 +65,7 @@
             }]
         },
         {
-            'title': 'Additional'|trans,
+            'title': 'kiboko.dam.views.teamstorage.update.additional.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',

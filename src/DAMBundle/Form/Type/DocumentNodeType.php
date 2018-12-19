@@ -19,8 +19,8 @@ class DocumentNodeType extends AbstractType
                 LocalizedFallbackValueCollectionType::class,
                 [
                     'required' => true,
-                    'entry_options' => ['constraints' => [new NotBlank()]]
-
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.documentnode.fields.names.label'
                 ]
             )
             ->add(
@@ -28,8 +28,8 @@ class DocumentNodeType extends AbstractType
                 LocalizedFallbackValueCollectionType::class,
                 [
                     'required' => true,
-                    'entry_options' => ['constraints' => [new NotBlank()]]
-
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.documentnode.fields.slugs.label'
                 ]
             )
 

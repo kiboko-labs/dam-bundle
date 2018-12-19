@@ -10,7 +10,7 @@
         {% if is_granted('kiboko_dam_node_create') %}
             {{ UI.addButton({
                 'path': path('kiboko_dam_node_create', { uuid: node.uuid }),
-                'entity_label': 'Folder'|trans,
+                'entity_label': 'kiboko.dam.views.teamstoragenode.browse.entity.label'|trans,
             }) }}
         {% endif %}
     </div>

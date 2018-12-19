@@ -1,0 +1,9 @@
+kiboko:
+    dam:
+        js:
+            jstree:
+                contextmenu:
+                    rename:
+                        label: Rename
+                    delete:
+                        label: Delete

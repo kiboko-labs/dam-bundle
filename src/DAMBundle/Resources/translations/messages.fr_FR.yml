@@ -1,24 +1,125 @@
 kiboko:
-  dam:
-    teamstoragenode:
-      entity_label: Stockage d'équipe
-      entity_plural_label: Stockages d'équipe
-      owner:
-        label: Propriétaire
-      message:
-        success: Le stockage d'équipe a bien été déclaré
+    dam:
+        teamstoragenode:
+            entity_label: Stockage d'équipe
+            entity_plural_label: Stockages d'équipe
+            owner:
+                label: Propriétaire
+            message:
+                success: Le stockage d'équipe a bien été déclaré
 
-    documentnode:
-      entity_label: Dossier
-      create_label: 'Créer un %entityName%'
-      entity_plural_label: Dossiers
-      reset: Reset
-      empty_node: Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots.
+        documentnode:
+            entity_label: Dossier
+            create_label: 'Créer un %entityName%'
+            entity_plural_label: Dossiers
+            reset: Reset
+            empty_node: Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots.
+                datagrid:
+                    columns:
+                        name:
+                            label: Nom
+                        slug:
+                            label: Url slug
+                        integration:
+                            label: Integration
+                create_label: Créer un dossier
+                divider_created: Diviseur
+                updated:
+                    label: 'Document mis à jour'
+                owner:
+                    label: Propriétaire
+                document:
+                    owner:
+                        label: Propriétaire
+                    entity_label: Ressource
+                    create_label: Téléverser
+                    entity_plural_label: Ressource
+                    datagrid:
+                        columns:
+                            name:
+                                label: Nom
+                            slug:
+                                label: Url slug
+                            owner:
+                                label: Propriétaire
+                            thumbnail:
+                                label: Vignette
+                    upload:
+                        ok:
+                            label: 'Document téléversé'
 
-    document:
-      entity_label: Média
-      create_label: Envoyer
-      entity_plural_label: Médias
+        updload: 'Envoyer un %entityName%'
+        updload_batch: 'Envoyer des %entityName% par lot'
 
-    updload: 'Envoyer un %entityName%'
-    updload_batch: 'Envoyer des %entityName% par lot'
+        views:
+            asset_widget:
+                cancel:
+                    label: 'Retour'
+            document:
+                update:
+                    update:
+                        label: 'Document mis à jour avec succès'
+                    created:
+                        label: 'Document créé avec succès'
+                    cancel:
+                        label: 'Retour'
+                    save:
+                        label: 'Sauvegarder'
+            teamstorage:
+                index:
+                    entity:
+                        plural:
+                            label: Stockages d'équipe
+                        label: Stockage d'équipe
+                update:
+                    entity:
+                        label: Stockage d'équipe
+                    general:
+                        label: 'Général'
+                    backend:
+                        label: 'Back-end'
+                    additional:
+                        label: 'Additionnel'
+            teamstoragenode:
+                browse:
+                    entity:
+                        label: Stockages d'équipe
+
+        form:
+            type:
+                cdpadapter:
+                    fields:
+                        url:
+                            label: Url
+                        client:
+                            label: Client
+                        secret:
+                            label: Secret
+                documentnode:
+                    fields:
+                        names:
+                            label: Noms
+                        slugs:
+                            label: Url slugs
+                documentnodeuuid:
+                    fields:
+                        uuid:
+                            label: Uuid
+                document:
+                    fields:
+                        names:
+                            label: Noms
+                        slugs:
+                            label: Url slugs
+                        file:
+                            label: Fichier
+                localadapter:
+                    fields:
+                        path:
+                            label: Chemin d'accé
+                        lock:
+                            label: Lock
+                teamstoragenode:
+                    fields:
+                        integration:
+                            label: Integration

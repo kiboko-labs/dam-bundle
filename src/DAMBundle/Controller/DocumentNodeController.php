@@ -204,7 +204,7 @@ final class DocumentNodeController extends Controller
         return $this->handler->update(
             $node,
             $this->form,
-            $this->translator->trans('The Node has been properly created.'),
+            $this->translator->trans('kiboko.dam.documentnode.updated.label'),
             $request
         );
     }

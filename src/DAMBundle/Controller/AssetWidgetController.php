@@ -142,7 +142,7 @@ class AssetWidgetController extends Controller
         $result = $this->formUpdateHandler->update(
             $document,
             $this->form,
-            $this->translator->trans('kiboko.document.save.ok'),
+            $this->translator->trans('kiboko.dam.document.upload.ok.label'),
             $request,
             new AssetHandler($this->form, $this->em, $node),
             new AssetProvider($this->helper, $document, $this->form, $request)

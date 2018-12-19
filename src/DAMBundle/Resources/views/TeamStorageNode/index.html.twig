@@ -2,13 +2,13 @@
 
 {% set gridName = 'kiboko-dam-team-storages-nodes-grid' %}
 {% set params = { localeId: localization.id|default(null) } %}
-{% set pageTitle = 'Team Storages'|trans %}
+{% set pageTitle = 'kiboko.dam.views.teamstorage.index.entity.plural.label'|trans %}
 
 {% block navButtons %}
     <div class="btn-group">
         {{ UI.addButton({
             'path': path('kiboko_dam_storage_create'),
-            'entity_label': 'Team Storage'|trans,
+            'entity_label': 'kiboko.dam.views.teamstorage.index.entity.label'|trans,
         }) }}
     </div>
 {% endblock %}

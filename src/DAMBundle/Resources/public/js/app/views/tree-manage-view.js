@@ -170,7 +170,7 @@ define(function(require) {
                         "Rename": {
                             "separator_before": false,
                             "separator_after": false,
-                            "label": "Rename",
+                            "label": _.__('kiboko.dam.js.jstree.contextmenu.rename.label'),
                             "action": (function (obj) {
                                 this.edit($node);
                             }).bind(tree)
@@ -178,7 +178,7 @@ define(function(require) {
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
-                            "label": "Remove",
+                            "label": _.__('kiboko.dam.js.jstree.contextmenu.delete.label'),
                             "action": (function (obj) {
                                 this.delete_node($node);
                             }).bind(tree)

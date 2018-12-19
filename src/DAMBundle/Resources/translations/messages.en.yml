@@ -1,23 +1,124 @@
 kiboko:
-  dam:
-    teamstoragenode:
-      entity_label: Team Storage
-      entity_plural_label: Team Storages
-      owner:
-        label: Owner
-      message:
-        success: The Team Storage has been properly created
+    dam:
+        teamstoragenode:
+            entity_label: Team Storage
+            entity_plural_label: Team Storages
+            owner:
+                label: Owner
+            message:
+                success: The Team Storage has been properly created
 
-    documentnode:
-      entity_label: Folder
-      entity_plural_label: Folder
-      reset: Reset
-      empty_node: This node is empty, you can drag and drop files in this space to upload new assets.
+        documentnode:
+            entity_label: Folder
+            entity_plural_label: Folder
+            reset: Reset
+            empty_node: This node is empty, you can drag and drop files in this space to upload new assets.
+            datagrid:
+                columns:
+                    name:
+                        label: Name
+                    slug:
+                        label: Slug
+                    integration:
+                        label: Integration
+            create_label: Create Folder
+            divider_created: Divider
+            updated:
+                label: 'Document updated'
+            owner:
+                label: Owner
+        document:
+            owner:
+                label: Owner
+            entity_label: Asset
+            create_label: Upload
+            entity_plural_label: Asset
+            datagrid:
+                columns:
+                    name:
+                        label: Name
+                    slug:
+                        label: Slug
+                    owner:
+                        label: Owner
+                    thumbnail:
+                        label: Thumbnail
+            upload:
+                ok:
+                    label: 'Document uploaded'
 
-    document:
-      entity_label: Asset
-      create_label: Upload
-      entity_plural_label: Asset
+        updload: 'Upload %entityName%'
+        updload_batch: 'Upload %entityName% batch'
 
-    updload: 'Upload %entityName%'
-    updload_batch: 'Upload %entityName% batch'
+        views:
+            asset_widget:
+                cancel:
+                    label: 'Cancel'
+            document:
+                update:
+                    update:
+                        label: 'Document updated successfully'
+                    created:
+                        label: 'Document created successfully'
+                    cancel:
+                        label: 'Cancel'
+                    save:
+                        label: 'Save'
+            teamstorage:
+                index:
+                    entity:
+                        plural:
+                            label: 'Team Storages'
+                        label: 'Team Storage'
+                update:
+                    entity:
+                        label: 'Team Storage'
+                    general:
+                        label: 'General'
+                    backend:
+                        label: 'Back End'
+                    additional:
+                        label: 'Additional'
+            teamstoragenode:
+                browse:
+                    entity:
+                        label: 'Team storage'
+
+        form:
+            type:
+                cdpadapter:
+                    fields:
+                        url:
+                            label: Url
+                        client:
+                            label: Client
+                        secret:
+                            label: Secret
+                documentnode:
+                    fields:
+                        names:
+                            label: Names
+                        slugs:
+                            label: Slugs
+                documentnodeuuid:
+                    fields:
+                        uuid:
+                            label: Uuid
+                document:
+                    fields:
+                        names:
+                            label: Names
+                        slugs:
+                            label: Slugs
+                        file:
+                            label: File
+                localadapter:
+                    fields:
+                        path:
+                            label: Path
+                        lock:
+                            label: Lock
+                teamstoragenode:
+                    fields:
+                        integration:
+                            label: Integration

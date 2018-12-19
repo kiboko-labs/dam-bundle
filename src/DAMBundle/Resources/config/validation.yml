@@ -9,6 +9,9 @@ Kiboko\Bundle\DAMBundle\Entity\DocumentNode:
             - NotBlank: ~
         slugs:
             - NotBlank: ~
-
-
-
+Kiboko\Bundle\DAMBundle\Entity\Document:
+    properties:
+        names:
+            - NotBlank: ~
+        slugs:
+            - NotBlank: ~
