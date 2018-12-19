@@ -15,3 +15,4 @@ services:
       - '@translator'
       - '@kiboko_dam.form.document.widget.upload_asset'
       - '@doctrine.orm.entity_manager'
+      - %kernel.project_dir%

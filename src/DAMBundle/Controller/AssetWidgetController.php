@@ -4,10 +4,8 @@ namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Kiboko\Bundle\DAMBundle\Entity\Document;
-use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Form\Handler\AssetHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
-use Kiboko\Bundle\DAMBundle\Provider\AssetProvider;
 use Oro\Bundle\ActionBundle\Helper\ContextHelper;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -53,29 +50,37 @@ class AssetWidgetController extends Controller
     private $form;
 
     /**
+     * @var string
+     */
+    private $projectDir;
+
+    /**
      * @param ContextHelper $helper
      * @param UpdateHandlerFacade $formUpdateHandler
      * @param TranslatorInterface $translator
      * @param FormInterface $form
      * @param EntityManager $em
+     * @param string $projectDir
      */
     public function __construct(
         ContextHelper $helper,
         UpdateHandlerFacade $formUpdateHandler,
         TranslatorInterface $translator,
         FormInterface $form,
-        EntityManager $em
+        EntityManager $em,
+        string $projectDir
     ) {
         $this->helper = $helper;
         $this->formUpdateHandler = $formUpdateHandler;
         $this->translator = $translator;
         $this->form = $form;
         $this->em = $em;
+        $this->projectDir = $projectDir;
     }
 
     /**
      * @param Request               $request
-     * @param DocumentNode $node
+     * @param DocumentNodeInterface $node
      *
      * @Route("/{uuid}",
      *     name="kiboko_dam_upload_asset_widget",
@@ -113,8 +118,10 @@ class AssetWidgetController extends Controller
      * @param DocumentNodeInterface $node
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @Route("/{uuid}/upload",
      *     name="kiboko_dam_upload_asset",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
@@ -132,23 +139,34 @@ class AssetWidgetController extends Controller
     public function uploadAction(DocumentNodeInterface $node, Request $request)
     {
         $document = new Document();
-        $result = $this->formUpdateHandler->update(
-            $document,
-            $this->form,
-            $this->translator->trans('kiboko.document.save.ok'),
-            $request,
-            new AssetHandler($this->form, $this->em, $node),
-            new AssetProvider($this->helper, $document, $this->form, $request)
-        );
 
-        if ($result instanceof Response) {
-            return $result;
+        $handler = new AssetHandler($this->form, $this->em, $node);
+
+        $handlerResult = $handler->process($document, $this->form, $request);
+
+        if ($handlerResult) {
+            return new JsonResponse([
+                'successful' => true,
+                'parent' => $node,
+                'pageReload' => true,
+                'flashMessages' => $this->get('session')->getFlashBag()->all(),
+                'widget' => [
+                    'message' => $this->get('translator')->trans('Asset ajoute'),
+                    'triggerSuccess' => true,
+                    'remove' => true,
+                ],
+            ], JsonResponse::HTTP_OK);
+        } else {
+            return new JsonResponse(
+                [
+                    'widget' => [
+                        'message' => $this->get('translator')->trans('Asset ajoute') . $this->form->getErrors(),
+                        'triggerSuccess' => false,
+                        'remove' => true,
+                    ],
+                ]
+            );
+
         }
-
-        if (!is_array($result)) {
-            throw new \RuntimeException();
-        }
-
-        return new JsonResponse($result);
     }
 }
