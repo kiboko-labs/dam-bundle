@@ -3,6 +3,8 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
+use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -36,21 +38,30 @@ final class DocumentNodeController extends Controller
     private $translator;
 
     /**
-     * @param Form                $form
-     * @param UpdateHandlerFacade $handler
-     * @param TranslatorInterface $translator
+     * @var DocumentNodeUpdateTreeHandler
+     */
+    private $treeHandler;
+
+    /**
+     * @param Form                          $form
+     * @param UpdateHandlerFacade           $handler
+     * @param TranslatorInterface           $translator
+     * @param DocumentNodeUpdateTreeHandler $treeHandler
      */
     public function __construct(
         Form $form,
         UpdateHandlerFacade $handler,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        DocumentNodeUpdateTreeHandler $treeHandler
     ) {
         $this->form = $form;
         $this->handler = $handler;
         $this->translator = $translator;
+        $this->treeHandler = $treeHandler;
     }
 
     /**
+     * @param TeamStorageNode $node
      * @return array|Response
      *
      * @Route("/{uuid}/browse",
@@ -58,9 +69,11 @@ final class DocumentNodeController extends Controller
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
-     *     class="KibokoDAMBundle:DocumentNode",
+     *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )
@@ -72,8 +85,9 @@ final class DocumentNodeController extends Controller
      * )
      * @Template()
      */
-    public function browseAction(DocumentNodeInterface $node)
+    public function browseAction(TeamStorageNode $node)
     {
+
         $path = [];
         $parent = $node;
         while (($parent = $parent->getParent()) !== null) {
@@ -83,12 +97,14 @@ final class DocumentNodeController extends Controller
         return [
             'entity' => $node,
             'path' => $path,
+            'tree' => $this->treeHandler->createTree($node),
         ];
     }
 
     /**
      * @param Request $request
      *
+     * @param DocumentNodeInterface $parent
      * @return array|Response
      *
      * @Route("/{uuid}/create",
@@ -188,7 +204,7 @@ final class DocumentNodeController extends Controller
         return $this->handler->update(
             $node,
             $this->form,
-            $this->translator->trans('The Node has been properly created.'),
+            $this->translator->trans('kiboko.dam.documentnode.updated.label'),
             $request
         );
     }

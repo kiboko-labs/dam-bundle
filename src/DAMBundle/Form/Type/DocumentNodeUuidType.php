@@ -20,6 +20,7 @@ class DocumentNodeUuidType extends AbstractType
                 'uuid',
                 TextType::class,
                 [
+                    'label' => 'kiboko.dam.form.type.documentnodeuuid.fields.uuid.label',
                     'attr' => [
                         'readonly' => true,
                     ],

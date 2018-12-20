@@ -1,0 +1,8 @@
+services:
+    kiboko_dam.form.document.widget.upload_asset:
+        class: Symfony\Component\Form\FormInterface
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - "kiboko_project_technology_form"
+            - 'Kiboko\Bundle\DAMBundle\Form\Type\DocumentType'
+            - null

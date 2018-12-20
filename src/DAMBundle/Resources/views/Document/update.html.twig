@@ -1,5 +1,5 @@
 {% if saved is defined and saved %}
-    {% set messageText = update|default(false) ? 'Document updated successfully'|trans : 'Document created successfully'|trans %}
+    {% set messageText = update|default(false) ? 'kiboko.dam.views.document.update.update.label'|trans  : 'kiboko.dam.views.document.update.created.label'|trans %}
     {% set widgetResponse = {
         widget: {
             message: messageText|trans,
@@ -26,8 +26,8 @@
                     {{ form_rest(form) }}
                 </div>
                 <div class="widget-actions form-actions" style="display: none;">
-                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
-                    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                    <button class="btn" type="reset">{{ 'kiboko.dam.views.document.update.cancel.label'|trans }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'kiboko.dam.views.document.update.save.label'|trans }}</button>
                 </div>
             </fieldset>
         </form>

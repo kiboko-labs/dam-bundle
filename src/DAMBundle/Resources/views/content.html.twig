@@ -1,9 +1,7 @@
 {% import 'OroSyncBundle:Include:contentTags.html.twig' as syncMacro %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-<div class="layout-content"
-        {% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}
->
+<div class="layout-content" {% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}>
     <div class="container-fluid page-title">
         {% block workflowStepListContainer %}
             {% placeholder page_title_before with {entity: entity} %}
@@ -122,8 +120,7 @@
                 {% endset %}
                 {%  if not isMobileVersion() %}
                     {{ actionButtons }}
-                {%  endif %}
-                {%  if isMobileVersion() %}
+                {%  else %}
                     {{ actionButtons }}
                 {%  endif %}
             </div>

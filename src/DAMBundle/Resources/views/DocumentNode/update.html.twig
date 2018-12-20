@@ -5,21 +5,26 @@
 {% set node = form.vars.value %}
 
 {% if node.id %}
-    {% set formAction = path('kiboko_dam_node_update', { uuid: node.uuid }) %}
+    {% set formAction = path('kiboko_dam_node_update', { 'uuid': node.uuid }) %}
 {% else %}
-    {% set formAction = path('kiboko_dam_node_create', { uuid: node.parent.uuid }) %}
+        {% set formAction = path('kiboko_dam_node_create', { 'uuid': node.parent.uuid }) %}
 {% endif %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('kiboko_dam_index')) }}
 
-    {{ UI.dropdownSaveButton({
-        'html': UI.saveAndCloseButton() ~ UI.saveAndStayButton()
-    }) }}
+    {{ UI.cancelButton(path('kiboko_dam_node_browse', {uuid: node.uuid})) }}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': 'kiboko_dam_node_browse',
+        'params': {'uuid': node.parent.uuid}
+    }) %}
+
+    {{ UI.dropdownSaveButton({'html': html}) }}
+
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if node.id %}
+    {% if node.uuid %}
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dam_index'),
@@ -41,7 +46,6 @@
         'subblocks': [{
             'title': '',
             'data': [
-                form_row(form.parent),
                 form_row(form.names),
                 form_row(form.slugs),
                 form_rest(form),

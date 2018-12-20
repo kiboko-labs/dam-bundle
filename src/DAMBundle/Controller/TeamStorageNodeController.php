@@ -3,6 +3,7 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
+use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -35,10 +36,12 @@ final class TeamStorageNodeController extends Controller
      */
     private $translator;
 
+
     /**
-     * @param Form                $form
-     * @param UpdateHandlerFacade $handler
-     * @param TranslatorInterface $translator
+     * @param Form                          $form
+     * @param UpdateHandlerFacade           $handler
+     * @param TranslatorInterface           $translator
+     * @param DocumentNodeUpdateTreeHandler $treeHandler
      */
     public function __construct(
         Form $form,
@@ -51,7 +54,7 @@ final class TeamStorageNodeController extends Controller
     }
 
     /**
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/",
      *     name="kiboko_dam_index",
@@ -71,28 +74,9 @@ final class TeamStorageNodeController extends Controller
     }
 
     /**
-     * @Route("/browse/{slug}/", name="kiboko_dam_storage_browse")
-     * @ParamConverter("node",
-     *     class="KibokoDAMBundle:TeamStorageNode",
-     *     options={
-     *         "repository_method" = "findBySlug",
-     *         "mapping": {"slug": "slug"},
-     *         "map_method_signature" = true,
-     *     }
-     * )
-     * @Template()
-     */
-    public function browseAction(DocumentNodeInterface $node)
-    {
-        return [
-            'node' => $node
-        ];
-    }
-
-    /**
      * @param Request $request
      *
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/create", name="kiboko_dam_storage_create")
      * @Acl(
@@ -112,16 +96,18 @@ final class TeamStorageNodeController extends Controller
      * @param Request               $request
      * @param DocumentNodeInterface $node
      *
-     * @return array|Request
+     * @return array|Response
      *
      * @Route("/{uuid}/update",
      *     name="kiboko_dam_storage_update",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )
@@ -149,7 +135,7 @@ final class TeamStorageNodeController extends Controller
         return $this->handler->update(
             $node,
             $this->form,
-            $this->translator->trans('The Team Storage has been properly created'),
+            $this->translator->trans('kiboko.dam.teamstoragenode.message.success'),
             $request
         );
     }

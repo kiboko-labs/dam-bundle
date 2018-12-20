@@ -79,4 +79,36 @@ class TeamStorageNode extends DocumentNode
     {
         $this->integration = $integration;
     }
+
+    /**
+     * @return File
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * @param File $thumbnail
+     */
+    public function setThumbnail(File $thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
 }

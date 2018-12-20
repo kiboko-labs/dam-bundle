@@ -22,6 +22,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\UserInterface;
 use Ramsey\Uuid\UuidFactory;
@@ -69,7 +70,8 @@ class DocumentNode implements DocumentNodeInterface,
     Behavior\MovableInterface,
     Behavior\AuthorizableInterface,
     DatesAwareInterface,
-    UpdatedByAwareInterface
+    UpdatedByAwareInterface,
+    OrganizationAwareInterface
 {
     use DatesAwareTrait;
     use UpdatedByAwareTrait;
@@ -265,8 +267,9 @@ class DocumentNode implements DocumentNodeInterface,
      */
     private $documents;
 
-    public function __construct()
-    {
+    public function __construct(
+        ?DocumentNodeInterface $root = null
+    ) {
         $this->uuid = (new UuidFactory())->uuid4();
         $this->names = new ArrayCollection();
         $this->slugs = new ArrayCollection();
@@ -274,6 +277,7 @@ class DocumentNode implements DocumentNodeInterface,
         $this->nodes = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->authorizations = new ArrayCollection();
+        $this->root = $root;
     }
 
     /**

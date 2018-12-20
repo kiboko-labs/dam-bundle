@@ -2,7 +2,7 @@ navigation:
     menu_config:
         items:
             kiboko_dam_tab:
-                label: Assets
+                label: kiboko.dam.document.entity_plural_label
                 uri:   '#'
                 attributes:
                     class: 'mobile-hide'
@@ -10,7 +10,7 @@ navigation:
                 extras:
                     icon: fa-image
             kiboko_dam_team_storages:
-                label: Team storages
+                label: kiboko.dam.teamstoragenode.entity_plural_label
                 route: kiboko_dam_index
         tree:
             application_menu:

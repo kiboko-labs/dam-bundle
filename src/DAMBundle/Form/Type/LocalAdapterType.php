@@ -31,11 +31,19 @@ class LocalAdapterType extends AbstractType
         $builder
             ->add(
                 'path',
-                TextType::class
+                TextType::class,
+                [
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.localadapter.fields.path.label'
+                ]
             )
             ->add(
                 'lock',
-                CheckboxType::class
+                CheckboxType::class,
+                [
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.localadapter.fields.lock.label'
+                ]
             )
         ;
     }

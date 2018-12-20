@@ -7,6 +7,7 @@ use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DocumentNodeType extends AbstractType
 {
@@ -14,17 +15,24 @@ class DocumentNodeType extends AbstractType
     {
         $builder
             ->add(
-                'parent',
-                DocumentNodeUuidType::class
-            )
-            ->add(
                 'names',
-                LocalizedFallbackValueCollectionType::class
+                LocalizedFallbackValueCollectionType::class,
+                [
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.documentnode.fields.names.label'
+                ]
             )
             ->add(
                 'slugs',
-                LocalizedFallbackValueCollectionType::class
+                LocalizedFallbackValueCollectionType::class,
+                [
+                    'required' => true,
+                    'entry_options' => ['constraints' => [new NotBlank()]],
+                    'label' => 'kiboko.dam.form.type.documentnode.fields.slugs.label'
+                ]
             )
+
         ;
     }
 

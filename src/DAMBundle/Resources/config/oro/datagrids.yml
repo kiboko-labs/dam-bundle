@@ -1,42 +1,44 @@
 datagrids:
     kiboko-dam-nodes-grid:
         columns:
-            uuid:
-                label: ID
             name:
-                label: Name
+                label: kiboko.dam.documentnode.datagrid.columns.name.label
                 data_name: localeName
             slug:
-                label: Slug
+                label: kiboko.dam.documentnode.datagrid.columns.slug.label
                 data_name: localeSlug
+            integration:
+                label: kiboko.dam.documentnode.datagrid.columns.integration.label
+                dataname: integration
         sorters:
             columns:
-                uuid:
-                    data_name: node.uuid
                 name:
                     data_name: localeName
                 slug:
                     data_name: localeSlug
+                integration:
+                    data_name: integration
         filters:
             columns:
-                uuid:
-                    type: string
-                    data_name: task.uuid
                 name:
                     type: string
                     data_name: localeName
                 slug:
                     type: string
                     data_name: localeSlug
+                integration:
+                    type: string
+                    data_name: integration
         actions:
             view:
                 type: navigate
-                label: Edit
+                label: oro.grid.action.view
                 link: view_link
                 icon: eye
+                rowAction: true
             edit:
                 type: navigate
-                label: Edit
+                label: oro.grid.action.update
                 link: update_link
                 icon: edit
 
@@ -49,12 +51,14 @@ datagrids:
                     - node.uuid
                     - name.string AS localeName
                     - slug.string AS localeSlug
+                    - channel.name AS integration
                 from:
                     - { table: KibokoDAMBundle:TeamStorageNode, alias: node }
                 join:
                     left:
                         - { join: node.names, alias: name }
                         - { join: node.slugs, alias: slug }
+                        - { join: node.integration, alias: channel }
                 where:
                     and:
                         - name.localization IS NULL
@@ -109,51 +113,62 @@ datagrids:
                     uuid: uuid
 
     kiboko-dam-documents-grid:
+        options:
+            frontend: true
         source:
             type: orm
             query:
                 select:
-                    - document.uuid
-                    - name.string AS localeName
-                    - slug.string AS localeSlug
+                    - file.id AS fileId
+                    - file.filename AS fileName
+                    - owner.username
                 from:
                     - { table: KibokoDAMBundle:Document, alias: document }
                 join:
+                    inner:
+                        - { join: document.node, alias: node }
                     left:
-                        - { join: document.names, alias: name }
-                        - { join: document.slugs, alias: slug }
+                        - { join: document.file, alias: file }
+                        - { join: document.owner, alias: owner }
                 where:
                     and:
-                        - name.localization IS NULL
-                        - slug.localization IS NULL
-                        - document.node = :parent
+                        - node.uuid = :parent
             bind_parameters:
                 parent: parent
-        columns:
-            uuid:
-                label: ID
+        properties:
             name:
-                label: Name
-                data_name: localeName
+                type: localized_value
+                data_name: names
             slug:
-                label: Slug
-                data_name: localeSlug
+                type: localized_value
+                data_name: slugs
+        columns:
+            name:
+                label: kiboko.dam.document.datagrid.columns.name.label
+                data_name: name
+            slug:
+                label: kiboko.dam.document.datagrid.columns.slug.label
+                data_name: slug
+            filename:
+                label: kiboko.dam.document.datagrid.columns.thumbnail.label
+                data_name: filename
+                type: twig
+                frontend_type: html
+                template: KibokoDAMBundle:Document:Datagrid/Property/thumbnail.html.twig
+            owner:
+              label: kiboko.dam.document.datagrid.columns.owner.label
+              data_name: owner
         sorters:
             columns:
-                uuid:
-                    data_name: node.uuid
                 name:
-                    data_name: localeName
+                    data_name: name
                 slug:
-                    data_name: localeSlug
+                    data_name: slug
         filters:
             columns:
-                uuid:
-                    type: string
-                    data_name: task.uuid
                 name:
                     type: string
-                    data_name: localeName
+                    data_name: name
                 slug:
                     type: string
-                    data_name: localeSlug
+                    data_name: slug

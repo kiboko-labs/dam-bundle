@@ -30,15 +30,27 @@ class CDPAdapterType extends AbstractType
         $builder
             ->add(
                 'url',
-                TextType::class
+                TextType::class,
+                [
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.cdpadapter.fields.url.label'
+                ]
             )
             ->add(
                 'client',
-                TextType::class
+                TextType::class,
+                [
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.cdpadapter.fields.client.label'
+                ]
             )
             ->add(
                 'secret',
-                TextType::class
+                TextType::class,
+                [
+                    'required' => true,
+                    'label' => 'kiboko.dam.form.type.cdpadapter.fields.secret.label'
+                ]
             )
         ;
     }
