@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,16 +28,23 @@ class DocumentNodeTreeAjaxController extends Controller
     /** @var LocalizationHelper */
     private $localizationHelper;
 
+    /** @var DocumentNodeUpdateTreeHandler */
+    private $handler;
+
     /**
      * @param EntityManager $em
      * @param LocalizationHelper $localizationHelper
+     * @param DocumentNodeUpdateTreeHandler $handler
      */
     public function __construct(
         EntityManager $em,
-        LocalizationHelper $localizationHelper
+        LocalizationHelper $localizationHelper,
+        DocumentNodeUpdateTreeHandler $handler
+
     ) {
         $this->em = $em;
         $this->localizationHelper = $localizationHelper;
+        $this->handler = $handler;
     }
 
 
@@ -120,6 +128,33 @@ class DocumentNodeTreeAjaxController extends Controller
             }
 
             return new JsonResponse('renamed',200);
+        }
+
+     /**
+     * @Route("/create/{uuid}",
+     *     name="kiboko_dam_document_node_tree_ajax_create",
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     options={
+     *         "expose"=true,
+     *     },
+     * )
+     * @ParamConverter("node",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Method({"POST"})
+     *
+     * {@inheritdoc}
+     */
+        public function createNodeAction(Request $request, DocumentNodeInterface $node)
+        {
+            $name= $request->get('name');
+            return $this->handler->createNode($node,$name);
         }
 
     /**

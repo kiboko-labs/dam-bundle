@@ -4,6 +4,8 @@ services:
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@oro_locale.helper.localization'
+      - '@kiboko_dam.tree.document_node_update_tree_handler'
+
     calls:
       - [setContainer, ["@service_container"]]
 

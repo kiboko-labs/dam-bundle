@@ -2,10 +2,17 @@
 
 namespace Kiboko\Bundle\DAMBundle\JsTree;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
+use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\UIBundle\Model\TreeItem;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class DocumentNodeUpdateTreeHandler
@@ -23,15 +30,23 @@ class DocumentNodeUpdateTreeHandler
     private $localizationHelper;
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * @param TranslatorInterface $translator
-     * @param LocalizationHelper  $localizationHelper
+     * @param LocalizationHelper $localizationHelper
+     * @param EntityManager $entityManager
      */
     public function __construct(
         TranslatorInterface $translator,
-        LocalizationHelper $localizationHelper
+        LocalizationHelper $localizationHelper,
+        EntityManager $entityManager
     ) {
         $this->translator = $translator;
         $this->localizationHelper = $localizationHelper;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -167,5 +182,35 @@ class DocumentNodeUpdateTreeHandler
                 }
             }
         }
+    }
+
+    public function createNode(DocumentNodeInterface $parent,string $name) {
+
+        $node = new DocumentNode();
+        $node->setParent($parent);
+
+        $nameToApply = new LocalizedFallbackValue();
+        $nameToApply->setString($name);
+        $nameToApply->setLocalization($this->localizationHelper->getCurrentLocalization());
+
+        $names = new ArrayCollection();
+        $names->add($nameToApply);
+
+        $slugs = new ArrayCollection();
+        $slugs->add($nameToApply);
+
+        $node->setNames($names);
+        $node->setSlugs($slugs);
+
+        try {
+            $this->entityManager->persist($node);
+            $this->entityManager->flush();
+        }
+        catch (ORMException $e) {
+            return new JsonResponse($e->getMessage(),500);
+        }
+
+        return new JsonResponse('created',200);
+
     }
 }

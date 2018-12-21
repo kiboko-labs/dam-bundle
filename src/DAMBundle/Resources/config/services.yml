@@ -48,6 +48,8 @@ services:
         arguments:
             - '@translator'
             - '@oro_locale.helper.localization'
+            - '@doctrine.orm.entity_manager'
+
 
     kiboko_dam.controller.document_node:
         class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeController

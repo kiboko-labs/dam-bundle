@@ -17,6 +17,11 @@ define(function(require) {
      * @class kibokodam.app.components.TreeManageView
      */
     TreeManageView = BaseTreeManageView.extend({
+
+        formatUuuid: function(chain) {
+            return chain.substr(5).replace(/_/g, '-');
+        },
+
         /**
          * @inheritDoc
          */
@@ -25,7 +30,7 @@ define(function(require) {
         },
 
         treeEvents: {
-            'create_node.jstree': 'onCreate',
+            'create_node.jstree': 'onNodeCreate',
             'rename_node.jstree': 'onNodeNameChange',
             'delete_node.jstree': 'onNodeDelete',
             'move_node.jstree': 'onNodeMove',
@@ -48,7 +53,6 @@ define(function(require) {
                 url: url
             });
         },
-
         /**
          * Triggers after node deleted in tree
          *
@@ -88,6 +92,28 @@ define(function(require) {
                     type: 'POST',
                     data: {
                         'newName': name
+                    },
+                    url: url
+                });
+            }
+        },
+        /**
+         * Triggers after node change creation
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeCreate: function(e, data) {
+            var parent =  data.parent;
+            var name = data.node.original.text;
+
+            if (data.node.original.uuid !== '') {
+                var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {uuid: this.formatUuuid(parent)});
+                $.ajax({
+                    async: false,
+                    type: 'POST',
+                    data: {
+                        'name': name,
                     },
                     url: url
                 });
@@ -174,6 +200,34 @@ define(function(require) {
                             "action": (function (obj) {
                                 this.edit($node);
                             }).bind(tree)
+                        },
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": true,
+                            "label": "Create",
+                            "action": false,
+                            "submenu": {
+                                "File": {
+                                    "seperator_before": false,
+                                    "seperator_after": false,
+                                    "label": "File",
+                                    action: function (obj) {
+                                        tree.create_node($node, { type: 'file', text: _.__('kiboko.dam.js.jstree.contextmenu.newfile.label'),icon: 'glyphicon glyphicon-file' });
+                                        tree.deselect_all();
+                                        tree.select_node($node);
+                                    }
+                                },
+                                "Folder": {
+                                    "seperator_before": false,
+                                    "seperator_after": false,
+                                    "label": "Folder",
+                                    action: function (data) {
+                                        tree.create_node($node, { text: _.__('kiboko.dam.js.jstree.contextmenu.newfile.label'), type: 'default' });
+                                        tree.deselect_all();
+                                        tree.select_node($node);
+                                    }
+                                },
+                            }
                         },
                         "Remove": {
                             "separator_before": false,
