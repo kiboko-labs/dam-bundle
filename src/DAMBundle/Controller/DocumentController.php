@@ -4,6 +4,7 @@ namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Form\Handler\DocumentHandler;
+use Kiboko\Bundle\DAMBundle\Form\Type\DocumentType;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\UIBundle\Route\Router;
@@ -13,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -131,6 +133,83 @@ final class DocumentController extends Controller
                 'form' => $this->form->createView(),
                 'formAction' => $formAction,
             ]
+        );
+    }
+
+    /**
+     * @param Document $document
+     * @return array|Response
+     *
+     * @Route("/{uuid}/view",
+     *     name="kiboko_dam_document_view",
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     * )
+     * @ParamConverter("document",
+     *     class="KibokoDAMBundle:Document",
+     *     options={
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Acl(
+     *      id="kiboko_dam_document_view",
+     *      type="entity",
+     *      class="KibokoDAMBundle:DocumentDocument",
+     *      permission="VIEW"
+     * )
+     * @Template()
+     */
+    public function viewAction(Document $document)
+    {
+        return [
+            'entity' => $document,
+        ];
+    }
+
+
+    /**
+     * @param Document $document
+     * @param Request $request
+     * @return array|Response
+     *
+     * @Route("/{uuid}/update",
+     *     name="kiboko_dam_document_update",
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     * )
+     * @ParamConverter("document",
+     *     class="KibokoDAMBundle:Document",
+     *     options={
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Acl(
+     *      id="kiboko_dam_document_view",
+     *      type="entity",
+     *      class="KibokoDAMBundle:DocumentDocument",
+     *      permission="VIEW"
+     * )
+     * @Template()
+     */
+    public function updateAction(Document $document, Request $request)
+    {
+        return $this->update($document, $request);
+    }
+
+    protected function update(Document $document, Request $request)
+    {
+        $form =  $this->createForm(DocumentType::class, $document);
+
+        return $this->get('oro_form.update_handler')->update(
+            $document,
+            $form,
+            $this->get('translator')->trans('kiboko.dam.views.document.update.save.label'),
+            $request,
+            null
         );
     }
 }

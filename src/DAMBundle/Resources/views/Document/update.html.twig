@@ -1,37 +1,62 @@
-{% if saved is defined and saved %}
-    {% set messageText = update|default(false) ? 'kiboko.dam.views.document.update.update.label'|trans  : 'kiboko.dam.views.document.update.created.label'|trans %}
-    {% set widgetResponse = {
-        widget: {
-            message: messageText|trans,
-            triggerSuccess: true,
-            remove: true
-        }
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+
+{% set document = form.vars.value %}
+
+{% set formAction = path('kiboko_dam_document_update', { 'uuid': document.uuid }) %}
+
+
+{% block navButtons %}
+
+    {{ UI.cancelButton(path('kiboko_dam_index')) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'kiboko_dam_node_browse',
+        'params': {'uuid': '$uuid'}
+    }) %}
+
+
+    {{ UI.dropdownSaveButton({'html': html}) }}
+
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if document.uuid %}
+        {% set breadcrumbs = {
+            'entity': document,
+            'indexPath': path('kiboko_dam_index'),
+            'indexLabel': 'kiboko.dam.views.teamstorage.update.entity.label' | trans,
+            'entityTitle': document.names|localized_value
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'Document' }) %}
+        {{ include('OroUIBundle::page_title_block.html.twig', { title: title }) }}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'document-edit' %}
+    {% set dataBlocks = [
+        {
+            'title': 'kiboko.dam.views.document.update.general.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+            'title': '',
+            'data': [
+                form_row(form.names),
+                form_row(form.slugs),
+                form_row(form.file),
+            ]}
+        ]
+        },
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form) ? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
     } %}
 
-    {{ widgetResponse|json_encode|raw }}
-{% else %}
-<div class="widget-content">
-    {% form_theme form with ['OroFormBundle:Form:fields.html.twig', _self] %}
-
-    <div class="form-container">
-        <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ formAction }}" method="post">
-            <fieldset class="form form-horizontal">
-                <div class="span6">
-                    {{ form_row(form.names) }}
-                    {{ form_row(form.slugs) }}
-                    {{ form_row(form.file) }}
-                    {% if form.owner is defined %}
-                        {{ form_row(form.owner) }}
-                    {% endif %}
-                    {{ form_rest(form) }}
-                </div>
-                <div class="widget-actions form-actions" style="display: none;">
-                    <button class="btn" type="reset">{{ 'kiboko.dam.views.document.update.cancel.label'|trans }}</button>
-                    <button class="btn btn-primary" type="submit">{{ 'kiboko.dam.views.document.update.save.label'|trans }}</button>
-                </div>
-            </fieldset>
-        </form>
-        {{ oro_form_js_validation(form) }}
-    </div>
-</div>
-{% endif %}
+    {{ parent() }}
+{% endblock content_data %}

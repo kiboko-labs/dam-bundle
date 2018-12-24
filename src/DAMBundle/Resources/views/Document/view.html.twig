@@ -1,0 +1,47 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%document.name%": entity.names|localized_value} }) %}
+
+{% block navButtons %}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('kiboko_dam_document_update', { 'uuid': entity.uuid }),
+            'entity_label': 'kiboko.dam.document.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('kiboko_dam_index'),
+        'indexLabel': 'kiboko.dam.documentnode.entity_plural_label'|trans,
+        'entityTitle': entity.names|localized_value
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set info %}
+        {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.owner.label'|trans, entity.owner.username) }}
+        {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.name.label'|trans, entity.names|localized_value) }}
+        {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.slug.label'|trans, entity.file.file) }}
+    {% endset %}
+
+    {% set info = [
+        {
+            'title': 'kiboko.dam.document.entity_label'|trans,
+            'class': 'active',
+            'subblocks':
+            [
+                { 'data': [ info ] },
+            ]
+        },
+    ] %}
+
+    {% set id = 'editorialView' %}
+    {% set data = {'dataBlocks': info} %}
+    {{ parent() }}
+{% endblock content_data %}
