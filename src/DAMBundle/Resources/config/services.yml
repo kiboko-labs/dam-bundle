@@ -91,3 +91,11 @@ services:
             - '@oro_featuretoggle.checker.feature_checker'
         tags:
             - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    kiboko_dam.event_listener.document_datagrid:
+        class: Kiboko\Bundle\DAMBundle\EventListener\DocumentDatagridListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.kiboko-dam-documents-grid, method: onBuildBefore }
+

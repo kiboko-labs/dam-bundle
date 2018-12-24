@@ -134,7 +134,10 @@ datagrids:
                     and:
                         - node.uuid = :parent
             bind_parameters:
-                parent: parent
+                -
+                    name: parent
+                    default: null
+                    type: string
         properties:
             name:
                 type: localized_value

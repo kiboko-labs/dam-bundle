@@ -34,6 +34,8 @@ define(function(require) {
             'rename_node.jstree': 'onNodeNameChange',
             'delete_node.jstree': 'onNodeDelete',
             'move_node.jstree': 'onNodeMove',
+            'select_node.jstree': 'onNodeOpen',
+
         },
 
         /**
@@ -52,6 +54,17 @@ define(function(require) {
                 type: 'DELETE',
                 url: url
             });
+        },
+        /**
+         * Triggers after node is opened
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeOpen: function(e, data) {
+
+            mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', this.formatUuuid(data.node.original.id));
+            mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
         },
         /**
          * Triggers after node deleted in tree
@@ -84,6 +97,7 @@ define(function(require) {
          */
         onNodeNameChange: function(e, data) {
             var uuid = data.node.original.uuid;
+
             var name = data.text;
             if (data.node.original.uuid !== '') {
                 var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
@@ -104,6 +118,7 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeCreate: function(e, data) {
+            console.log("YOP");
             var parent =  data.parent;
             var name = data.node.original.text;
 
@@ -157,6 +172,9 @@ define(function(require) {
          */
         customizeTreeConfig: function(options, config) {
 
+            config.root = {
+                "valid_children" : ["default"],
+            }
             if (this.checkboxEnabled) {
                 config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
@@ -212,9 +230,7 @@ define(function(require) {
                                     "seperator_after": false,
                                     "label": "File",
                                     action: function (obj) {
-                                        tree.create_node($node, { type: 'file', text: _.__('kiboko.dam.js.jstree.contextmenu.newfile.label'),icon: 'glyphicon glyphicon-file' });
-                                        tree.deselect_all();
-                                        tree.select_node($node);
+                                        //TO:DO upload widget
                                     }
                                 },
                                 "Folder": {
