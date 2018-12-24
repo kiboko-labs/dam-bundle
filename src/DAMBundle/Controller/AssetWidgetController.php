@@ -87,7 +87,9 @@ class AssetWidgetController extends Controller
      * @Route("/{uuid}",
      *     name="kiboko_dam_upload_asset_widget",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
-     *
+     *     options={
+     *         "expose"=true,
+     *     },
      * )
      *
      * @ParamConverter("node",

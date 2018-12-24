@@ -98,7 +98,6 @@ define(function(require) {
         onNodeNameChange: function(e, data) {
             var uuid = data.node.original.uuid;
             if (uuid) {
-                console.log(uuid);
                 var name = data.text;
                 if (data.node.original.uuid !== '') {
                     var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
@@ -120,7 +119,6 @@ define(function(require) {
          * @param {Object} data
          */
         onNodeCreate: function(e, data) {
-            console.log("YOP");
             var parent =  data.parent;
             var name = data.node.original.text;
 
@@ -222,38 +220,22 @@ define(function(require) {
                                 this.edit($node);
                             }).bind(tree)
                         },
-                        "Create": {
-                            "separator_before": false,
-                            "separator_after": true,
-                            "label": "Create",
-                            "action": false,
-                            "submenu": {
-                                "File": {
-                                    "seperator_before": false,
-                                    "seperator_after": false,
-                                    "label": "File",
-                                    action: function (obj) {
-                                        //TO:DO upload widget
+                        "Create Folder": {
+                            "seperator_before": false,
+                            "seperator_after": false,
+                            "label": "Folder",
+                            action: function (data) {
+                                var inst = $.jstree.reference(data.reference),
+                                    obj = inst.get_node(data.reference);
+                                inst.create_node(obj, {}, "last", function (new_node) {
+                                    try {
+                                        inst.edit(new_node);
+                                    } catch (ex) {
+                                        setTimeout(function () { inst.edit(new_node); },0);
                                     }
-                                },
-                                "Folder": {
-                                    "seperator_before": false,
-                                    "seperator_after": false,
-                                    "label": "Folder",
-                                    action: function (data) {
-                                        var inst = $.jstree.reference(data.reference),
-                                            obj = inst.get_node(data.reference);
-                                        inst.create_node(obj, {}, "last", function (new_node) {
-                                            try {
-                                                inst.edit(new_node);
-                                            } catch (ex) {
-                                                setTimeout(function () { inst.edit(new_node); },0);
-                                            }
-                                        });
-                                        tree.deselect_all();
-                                        tree.select_node($node);
-                                    }
-                                },
+                                });
+                                tree.deselect_all();
+                                tree.select_node($node);
                             }
                         },
                         "Remove": {
