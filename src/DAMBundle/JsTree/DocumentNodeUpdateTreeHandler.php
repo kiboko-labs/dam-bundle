@@ -96,12 +96,12 @@ class DocumentNodeUpdateTreeHandler
         foreach ($entities as $entity) {
             $node = $this->formatEntity($root, $entity);
 
-            if ($entity->getParent() === $root) {
-                $node['parent'] = self::ROOT_PARENT_VALUE;
-            }
-
             $formattedTree[] = $node;
         }
+
+        $topNode = $this->formatEntity($root,$root);
+        $topNode['parent'] = self::ROOT_PARENT_VALUE;
+        $formattedTree[] = $topNode;
 
         return $formattedTree;
     }
