@@ -97,18 +97,20 @@ define(function(require) {
          */
         onNodeNameChange: function(e, data) {
             var uuid = data.node.original.uuid;
-
-            var name = data.text;
-            if (data.node.original.uuid !== '') {
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
-                $.ajax({
-                    async: false,
-                    type: 'POST',
-                    data: {
-                        'newName': name
-                    },
-                    url: url
-                });
+            if (uuid) {
+                console.log(uuid);
+                var name = data.text;
+                if (data.node.original.uuid !== '') {
+                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
+                    $.ajax({
+                        async: false,
+                        type: 'POST',
+                        data: {
+                            'newName': name
+                        },
+                        url: url
+                    });
+                }
             }
         },
         /**
@@ -179,6 +181,7 @@ define(function(require) {
                 config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
                 config.plugins.push('dnd');
+                config.plugins.push('unique');
 
                 config.checkbox = {
                     whole_node: false,
@@ -238,7 +241,15 @@ define(function(require) {
                                     "seperator_after": false,
                                     "label": "Folder",
                                     action: function (data) {
-                                        tree.create_node($node, { text: _.__('kiboko.dam.js.jstree.contextmenu.newfile.label'), type: 'default' });
+                                        var inst = $.jstree.reference(data.reference),
+                                            obj = inst.get_node(data.reference);
+                                        inst.create_node(obj, {}, "last", function (new_node) {
+                                            try {
+                                                inst.edit(new_node);
+                                            } catch (ex) {
+                                                setTimeout(function () { inst.edit(new_node); },0);
+                                            }
+                                        });
                                         tree.deselect_all();
                                         tree.select_node($node);
                                     }
