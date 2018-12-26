@@ -3,6 +3,8 @@
 namespace Kiboko\Bundle\DAMBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentInterface;
