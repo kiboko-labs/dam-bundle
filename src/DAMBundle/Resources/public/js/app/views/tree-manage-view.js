@@ -223,7 +223,7 @@ define(function(require) {
                         "Create Folder": {
                             "seperator_before": false,
                             "seperator_after": false,
-                            "label": "Folder",
+                            "label": _.__('kiboko.dam.js.jstree.contextmenu.newfolder.label'),
                             action: function (data) {
                                 var inst = $.jstree.reference(data.reference),
                                     obj = inst.get_node(data.reference);

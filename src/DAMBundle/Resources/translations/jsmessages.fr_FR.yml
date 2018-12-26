@@ -7,5 +7,5 @@ kiboko:
                         label: Renommer
                     delete:
                         label: Supprimer
-                    newfile:
-                        label: Nouveau fichier
+                    newfolder:
+                        label: Nouveau dossier
