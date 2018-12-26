@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  *     "document" = "Kiboko\Bundle\DAMBundle\Entity\DocumentAuthorization",
  *     "node" = "Kiboko\Bundle\DAMBundle\Entity\DocumentNodeAuthorization"
  * })
- * @ORM\Table(name="kiboko_dam_authorization")
+ * @ORM\Table(name="kbk_dam_authorization")
  */
 abstract class Authorization implements AuthorizationInterface, IdentifiableInterface
 {
