@@ -74,18 +74,12 @@ define(function(require) {
          */
         onNodeMove: function(e, data) {
 
-            var newParent = data.parent;
-            var oldParent = data.old_parent;
-            var uuidParent = this.$tree.jstree(true).get_node(data.parent).original.uuid;
-
-            var uuid = data.node.original.uuid;
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid});
+            var uuid = this.formatUuuid(data.node.id);
+            var uuidParent = this.formatUuuid(data.parent);
+                var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid,uuidParent: uuidParent});
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    data: {
-                        'newParent': uuidParent
-                    },
                     url: url
                 });
         },

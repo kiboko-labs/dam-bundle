@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
@@ -211,6 +212,27 @@ class DocumentNodeUpdateTreeHandler
         }
 
         return new JsonResponse('created',200);
+
+    }
+
+    public function moveNode(MovableInterface $node, MovableInterface $newParent)
+    {
+        if (!$newParent instanceof DocumentNodeInterface || !$node instanceof DocumentNodeInterface)
+        {
+            return new JsonResponse('Arguments are not an instance of MovableInterface',500);
+
+        }
+        $node->moveTo($newParent);
+
+        try {
+            $this->entityManager->persist($node);
+            $this->entityManager->flush();
+        }
+        catch (ORMException $e) {
+            return new JsonResponse($e->getMessage(),500);
+        }
+
+        return new JsonResponse('moved folder successfully',200);
 
     }
 }

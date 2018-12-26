@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -158,7 +159,7 @@ class DocumentNodeTreeAjaxController extends Controller
         }
 
     /**
-     * @Route("/move/{uuid}",
+     * @Route("/move/{uuid}/to/{uuidParent}",
      *     name="kiboko_dam_document_node_tree_ajax_move",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      *     options={
@@ -174,13 +175,22 @@ class DocumentNodeTreeAjaxController extends Controller
      *         "map_method_signature" = true,
      *     }
      * )
+     * @ParamConverter("newParent",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {
+     *             "uuidParent": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
      * @Method({"POST"})
      *
      * {@inheritdoc}
      */
-    public function moveAction(Request $request, DocumentNodeInterface $node)
+    public function moveAction(Request $request, MovableInterface $node,MovableInterface $newParent)
     {
-        $newparent= $request->get('newParent');
+        return $this->handler->moveNode($node,$newParent);
 
     }
 
