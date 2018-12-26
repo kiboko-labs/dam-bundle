@@ -50,7 +50,7 @@ define(function(require) {
             var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
 
             $.ajax({
-                async: false,
+                async: true,
                 type: 'DELETE',
                 url: url
             });
@@ -81,7 +81,7 @@ define(function(require) {
             var uuid = data.node.original.uuid;
                 var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid});
                 $.ajax({
-                    async: false,
+                    async: true,
                     type: 'POST',
                     data: {
                         'newParent': uuidParent
@@ -102,7 +102,7 @@ define(function(require) {
                 if (data.node.original.uuid !== '') {
                     var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
                     $.ajax({
-                        async: false,
+                        async: true,
                         type: 'POST',
                         data: {
                             'newName': name
@@ -125,7 +125,7 @@ define(function(require) {
             if (data.node.original.uuid !== '') {
                 var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {uuid: this.formatUuuid(parent)});
                 $.ajax({
-                    async: false,
+                    async: true,
                     type: 'POST',
                     data: {
                         'name': name,
