@@ -165,35 +165,6 @@ final class DocumentNodeController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
-     * @return array|Response
-     *
-     * @Route("/{uuid}/delete",
-     *     name="kiboko_dam_node_delete",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
-     * )
-     * @ParamConverter("parent",
-     *     class="KibokoDAMBundle:DocumentNode",
-     *     options={
-     *         "mapping": {"uuid": "uuid"},
-     *         "map_method_signature" = true,
-     *     }
-     * )
-     * @Acl(
-     *      id="kiboko_dam_node_create",
-     *      type="entity",
-     *      class="KibokoDAMBundle:DocumentNode",
-     *      permission="CREATE"
-     * )
-     * @Template("KibokoDAMBundle:DocumentNode:update.html.twig")
-     */
-    public function deleteAction(Request $request, DocumentNodeInterface $parent)
-    {
-        return new Response(null, 403);
-    }
-
-    /**
      * @param Request               $request
      * @param DocumentNodeInterface $node
      *
