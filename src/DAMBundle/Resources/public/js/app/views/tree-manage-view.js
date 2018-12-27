@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     'use strict';
 
     var TreeManageView;
@@ -18,7 +18,7 @@ define(function(require) {
      */
     TreeManageView = BaseTreeManageView.extend({
 
-        formatUuuid: function(chain) {
+        formatUuuid: function (chain) {
             return chain.substr(5).replace(/_/g, '-');
         },
 
@@ -35,8 +35,10 @@ define(function(require) {
             'delete_node.jstree': 'onNodeDelete',
             'move_node.jstree': 'onNodeMove',
             'select_node.jstree': 'onNodeOpen',
+            'dnd_stop.vakata': 'onDragStop',
 
         },
+
 
         /**
          * Triggers after node deleted in tree
@@ -44,7 +46,18 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeDelete: function(e, data) {
+        onDragStop: function (e, data) {
+
+            console.log('salut');
+
+        },
+        /**
+         * Triggers after node deleted in tree
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeDelete: function (e, data) {
 
             var uuid = data.node.original.uuid;
             var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
@@ -55,14 +68,21 @@ define(function(require) {
                 url: url
             });
         },
+        reloadUrl: function () {
+            var url = window.location.pathname;
+            var regex = /browse(.*)/g;
+            var newUrl = 'browse/';
+            newUrl += this.formatUuuid(data.node.id);
+            window.history.pushState("", "", url.replace(regex,newUrl));
+        },
         /**
          * Triggers after node is opened
          *
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeOpen: function(e, data) {
-
+        onNodeOpen: function (e, data) {
+            this.reloadUrl();
             mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', this.formatUuuid(data.node.original.id));
             mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
         },
@@ -72,16 +92,31 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeMove: function(e, data) {
+        onNodeMove: function (e, data) {
 
+            if (data.node.parent === "#") {
+                e.stopImmediatePropagation();
+                this.tree.jstree("refresh");
+                return;
+            }
             var uuid = this.formatUuuid(data.node.id);
             var uuidParent = this.formatUuuid(data.parent);
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid,uuidParent: uuidParent});
-                $.ajax({
-                    async: true,
-                    type: 'POST',
-                    url: url
-                });
+
+            if (uuid && uuidParent) {
+
+                if (uuid !== uuidParent) {
+                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {
+                        uuid: uuid,
+                        uuidParent: uuidParent
+                    });
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: url
+                    });
+                }
+            }
+
         },
         /**
          * Triggers after node change name
@@ -89,7 +124,7 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeNameChange: function(e, data) {
+        onNodeNameChange: function (e, data) {
             var uuid = data.node.original.uuid;
             if (uuid) {
                 var name = data.text;
@@ -112,8 +147,8 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeCreate: function(e, data) {
-            var parent =  data.parent;
+        onNodeCreate: function (e, data) {
+            var parent = data.parent;
             var name = data.node.original.text;
 
             if (data.node.original.uuid !== '') {
@@ -135,7 +170,7 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} selected
          */
-        onSelect: function(e, selected) {
+        onSelect: function (e, selected) {
 
             BaseTreeManageView.__super__.onSelect.apply(this, arguments);
 
@@ -164,13 +199,13 @@ define(function(require) {
          * @param {Object} config
          * @returns {Object}
          */
-        customizeTreeConfig: function(options, config) {
+        customizeTreeConfig: function (options, config) {
 
             config.root = {
-                "valid_children" : ["default"],
+                "valid_children": ["default"],
             }
             if (this.checkboxEnabled) {
-                config.plugins.push('checkbox');
+                // config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
                 config.plugins.push('dnd');
                 config.plugins.push('unique');
@@ -225,7 +260,9 @@ define(function(require) {
                                     try {
                                         inst.edit(new_node);
                                     } catch (ex) {
-                                        setTimeout(function () { inst.edit(new_node); },0);
+                                        setTimeout(function () {
+                                            inst.edit(new_node);
+                                        }, 0);
                                     }
                                 });
                                 tree.deselect_all();

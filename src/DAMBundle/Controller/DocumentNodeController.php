@@ -100,6 +100,58 @@ final class DocumentNodeController extends Controller
             'tree' => $this->treeHandler->createTree($node),
         ];
     }
+    /**
+     * @param TeamStorageNode $teamStorageNode
+     * @param DocumentNode $node
+     * @return array|Response
+     *
+     * @Route("/{uuid}/browse/{uuid2}",
+     *     name="kiboko_dam_node_browse_to_node",
+     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *     "uuid2"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     * )
+     * @ParamConverter("teamstoragenode",
+     *     class="KibokoDAMBundle:TeamStorageNode",
+     *     options={
+     *         "mapping": {
+     *             "uuid": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @ParamConverter("node",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {
+     *             "uuid2": "uuid",
+     *         },
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @Acl(
+     *      id="kiboko_dam_node_view",
+     *      type="entity",
+     *      class="KibokoDAMBundle:DocumentNode",
+     *      permission="VIEW"
+     * )
+     * @Template()
+     */
+    public function browseToNodeAction(TeamStorageNode $teamStorageNode, DocumentNode $node)
+    {
+
+        $path = [];
+        $parent = $teamStorageNode;
+        while (($parent = $parent->getParent()) !== null) {
+            $path[] = $parent;
+        }
+
+        return [
+            'teamstorage' => $teamStorageNode,
+            'node' => $node,
+            'path' => $path,
+            'tree' => $this->treeHandler->createTree($teamStorageNode),
+        ];
+    }
 
     /**
      * @param Request $request
