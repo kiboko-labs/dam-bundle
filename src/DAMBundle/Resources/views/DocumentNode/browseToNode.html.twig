@@ -43,7 +43,7 @@
                         {# Create Divider button #}
                         {% set html = UI.clientButton({
                             'dataUrl': path('kiboko_dam_upload_asset_widget', { uuid: teamstorage.uuid}),
-                            'aCss': 'btn-primary',
+                            'aCss': 'btn-primary upload_button_widget',
                             'iCss': 'fa-image',
                             'label': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
                             'widget': {

@@ -36,9 +36,27 @@ define(function (require) {
             'move_node.jstree': 'onNodeMove',
             'select_node.jstree': 'onNodeOpen',
             'dnd_stop.vakata': 'onDragStop',
-
+            'ready.jstree': 'onTreeLoaded',
         },
 
+        onTreeLoaded: function (e,data) {
+            var url = window.location.pathname;
+            var regex = /(?<=browse\/).*$/g;
+            var nodeUuid = url.match(regex).toString();
+            console.log(dataUrl);
+            var str = 'node_';
+
+                if(nodeUuid) {
+
+                    var dataUrl = $(".upload_button_widget").attr('data-url');
+                    $(".upload_button_widget").attr('data-url',dataUrl.replace(/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/
+                        ,nodeUuid ));
+                    nodeUuid = nodeUuid.replace(/-/g, '_');
+                nodeUuid = str.concat('', nodeUuid);
+                this.jsTreeInstance._open_to(nodeUuid);
+                this.jsTreeInstance.select_node(nodeUuid);
+            }
+        },
 
         /**
          * Triggers after node deleted in tree
@@ -68,13 +86,6 @@ define(function (require) {
                 url: url
             });
         },
-        reloadUrl: function () {
-            var url = window.location.pathname;
-            var regex = /browse(.*)/g;
-            var newUrl = 'browse/';
-            newUrl += this.formatUuuid(data.node.id);
-            window.history.pushState("", "", url.replace(regex,newUrl));
-        },
         /**
          * Triggers after node is opened
          *
@@ -82,7 +93,11 @@ define(function (require) {
          * @param {Object} data
          */
         onNodeOpen: function (e, data) {
-            this.reloadUrl();
+            var url = window.location.pathname;
+            var regex = /browse(.*)/g;
+            var newUrl = 'browse/';
+            newUrl += this.formatUuuid(data.node.id);
+            window.history.pushState("", "", url.replace(regex,newUrl));
             mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', this.formatUuuid(data.node.original.id));
             mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
         },
