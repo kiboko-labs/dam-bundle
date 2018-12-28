@@ -225,6 +225,14 @@ define(function (require) {
          */
         customizeTreeConfig: function (options, config) {
 
+            config.core.check_callback =  function (operation, node, parent, position, more) {
+                if(operation === "copy_node" || operation === "move_node") {
+                    if(parent.id === "#") {
+                        return false; // prevent moving a child above or below the root
+                    }
+                }
+                return true; // allow everything else
+            }
             config.root = {
                 "valid_children": ["default"],
             }
@@ -233,6 +241,8 @@ define(function (require) {
                 config.plugins.push('contextmenu');
                 config.plugins.push('dnd');
                 config.plugins.push('unique');
+                config.plugins.push('sort');
+                config.plugins.push('state');
 
                 config.checkbox = {
                     whole_node: false,
