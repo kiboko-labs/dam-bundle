@@ -450,7 +450,7 @@ class Document implements DocumentInterface,
 
     public function getMimeType(): string
     {
-        $this->file->getMimeType();
+        return $this->file->getMimeType();
     }
 
     public function setFile(File $file): void

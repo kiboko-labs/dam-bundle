@@ -38,10 +38,9 @@ final class TeamStorageNodeController extends Controller
 
 
     /**
-     * @param Form                          $form
-     * @param UpdateHandlerFacade           $handler
-     * @param TranslatorInterface           $translator
-     * @param DocumentNodeUpdateTreeHandler $treeHandler
+     * @param Form $form
+     * @param UpdateHandlerFacade $handler
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         Form $form,

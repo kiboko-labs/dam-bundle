@@ -81,4 +81,20 @@ abstract class Authorization implements AuthorizationInterface, IdentifiableInte
     {
         return $this->uuid;
     }
+
+    /**
+     * @return DocumentActionInterface[]
+     */
+    public function getAuthorizations()
+    {
+        return $this->authorizations;
+    }
+
+    /**
+     * @param DocumentActionInterface[] $authorizations
+     */
+    public function setAuthorizations(array $authorizations)
+    {
+        $this->authorizations = $authorizations;
+    }
 }
