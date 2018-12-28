@@ -13,10 +13,10 @@
     {% set routePrefix = 'kiboko_dam_node_' %}
 
     {% set breadcrumbs = {
-        'entity': entity,
+        'entity': teamstorage,
         'indexPath': path('kiboko_dam_index'),
         'indexLabel': 'kiboko.dam.teamstoragenode.entity_plural_label'|trans,
-        'entityTitle': entity.names|localized_value
+        'entityTitle': teamstorage.names|localized_value
     } %}
 
     <div class="layout-content"{% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}>
@@ -31,7 +31,7 @@
 
                     <div class="pull-right">
                         {{ UI.button({
-                            'path' : path(routePrefix ~ 'create', { uuid: entity.uuid }),
+                            'path' : path(routePrefix ~ 'create', { uuid: teamstorage.uuid }),
                             'iCss': 'fa-folder',
                             'label': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }),
                             'title': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans })
@@ -41,8 +41,8 @@
 
                         {# Create Divider button #}
                         {% set html = UI.clientButton({
-                            'dataUrl': path('kiboko_dam_upload_asset_widget', { uuid: entity.uuid}),
-                            'aCss': 'btn-primary',
+                            'dataUrl': path('kiboko_dam_upload_asset_widget', { uuid: teamstorage.uuid}),
+                            'aCss': 'btn-primary upload_button_widget',
                             'iCss': 'fa-image',
                             'label': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
                             'widget': {
@@ -71,7 +71,7 @@
                             'iCss': 'fa-plus',
                             'dataMethod': 'POST',
                             'dataRedirect': app.request.uri,
-                            'dataUrl': path(routePrefix ~ 'create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
+                            'dataUrl': path(routePrefix ~ 'create', { uuid: teamstorage.uuid, parentKey: teamstorage.names|localized_value, 'isDivider': true }),
                             'successMessage': dividerCreatedMessage|default('kiboko.dam.documentnode.divider_created')|trans({'%reload_link%': reloadLink})
                         }) %}
 
@@ -97,8 +97,8 @@
             {% block content_data %}
                 {% set treeOptions = {
                     'data' : tree,
-                    'menu' : entity.uuid,
-                    'nodeId': entity.uuid,
+                    'menu' : teamstorage.uuid,
+                    'nodeId': teamstorage.uuid,
                     'updateAllowed' : true,
                     'view' : 'kibokodam/js/app/views/tree-manage-view',
                     'onRootSelectRoute' : routePrefix ~ 'view',
@@ -113,21 +113,21 @@
                     {% block sidebar %}
                         {{ UI.renderJsTree(
                             {
-                                'label': entity.names|localized_value,
+                                'label': teamstorage.names|localized_value,
                                 'treeOptions': treeOptions
                             },
                             {
                                 'move': {
                                     'view': 'oroui/js/app/views/jstree/move-action-view',
                                     'routeName': routePrefix ~ 'move',
-                                    'routeParams': {menuName: entity.uuid}
+                                    'routeParams': {menuName: teamstorage.uuid}
                                 }
                             }
                         ) }}
                     {% endblock sidebar %}
 
                     {% block content %}
-                        {% if entity.documents.empty %}
+                        {% if teamstorage.documents.empty %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
                                 {{ 'kiboko.dam.documentnode.empty_node'|trans }}
@@ -136,7 +136,7 @@
                         {% else %}
                         <div class="category-data">
                             <div class="tree-empty-content scrollable-container">
-                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', { parent: entity.uuid }) }}
+                               {{  dataGrid.renderGrid('kiboko-dam-documents-grid', { parent: teamstorage.uuid }) }}
                             </div>
                         </div>
                         {% endif %}

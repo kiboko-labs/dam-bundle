@@ -95,7 +95,7 @@ final class DocumentNodeController extends Controller
         }
 
         return [
-            'entity' => $node,
+            'teamstorage' => $node,
             'path' => $path,
             'tree' => $this->treeHandler->createTree($node),
         ];
@@ -134,7 +134,7 @@ final class DocumentNodeController extends Controller
      *      class="KibokoDAMBundle:DocumentNode",
      *      permission="VIEW"
      * )
-     * @Template()
+     * @Template("@KibokoDAM/DocumentNode/browse.html.twig")
      */
     public function browseToNodeAction(TeamStorageNode $teamStorageNode, DocumentNode $node)
     {

@@ -18,17 +18,6 @@ define(function (require) {
      */
     TreeManageView = BaseTreeManageView.extend({
 
-        formatUuuid: function (chain) {
-            return chain.substr(5).replace(/_/g, '-');
-        },
-
-        /**
-         * @inheritDoc
-         */
-        constructor: function TreeManageView() {
-            TreeManageView.__super__.constructor.apply(this, arguments);
-        },
-
         treeEvents: {
             'create_node.jstree': 'onNodeCreate',
             'rename_node.jstree': 'onNodeNameChange',
@@ -39,19 +28,40 @@ define(function (require) {
             'ready.jstree': 'onTreeLoaded',
         },
 
-        onTreeLoaded: function (e,data) {
+        /**
+         * @inheritDoc
+         */
+        constructor: function TreeManageView() {
+            TreeManageView.__super__.constructor.apply(this, arguments);
+        },
+
+        formatUuuid: function (chain) {
+            return chain.substr(5).replace(/_/g, '-');
+        },
+
+        onTreeLoaded: function (e, data) {
             var url = window.location.pathname;
             var regex = /(?<=browse\/).*$/g;
-            var nodeUuid = url.match(regex).toString();
-            console.log(dataUrl);
-            var str = 'node_';
+            if(url.match(regex)) {
+                url = url.match(regex);
+                var nodeUuid = url.toString();
+                var buttonUuid = nodeUuid;
 
-                if(nodeUuid) {
+            }
 
-                    var dataUrl = $(".upload_button_widget").attr('data-url');
-                    $(".upload_button_widget").attr('data-url',dataUrl.replace(/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/
-                        ,nodeUuid ));
-                    nodeUuid = nodeUuid.replace(/-/g, '_');
+            if (nodeUuid) {
+
+                $("div[class='grid-views']").ready(function(){
+                    mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', buttonUuid);
+                    mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
+                });
+
+                var str = 'node_';
+                var uploadWidget = $(".upload_button_widget");
+                var dataUrl = uploadWidget.attr('data-url');
+                var regexUuid = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
+                uploadWidget.attr('data-url', dataUrl.replace(regexUuid, nodeUuid));
+                nodeUuid = nodeUuid.replace(/-/g, '_');
                 nodeUuid = str.concat('', nodeUuid);
                 this.jsTreeInstance._open_to(nodeUuid);
                 this.jsTreeInstance.select_node(nodeUuid);
@@ -65,8 +75,6 @@ define(function (require) {
          * @param {Object} data
          */
         onDragStop: function (e, data) {
-
-            console.log('salut');
 
         },
         /**
@@ -98,6 +106,7 @@ define(function (require) {
             var newUrl = 'browse/';
             newUrl += this.formatUuuid(data.node.id);
             window.history.pushState("", "", url.replace(regex,newUrl));
+
             mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', this.formatUuuid(data.node.original.id));
             mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
         },
