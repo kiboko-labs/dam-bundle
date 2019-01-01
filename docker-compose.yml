@@ -18,30 +18,34 @@ services:
     restart: on-failure
 
   fpm:
+    image: kiboko/php:7.1-fpm-oroplatform-prod
     build:
-      context: .docker/php@7.1/fpm/dev
+      context: .docker/php@7.1/fpm/prod
     user: docker:docker
     volumes:
       - ./:/var/www/html
     restart: on-failure
 
   ws:
+    image: kiboko/php:7.1-cli-oroplatform-prod
     build:
-      context: .docker/php@7.1/cli
+      context: .docker/php@7.1/cli/prod
     user: docker:docker
     volumes:
       - ./:/var/www/html
     restart: on-failure
 
   mq:
+    image: kiboko/php:7.1-cli-oroplatform-prod
     build:
-      context: .docker/php@7.1/cli
+      context: .docker/php@7.1/cli/prod
     user: docker:docker
     volumes:
       - ./:/var/www/html
     restart: on-failure
 
   cli:
+    image: kiboko/php:7.1-cli-oroplatform-prod
     build:
       context: .docker/php@7.1/cli/prod
     user: docker:docker
