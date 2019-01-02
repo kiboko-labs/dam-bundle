@@ -122,6 +122,7 @@ datagrids:
                     - file.id AS fileId
                     - file.filename AS fileName
                     - owner.username
+                    - document.id AS id
                     - document.uuid AS uuid
                 from:
                     - { table: KibokoDAMBundle:Document, alias: document }
@@ -140,6 +141,7 @@ datagrids:
                     default: null
                     type: string
         properties:
+            id: ~
             name:
                 type: localized_value
                 data_name: names
@@ -156,6 +158,11 @@ datagrids:
                 route: kiboko_dam_document_update
                 params:
                      - uuid
+#            delete_link:
+#                type: url
+#                route: kiboko_api_delete_document
+#                params:
+#                    - id
         actions:
             view:
                 acl_resource:  kiboko_dam_document_view
@@ -171,13 +178,13 @@ datagrids:
                 link:          update_link
                 icon:          edit
                 rowAction:     true
-    #          delete:
-    #              acl_resource:  kiboko_api_delete_project
-    #              type:          delete
-    #              label:         oro.grid.action.delete
-    #              link:          delete_link
-    #              icon:          trash
-    #              rowAction:     true
+            delete:
+                acl_resource:  kiboko_api_delete_document
+                type:          delete
+                label:         oro.grid.action.delete
+                link:          delete_link
+                icon:          trash
+                rowAction:     true
         columns:
             name:
                 label: kiboko.dam.document.datagrid.columns.name.label

@@ -99,3 +99,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.kiboko-dam-documents-grid, method: onBuildBefore }
 
+    kiboko_dam.document_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - Kiboko\Bundle\DAMBundle\Entity\Document
+            - '@doctrine.orm.entity_manager'
+

@@ -1,3 +1,4 @@
 config:
     paths:
         'kibokodam/js/app/views/tree-manage-view': 'bundles/kibokodam/js/app/views/tree-manage-view.js'
+        'kibokodam/js/app/views/drag-and-drop': 'bundles/kibokodam/js/app/views/drag-and-drop.js'
