@@ -45,22 +45,24 @@ define(function (require) {
             if(url.match(regex)) {
                 url = url.match(regex);
                 var nodeUuid = url.toString();
-                var buttonUuid = nodeUuid;
 
             }
 
             if (nodeUuid) {
 
                 $("div[class='grid-views']").ready(function(){
-                    mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', buttonUuid);
+                    mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', nodeUuid);
                     mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
                 });
 
                 var str = 'node_';
                 var uploadWidget = $(".upload_button_widget");
+                var createNodeWidget = $('.pull-right a');
+                var hrefNodeCreate = createNodeWidget.attr("href");
                 var dataUrl = uploadWidget.attr('data-url');
                 var regexUuid = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
                 uploadWidget.attr('data-url', dataUrl.replace(regexUuid, nodeUuid));
+                createNodeWidget.attr('href',hrefNodeCreate.replace(regexUuid,nodeUuid));
                 nodeUuid = nodeUuid.replace(/-/g, '_');
                 nodeUuid = str.concat('', nodeUuid);
                 this.jsTreeInstance._open_to(nodeUuid);

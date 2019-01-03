@@ -1,3 +1,5 @@
+parameters:
+    kiboko_dam.event_listener.document_filesize_formatter: Kiboko\Bundle\DAMBundle\EventListener\DocumentDatagridListener
 services:
     kiboko_dam.form.type.document:
         class: Kiboko\Bundle\DAMBundle\Form\Type\DocumentType

@@ -4,6 +4,7 @@ namespace Kiboko\Bundle\DAMBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;

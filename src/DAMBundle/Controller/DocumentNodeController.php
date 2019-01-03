@@ -6,6 +6,7 @@ use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
 use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Kiboko\Bundle\DAMBundle\Provider\NodeProvider;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -157,9 +158,11 @@ final class DocumentNodeController extends Controller
      * @param Request $request
      *
      * @param DocumentNodeInterface $parent
+     * @param DocumentNodeInterface $root
      * @return array|Response
      *
-     * @Route("/{uuid}/create",
+     *
+     * @Route("/{uuid}/create/{root}",
      *     name="kiboko_dam_node_create",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
@@ -167,6 +170,13 @@ final class DocumentNodeController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {"uuid": "uuid"},
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @ParamConverter("root",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {"root": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -178,21 +188,22 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("KibokoDAMBundle:DocumentNode:update.html.twig")
      */
-    public function createAction(Request $request, DocumentNodeInterface $parent)
+    public function createAction(Request $request, DocumentNodeInterface $parent,DocumentNodeInterface $root)
     {
         $node = new DocumentNode();
         $node->setParent($parent);
 
-        return $this->update($request, $node);
+        return $this->update($request, $node,$root);
     }
 
     /**
-     * @param Request               $request
-     * @param DocumentNodeInterface $node
      *
+     * @param Request $request
+     * @param DocumentNodeInterface $node
+     * @param DocumentNodeInterface|null $root
      * @return array|Response
      *
-     * @Route("/{uuid}/update",
+     * @Route("/{root}/update/{uuid}",
      *     name="kiboko_dam_node_update",
      *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
@@ -200,6 +211,15 @@ final class DocumentNodeController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {"uuid": "uuid"},
+     *         "map_method_signature" = true,
+     *     }
+     *)
+     * @ParamConverter("root",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {
+     *             "root": "uuid",
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )
@@ -211,24 +231,27 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("KibokoDAMBundle:DocumentNode:update.html.twig")
      */
-    public function editAction(Request $request, DocumentNodeInterface $node)
+    public function editAction(Request $request,DocumentNodeInterface $node,  DocumentNodeInterface $root = null)
     {
-        return $this->update($request, $node);
+        return $this->update($request,$node,$root);
     }
 
     /**
-     * @param Request               $request
+     * @param Request $request
+     * @param DocumentNodeInterface $root
      * @param DocumentNodeInterface $node
      *
      * @return array|Response
      */
-    private function update(Request $request, DocumentNodeInterface $node)
+    private function update(Request $request,DocumentNodeInterface $node, DocumentNodeInterface $root = null)
     {
         return $this->handler->update(
             $node,
             $this->form,
             $this->translator->trans('kiboko.dam.documentnode.updated.label'),
-            $request
+            $request,
+            null,
+            new NodeProvider($root, $node, $this->form, $request)
         );
     }
 }
