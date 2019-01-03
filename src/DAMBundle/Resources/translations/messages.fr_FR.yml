@@ -44,6 +44,14 @@ kiboko:
                                 label: Propriétaire
                             thumbnail:
                                 label: Vignette
+                            extension:
+                                label: Extension
+                            filesize:
+                                label: Taille
+                            createdat:
+                                label: Créer le
+                            updatedat:
+                                label: Mis à jour le
                     upload:
                         ok:
                             label: 'Document téléversé'

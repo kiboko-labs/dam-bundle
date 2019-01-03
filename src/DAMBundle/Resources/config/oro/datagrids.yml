@@ -121,9 +121,14 @@ datagrids:
                 select:
                     - file.id AS fileId
                     - file.filename AS fileName
-                    - owner.username
+                    - owner.username AS ownerName
                     - document.id AS id
                     - document.uuid AS uuid
+                    - node.uuid AS parentUuid
+                    - file.extension AS extension
+                    - file.fileSize
+                    - file.createdAt AS createdAt
+                    - file.updatedAt AS updatedAt
                 from:
                     - { table: KibokoDAMBundle:Document, alias: document }
                 join:
@@ -145,9 +150,6 @@ datagrids:
             name:
                 type: localized_value
                 data_name: names
-            slug:
-                type: localized_value
-                data_name: slugs
             view_link:
                 type:  url
                 route: kiboko_dam_document_view
@@ -158,11 +160,11 @@ datagrids:
                 route: kiboko_dam_document_update
                 params:
                      - uuid
-#            delete_link:
-#                type: url
-#                route: kiboko_api_delete_document
-#                params:
-#                    - id
+            delete_link:
+                type: url
+                route: kiboko_api_delete_document
+                params:
+                    document: id
         actions:
             view:
                 acl_resource:  kiboko_dam_document_view
@@ -189,9 +191,20 @@ datagrids:
             name:
                 label: kiboko.dam.document.datagrid.columns.name.label
                 data_name: name
-            slug:
-                label: kiboko.dam.document.datagrid.columns.slug.label
-                data_name: slug
+            extension:
+                label: kiboko.dam.document.datagrid.columns.extension.label
+                data_name: extension
+            filesize:
+                label: kiboko.dam.document.datagrid.columns.filesize.label
+                data_name: fileSize
+            updatedat:
+                label: kiboko.dam.document.datagrid.columns.updatedat.label
+                data_name: updatedAt
+                frontend_type: datetime
+            createdat:
+                label: kiboko.dam.document.datagrid.columns.createdat.label
+                data_name: createdAt
+                frontend_type: datetime
             filename:
                 label: kiboko.dam.document.datagrid.columns.thumbnail.label
                 data_name: filename
@@ -200,18 +213,14 @@ datagrids:
                 template: KibokoDAMBundle:Document:Datagrid/Property/thumbnail.html.twig
             owner:
               label: kiboko.dam.document.datagrid.columns.owner.label
-              data_name: owner
+              data_name: ownerName
         sorters:
             columns:
                 name:
                     data_name: name
-                slug:
-                    data_name: slug
         filters:
             columns:
                 name:
                     type: string
                     data_name: name
-                slug:
-                    type: string
-                    data_name: slug
+
