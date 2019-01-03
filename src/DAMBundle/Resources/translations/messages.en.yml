@@ -72,6 +72,8 @@ kiboko:
                         label: 'Cancel'
                     save:
                         label: 'Save'
+                    general:
+                        label: General
             teamstorage:
                 index:
                     entity:

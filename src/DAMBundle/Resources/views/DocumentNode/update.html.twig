@@ -16,7 +16,7 @@
 
     {% set html = UI.saveAndCloseButton({
         'route': 'kiboko_dam_node_browse',
-        'params': {'uuid': root.uuid}
+        'params': {uuid: root.uuid}
     }) %}
 
     {{ UI.dropdownSaveButton({'html': html}) }}
@@ -28,18 +28,17 @@
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dam_index'),
-            'indexLabel': 'Team Storage'|trans,
+            'indexLabel': 'kiboko.dam.documentnode.entity_label'|trans,
             'entityTitle': node.names|localized_value
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'Team Storage'|trans }) %}
+        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }) %}
         {{ include('OroUIBundle::page_title_block.html.twig', { title: title }) }}
     {% endif %}
 {% endblock pageHeader %}
 
 {% block content_data %}
-
     {% set id = 'document-node-edit' %}
     {% set dataBlocks = [{
         'title': 'General'|trans,

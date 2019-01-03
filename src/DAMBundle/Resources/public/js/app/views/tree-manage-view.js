@@ -28,45 +28,86 @@ define(function (require) {
             'ready.jstree': 'onTreeLoaded',
         },
 
+        uploadWidget: null,
+        createNodeWidget: null,
+
         /**
          * @inheritDoc
          */
         constructor: function TreeManageView() {
             TreeManageView.__super__.constructor.apply(this, arguments);
+            this.uploadWidget = $(".upload_button_widget");
+            this.createNodeWidget = $('.pull-right a');
         },
 
+        /**
+         * Format uuid
+         * @param chain
+         * @returns {*}
+         */
         formatUuuid: function (chain) {
             return chain.substr(5).replace(/_/g, '-');
         },
 
-        onTreeLoaded: function (e, data) {
-            var url = window.location.pathname;
-            var regex = /(?<=browse\/).*$/g;
-            if(url.match(regex)) {
-                url = url.match(regex);
-                var nodeUuid = url.toString();
+        /**
+         * Refresh document datagrid at uuid node provided
+         * @param nodeUuid
+         */
+        reloadDocumentGrid: function (nodeUuid) {
 
+            $("div[class='grid-views']").ready(function(){
+                mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', nodeUuid);
+                mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
+            });
+        },
+
+        /**
+         * Refresh JsTree selection at uuid provided
+         * @param nodeUuid
+         */
+        refreshJsTree: function (nodeUuid) {
+
+            var str = 'node_';
+            nodeUuid = nodeUuid.replace(/-/g, '_');
+            nodeUuid = str.concat('', nodeUuid);
+            this.jsTreeInstance._open_to(nodeUuid);
+            this.jsTreeInstance.select_node(nodeUuid);
+        },
+
+        /**
+         * Refresh buttons route with uuid provided
+         * @param nodeUuid
+         */
+        refreshButtonsRoute: function (nodeUuid) {
+
+            var hrefNodeCreate = this.createNodeWidget.attr("href");
+            var dataUrl = this.uploadWidget.attr('data-url');
+            var regexUuid = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
+            this.uploadWidget.attr('data-url', dataUrl.replace(regexUuid, nodeUuid));
+            var regexUuid2 = /(?<=create\/).*$/;
+
+            this.createNodeWidget.attr('href',hrefNodeCreate.replace(regexUuid2,nodeUuid));
+        },
+
+        /**
+         * Update document grid, buttons route and tree position after page reload
+         * @param event
+         * @param data
+         */
+        onTreeLoaded: function (event, data) {
+
+            var path = window.location.pathname;
+            var regexChildUuid = /(?<=browse\/).*$/g;
+            if(path.match(regexChildUuid)) {
+                var nodeUuid = path.match(regexChildUuid).toString();
             }
 
             if (nodeUuid) {
 
-                $("div[class='grid-views']").ready(function(){
-                    mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', nodeUuid);
-                    mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
-                });
+                this.reloadDocumentGrid(nodeUuid);
+                this.refreshButtonsRoute(nodeUuid);
+                this.refreshJsTree(nodeUuid);
 
-                var str = 'node_';
-                var uploadWidget = $(".upload_button_widget");
-                var createNodeWidget = $('.pull-right a');
-                var hrefNodeCreate = createNodeWidget.attr("href");
-                var dataUrl = uploadWidget.attr('data-url');
-                var regexUuid = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
-                uploadWidget.attr('data-url', dataUrl.replace(regexUuid, nodeUuid));
-                createNodeWidget.attr('href',hrefNodeCreate.replace(regexUuid,nodeUuid));
-                nodeUuid = nodeUuid.replace(/-/g, '_');
-                nodeUuid = str.concat('', nodeUuid);
-                this.jsTreeInstance._open_to(nodeUuid);
-                this.jsTreeInstance.select_node(nodeUuid);
             }
         },
 
@@ -79,6 +120,7 @@ define(function (require) {
         onDragStop: function (e, data) {
 
         },
+
         /**
          * Triggers after node deleted in tree
          *
@@ -103,14 +145,17 @@ define(function (require) {
          * @param {Object} data
          */
         onNodeOpen: function (e, data) {
+
+
             var url = window.location.pathname;
             var regex = /browse(.*)/g;
             var newUrl = 'browse/';
             newUrl += this.formatUuuid(data.node.id);
             window.history.pushState("", "", url.replace(regex,newUrl));
 
-            mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', this.formatUuuid(data.node.original.id));
-            mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
+
+            this.reloadDocumentGrid(this.formatUuuid(data.node.id));
+            this.refreshButtonsRoute(this.formatUuuid(data.node.id));
         },
         /**
          * Triggers after node deleted in tree
@@ -144,6 +189,7 @@ define(function (require) {
             }
 
         },
+
         /**
          * Triggers after node change name
          *
@@ -167,6 +213,7 @@ define(function (require) {
                 }
             }
         },
+
         /**
          * Triggers after node change creation
          *
