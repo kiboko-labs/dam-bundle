@@ -150,7 +150,7 @@ final class DocumentNodeController extends Controller
             'teamstorage' => $teamStorageNode,
             'node' => $node,
             'path' => $path,
-            'tree' => $this->treeHandler->createTree($teamStorageNode),
+            'tree' => $this->treeHandler->createTree($teamStorageNode, $node),
         ];
     }
 

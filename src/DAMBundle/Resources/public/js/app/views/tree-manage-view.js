@@ -62,31 +62,15 @@ define(function (require) {
         },
 
         /**
-         * Refresh JsTree selection at uuid provided
-         * @param nodeUuid
-         */
-        refreshJsTree: function (nodeUuid) {
-
-            var str = 'node_';
-            nodeUuid = nodeUuid.replace(/-/g, '_');
-            nodeUuid = str.concat('', nodeUuid);
-            this.jsTreeInstance._open_to(nodeUuid);
-            this.jsTreeInstance.select_node(nodeUuid);
-        },
-
-        /**
          * Refresh buttons route with uuid provided
          * @param nodeUuid
          */
         refreshButtonsRoute: function (nodeUuid) {
 
-            var hrefNodeCreate = this.createNodeWidget.attr("href");
-            var dataUrl = this.uploadWidget.attr('data-url');
-            var regexUuid = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
-            this.uploadWidget.attr('data-url', dataUrl.replace(regexUuid, nodeUuid));
-            var regexUuid2 = /(?<=create\/).*$/;
-
-            this.createNodeWidget.attr('href',hrefNodeCreate.replace(regexUuid2,nodeUuid));
+            this.createNodeWidget.attr('href', routing.generate('kiboko_dam_node_create', {
+                'uuid': nodeUuid,
+                'root': null
+            }));
         },
 
         /**
@@ -106,7 +90,6 @@ define(function (require) {
 
                 this.reloadDocumentGrid(nodeUuid);
                 this.refreshButtonsRoute(nodeUuid);
-                this.refreshJsTree(nodeUuid);
 
             }
         },

@@ -53,9 +53,10 @@ class DocumentNodeUpdateTreeHandler
     /**
      * @param TeamStorageNode $root
      *
+     * @param DocumentNodeInterface $node
      * @return array
      */
-    public function createTree(TeamStorageNode $root): array
+    public function createTree(TeamStorageNode $root, DocumentNodeInterface $node = null): array
     {
         if ($root === null) {
             return [];
@@ -63,7 +64,7 @@ class DocumentNodeUpdateTreeHandler
 
         $tree = $this->getNodes($root);
 
-        return $this->formatTree($tree, $root);
+        return $this->formatTree($tree, $root, $node);
     }
 
     /**
@@ -86,16 +87,22 @@ class DocumentNodeUpdateTreeHandler
 
     /**
      * @param DocumentNodeInterface[] $entities
-     * @param DocumentNodeInterface   $root
+     * @param DocumentNodeInterface $root
      *
+     * @param DocumentNodeInterface $node
      * @return array
      */
-    private function formatTree(array $entities, DocumentNodeInterface $root)
+    private function formatTree(array $entities, DocumentNodeInterface $root, DocumentNodeInterface $node = null)
     {
         $formattedTree = [];
-
+        $uuidOpenedNode = null;
         foreach ($entities as $entity) {
-            $node = $this->formatEntity($root, $entity);
+            if( $entity === $node){
+                $node = $this->formatEntity($root, $entity, true);
+            }
+            else {
+                $node = $this->formatEntity($root, $entity);
+            }
 
             $formattedTree[] = $node;
         }
@@ -139,6 +146,7 @@ class DocumentNodeUpdateTreeHandler
             'state' => [
                 'opened' => $isOpened,
                 'disabled' => false,
+                'selected' => $isOpened,
             ],
             //'li_attr' => !$entity->isDisplayed() ? ['class' => 'hidden'] : []
         ];
@@ -147,11 +155,12 @@ class DocumentNodeUpdateTreeHandler
     /**
      * @param DocumentNodeInterface|null $root
      *
+     * @param DocumentNodeInterface|null $node
      * @return TreeItem[]
      */
-    public function getTreeItemList(DocumentNodeInterface $root = null)
+    public function getTreeItemList(DocumentNodeInterface $root = null, DocumentNodeInterface $node = null)
     {
-        $nodes = $this->createTree($root);
+        $nodes = $this->createTree($root,$node);
 
         $items = [];
 
