@@ -106,35 +106,37 @@ class DocumentNodeTreeAjaxController extends Controller
      *
      * {@inheritdoc}
      */
-        public function renameAction(Request $request, DocumentNodeInterface $node)
-        {
-            $newName = $request->get('newName');
+    public function renameAction(Request $request, DocumentNodeInterface $node)
+    {
+        $newName = $request->get('newName');
 
-            /** @var DocumentNode $oldNode */
+        /** @var DocumentNode $oldNode */
 
-            $oldName = $node->getLocaleName($this->localizationHelper);
-            $oldName->setString($newName);
+        $oldName = $node->getLocaleName($this->localizationHelper);
+        $oldName->setString($newName);
 
-            $collection = new ArrayCollection();
-            $collection->add($oldName);
+        $collection = new ArrayCollection();
+        $collection->add($oldName);
 
-            $node->setNames($collection);
+        $node->setNames($collection);
 
-            try {
-                $this->em->persist($node);
-                $this->em->flush();
-            }
-            catch (ORMException $e) {
-                return new JsonResponse($e->getMessage(),500);
-            }
-
-            return new JsonResponse('renamed',200);
+        try {
+            $this->em->persist($node);
+            $this->em->flush();
         }
+        catch (ORMException $e) {
+            return new JsonResponse($e->getMessage(),500);
+        }
+
+        return new JsonResponse('renamed',200);
+    }
 
      /**
      * @Route("/create/{uuid}",
      *     name="kiboko_dam_document_node_tree_ajax_create",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={
+     *         "uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
      *     options={
      *         "expose"=true,
      *     },
@@ -152,11 +154,11 @@ class DocumentNodeTreeAjaxController extends Controller
      *
      * {@inheritdoc}
      */
-        public function createNodeAction(Request $request, DocumentNodeInterface $node)
-        {
-            $name= $request->get('name');
-            return $this->handler->createNode($node,$name);
-        }
+    public function createNodeAction(Request $request, DocumentNodeInterface $node)
+    {
+        $name = $request->get('name');
+        return $this->handler->createNode($node, $name);
+    }
 
     /**
      * @Route("/move/{uuid}/to/{uuidParent}",

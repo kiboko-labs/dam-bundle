@@ -31,11 +31,14 @@ define(function (require) {
         uploadWidget: null,
         createNodeWidget: null,
 
+        rootUuid: null,
+
         /**
          * @inheritDoc
          */
         constructor: function TreeManageView() {
             TreeManageView.__super__.constructor.apply(this, arguments);
+            this.rootUuid = arguments[0].menu;
             this.uploadWidget = $(".upload_button_widget");
             this.createNodeWidget = $('.pull-right a');
         },
@@ -69,8 +72,9 @@ define(function (require) {
 
             this.createNodeWidget.attr('href', routing.generate('kiboko_dam_node_create', {
                 'uuid': nodeUuid,
-                'root': null
+                'root': this.rootUuid
             }));
+
         },
 
         /**
@@ -120,6 +124,9 @@ define(function (require) {
                 type: 'DELETE',
                 url: url
             });
+            // Todo: update url correclty
+         //   window.history.pushState("object or string", "Title", "/new-url");
+
         },
         /**
          * Triggers after node is opened
@@ -128,7 +135,6 @@ define(function (require) {
          * @param {Object} data
          */
         onNodeOpen: function (e, data) {
-
 
             var url = window.location.pathname;
             var regex = /browse(.*)/g;
@@ -210,7 +216,6 @@ define(function (require) {
             if (data.node.original.uuid !== '') {
                 var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {uuid: this.formatUuuid(parent)});
                 $.ajax({
-                    async: true,
                     type: 'POST',
                     data: {
                         'name': name,
@@ -320,17 +325,7 @@ define(function (require) {
                             "seperator_after": false,
                             "label": _.__('kiboko.dam.js.jstree.contextmenu.newfolder.label'),
                             action: function (data) {
-                                var inst = $.jstree.reference(data.reference),
-                                    obj = inst.get_node(data.reference);
-                                inst.create_node(obj, {}, "last", function (new_node) {
-                                    try {
-                                        inst.edit(new_node);
-                                    } catch (ex) {
-                                        setTimeout(function () {
-                                            inst.edit(new_node);
-                                        }, 0);
-                                    }
-                                });
+                                tree.create_node($node, { text: _.__('kiboko.dam.js.jstree.contextmenu.newfolder.label'), type: 'default' });
                                 tree.deselect_all();
                                 tree.select_node($node);
                             }

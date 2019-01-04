@@ -164,7 +164,13 @@ final class DocumentNodeController extends Controller
      *
      * @Route("/{root}/create/{uuid}",
      *     name="kiboko_dam_node_create",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={
+     *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *         "uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
+     *     options={
+     *         "expose"=true,
+     *     }
      * )
      * @ParamConverter("parent",
      *     class="KibokoDAMBundle:DocumentNode",
