@@ -307,6 +307,14 @@ class DocumentNode implements DocumentNodeInterface,
     }
 
     /**
+     * @return DocumentNodeInterface
+     */
+    public function getRoot(): DocumentNodeInterface
+    {
+        return $this->root;
+    }
+
+    /**
      * @return UserInterface
      */
     public function getOwner(): ?UserInterface
