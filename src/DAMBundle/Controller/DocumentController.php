@@ -90,7 +90,9 @@ final class DocumentController extends Controller
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"node": "uuid"},
+     *         "mapping": {
+     *             "node": "uuid"
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )

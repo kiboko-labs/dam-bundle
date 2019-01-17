@@ -62,57 +62,21 @@ final class DocumentNodeController extends Controller
     }
 
     /**
-     * @param TeamStorageNode $node
-     *
-     * @return array|Response
-     *
-     * @Route("/{node}/browse",
-     *     name="kiboko_dam_node_browse",
-     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
-     * )
-     * @ParamConverter("node",
-     *     class="KibokoDAMBundle:TeamStorageNode",
-     *     options={
-     *         "mapping": {
-     *             "node": "uuid",
-     *         },
-     *         "map_method_signature" = true,
-     *     }
-     * )
-     * @Acl(
-     *      id="kiboko_dam_node_view",
-     *      type="entity",
-     *      class="KibokoDAMBundle:DocumentNode",
-     *      permission="VIEW"
-     * )
-     * @Template()
-     */
-    public function browseAction(TeamStorageNode $node)
-    {
-        $path = [];
-        $parent = $node;
-        while (($parent = $parent->getParent()) !== null) {
-            $path[] = $parent;
-        }
-
-        return [
-            'teamstorage' => $node,
-            'path' => $path,
-            'tree' => $this->treeHandler->createTree($node),
-        ];
-    }
-
-    /**
      * @param TeamStorageNode $root
      * @param DocumentNode $node
      *
      * @return array|Response
-     *
      * @Route("/{root}/browse/{node}",
-     *     name="kiboko_dam_node_browse_to_node",
+     *     name="kiboko_dam_node_browse",
      *     requirements={
      *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
      *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     }
+     * )
+     * @Route("/{root}/browse",
+     *     name="kiboko_dam_root_browse",
+     *     requirements={
+     *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
      *     }
      * )
      * @ParamConverter("root",
@@ -141,7 +105,7 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("@KibokoDAM/DocumentNode/browse.html.twig")
      */
-    public function browseToNodeAction(TeamStorageNode $root, DocumentNode $node)
+    public function browseAction(TeamStorageNode $root, ?DocumentNode $node = null)
     {
         $path = [];
         $parent = $root;
@@ -178,14 +142,18 @@ final class DocumentNodeController extends Controller
      * @ParamConverter("root",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"root": "uuid"},
+     *         "mapping": {
+     *             "root": "uuid"
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )
      * @ParamConverter("parent",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"parent": "uuid"},
+     *         "mapping": {
+     *             "parent": "uuid"
+     *         },
      *         "map_method_signature" = true,
      *     }
      * )

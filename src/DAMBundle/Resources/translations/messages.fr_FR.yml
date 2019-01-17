@@ -1,60 +1,60 @@
 kiboko:
     dam:
         teamstoragenode:
-            entity_label: Stockage d'équipe
-            entity_plural_label: Stockages d'équipe
+            entity_label: "Stockage d'équipe"
+            entity_plural_label: "Stockages d'équipe"
             owner:
-                label: Propriétaire
+                label: "Propriétaire"
             message:
-                success: Le stockage d'équipe a bien été déclaré
+                success: "Le stockage d'équipe a bien été déclaré"
 
         documentnode:
-            entity_label: Dossier
-            create_label: 'Créer un %entityName%'
-            entity_plural_label: Dossiers
-            reset: Reset
-            empty_node: Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots.
-                datagrid:
-                    columns:
-                        name:
-                            label: Nom
-                        slug:
-                            label: Url slug
-                        integration:
-                            label: Integration
-                create_label: Créer un dossier
-                divider_created: Diviseur
-                updated:
-                    label: 'Document mis à jour'
-                owner:
-                    label: Propriétaire
-                document:
+            entity_label: "Dossier"
+            create_label: "Créer un %entityName%"
+            entity_plural_label: "Dossiers"
+            reset: "Reset"
+            empty_node: "Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots."
+            datagrid:
+                columns:
+                    name:
+                        label: "Nom"
+                    slug:
+                        label: "Url slug"
+                    integration:
+                        label: "Integration"
+            create_label: "Créer un dossier"
+            divider_created: "Diviseur"
+            updated:
+                label: "Document mis à jour"
+            owner:
+                label: "Propriétaire"
+        document:
+            owner:
+                label: "Propriétaire"
+            entity_label: "Ressource"
+            create_label: "Téléverser"
+            entity_plural_label: "Ressource"
+            datagrid:
+                columns:
+                    name:
+                        label: "Nom"
+                    slug:
+                        label: "Url slug"
                     owner:
-                        label: Propriétaire
-                    entity_label: Ressource
-                    create_label: Téléverser
-                    entity_plural_label: Ressource
-                    datagrid:
-                        columns:
-                            name:
-                                label: Nom
-                            slug:
-                                label: Url slug
-                            owner:
-                                label: Propriétaire
-                            thumbnail:
-                                label: Vignette
-                            extension:
-                                label: Extension
-                            filesize:
-                                label: Taille
-                            createdat:
-                                label: Créer le
-                            updatedat:
-                                label: Mis à jour le
-                    upload:
-                        ok:
-                            label: 'Document téléversé'
+                        label: "Propriétaire"
+                    thumbnail:
+                        label: "Vignette"
+                    extension:
+                        label: "Extension"
+                    filesize:
+                        label: "Taille"
+                    createdat:
+                        label: "Créer le"
+                    updatedat:
+                        label: "Mis à jour le"
+            upload:
+                ok:
+                    label: "Document téléversé"
 
         updload: 'Envoyer un %entityName%'
         updload_batch: 'Envoyer des %entityName% par lot'

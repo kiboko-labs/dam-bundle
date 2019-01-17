@@ -241,12 +241,12 @@ define(function (require) {
             let url;
             if (this.onRootSelectRoute && selected.node.parent === '#') {
                 url = routing.generate(this.onRootSelectRoute, {
-                    storage: selected.node.original.storage,
+                    root: selected.node.original.storage,
                     node: selected.node.original.uuid
                 });
             } else {
                 url = routing.generate(this.onSelectRoute, {
-                    storage: selected.node.original.storage,
+                    root: selected.node.original.storage,
                     node: selected.node.original.uuid
                 });
             }

@@ -49,6 +49,7 @@ datagrids:
             query:
                 select:
                     - node.uuid
+                    - node.root.uuid AS root
                     - name.string AS localeName
                     - slug.string AS localeSlug
                     - channel.name AS integration
@@ -70,6 +71,7 @@ datagrids:
                 type: url
                 route: kiboko_dam_node_browse
                 params:
+                    root: root
                     uuid: uuid
             update_link:
                 type: url
@@ -84,6 +86,7 @@ datagrids:
             query:
                 select:
                     - node.uuid
+                    - node.root.uuid AS root
                     - name.string AS localeName
                     - slug.string AS localeSlug
                 from:
@@ -105,6 +108,7 @@ datagrids:
                 type: url
                 route: kiboko_dam_node_browse
                 params:
+                    root: root
                     uuid: uuid
             update_link:
                 type: url

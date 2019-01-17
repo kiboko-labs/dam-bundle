@@ -13,9 +13,8 @@
     {{ UI.cancelButton(path('kiboko_dam_index')) }}
     {% set html = UI.saveAndCloseButton({
         'route': 'kiboko_dam_node_browse',
-        'params': { 'node': node.uuid }
+        'params': { 'root': node.root.uuid, 'node': node.uuid }
     }) %}
-
 
     {{ UI.dropdownSaveButton({'html': html}) }}
 
