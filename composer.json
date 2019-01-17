@@ -6,6 +6,7 @@
     "autoload": {
         "psr-4": {
             "": "src/",
+            "App\\": "src/",
             "Kiboko\\Bundle\\DAMBundle\\": "src/DAMBundle/",
             "Kiboko\\Bridge\\DAMAmazonBridge\\": "src/DAMAmazonBridge/",
             "Kiboko\\Bridge\\DAMAzureBridge\\": "src/DAMAzureBridge/",

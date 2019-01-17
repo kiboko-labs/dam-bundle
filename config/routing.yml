@@ -22,3 +22,11 @@ oro_auto_routing:
 oro_expose:
     resource: .
     type:     oro_expose
+
+#
+# ORO routes
+#
+kiboko_dam_front:
+    path: /index
+    defaults:
+        _controller: App\Controller\FrontendController::indexAction
