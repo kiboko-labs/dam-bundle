@@ -157,12 +157,12 @@ datagrids:
                 type:  url
                 route: kiboko_dam_document_view
                 params:
-                     - uuid
+                    node: uuid
             update_link:
                 type:  url
                 route: kiboko_dam_document_update
                 params:
-                     - uuid
+                    node: uuid
             delete_link:
                 type: url
                 route: kiboko_api_delete_document
