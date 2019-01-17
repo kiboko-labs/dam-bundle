@@ -19,12 +19,18 @@ services:
       - ./.docker/nginx@1.15/config/vhost-dev.conf:/etc/nginx/conf.d/100-default.conf
 
   fpm:
+    image: kiboko/php:7.1-fpm-oroplatform-dev
+    build:
+      context: .docker/php@7.1/fpm/dev
     volumes:
       - ./.docker/php@7.1/fpm/dev/config/pool.ini:/usr/local/etc/php/pool.d/default.ini:ro
       - ./.docker/php@7.1/fpm/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
       - ./.docker/php@7.1/fpm/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
 
   ws:
+    image: kiboko/php:7.1-cli-oroplatform-dev
+    build:
+      context: .docker/php@7.1/cli/dev
     command: ["bin/console", "gos:websocket:server", "--env=prod"]
     ports:
       - 8080:8080
@@ -33,12 +39,18 @@ services:
       - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
 
   mq:
+    image: kiboko/php:7.1-cli-oroplatform-dev
+    build:
+      context: .docker/php@7.1/cli/dev
     command: ["bin/console", "oro:message-queue:consume", "--env=prod", "-vv"]
     volumes:
       - ./.docker/php@7.1/cli/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
       - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
 
   cli:
+    image: kiboko/php:7.1-cli-oroplatform-dev
+    build:
+      context: .docker/php@7.1/cli/dev
     volumes:
       - ./.docker/php@7.1/cli/dev/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
       - ./.docker/php@7.1/cli/dev/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
