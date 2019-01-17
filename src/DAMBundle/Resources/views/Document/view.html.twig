@@ -6,7 +6,7 @@
 {% block navButtons %}
     {% if is_granted('EDIT', entity) %}
         {{ UI.editButton({
-            'path' : path('kiboko_dam_document_update', { 'uuid': entity.uuid }),
+            'path' : path('kiboko_dam_document_update', { 'node': entity.uuid }),
             'entity_label': 'kiboko.dam.document.entity_label'|trans
         }) }}
     {% endif %}

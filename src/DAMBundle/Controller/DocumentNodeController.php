@@ -63,17 +63,18 @@ final class DocumentNodeController extends Controller
 
     /**
      * @param TeamStorageNode $node
+     *
      * @return array|Response
      *
-     * @Route("/{uuid}/browse",
+     * @Route("/{node}/browse",
      *     name="kiboko_dam_node_browse",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -88,7 +89,6 @@ final class DocumentNodeController extends Controller
      */
     public function browseAction(TeamStorageNode $node)
     {
-
         $path = [];
         $parent = $node;
         while (($parent = $parent->getParent()) !== null) {
@@ -101,21 +101,25 @@ final class DocumentNodeController extends Controller
             'tree' => $this->treeHandler->createTree($node),
         ];
     }
+
     /**
-     * @param TeamStorageNode $teamStorageNode
+     * @param TeamStorageNode $root
      * @param DocumentNode $node
+     *
      * @return array|Response
      *
-     * @Route("/{uuid}/browse/{uuid2}",
+     * @Route("/{root}/browse/{node}",
      *     name="kiboko_dam_node_browse_to_node",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
-     *     "uuid2"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={
+     *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     }
      * )
-     * @ParamConverter("teamstoragenode",
+     * @ParamConverter("root",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "root": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -124,7 +128,7 @@ final class DocumentNodeController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {
-     *             "uuid2": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -137,20 +141,19 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("@KibokoDAM/DocumentNode/browse.html.twig")
      */
-    public function browseToNodeAction(TeamStorageNode $teamStorageNode, DocumentNode $node)
+    public function browseToNodeAction(TeamStorageNode $root, DocumentNode $node)
     {
-
         $path = [];
-        $parent = $teamStorageNode;
+        $parent = $root;
         while (($parent = $parent->getParent()) !== null) {
             $path[] = $parent;
         }
 
         return [
-            'teamstorage' => $teamStorageNode,
+            'teamstorage' => $root,
             'node' => $node,
             'path' => $path,
-            'tree' => $this->treeHandler->createTree($teamStorageNode, $node),
+            'tree' => $this->treeHandler->createTree($root, $node),
         ];
     }
 
@@ -159,30 +162,30 @@ final class DocumentNodeController extends Controller
      *
      * @param DocumentNodeInterface $parent
      * @param DocumentNodeInterface $root
+     *
      * @return array|Response
      *
-     *
-     * @Route("/{root}/create/{uuid}",
+     * @Route("/{root}/create/{parent}",
      *     name="kiboko_dam_node_create",
      *     requirements={
      *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
-     *         "uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *         "parent"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
      *     },
      *     options={
      *         "expose"=true,
-     *     }
-     * )
-     * @ParamConverter("parent",
-     *     class="KibokoDAMBundle:DocumentNode",
-     *     options={
-     *         "mapping": {"uuid": "uuid"},
-     *         "map_method_signature" = true,
      *     }
      * )
      * @ParamConverter("root",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {"root": "uuid"},
+     *         "map_method_signature" = true,
+     *     }
+     * )
+     * @ParamConverter("parent",
+     *     class="KibokoDAMBundle:DocumentNode",
+     *     options={
+     *         "mapping": {"parent": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -194,8 +197,11 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("KibokoDAMBundle:DocumentNode:update.html.twig")
      */
-    public function createAction(Request $request, DocumentNodeInterface $parent,DocumentNodeInterface $root)
-    {
+    public function createAction(
+        Request $request,
+        DocumentNodeInterface $root,
+        DocumentNodeInterface $parent
+    ) {
         $node = new DocumentNode();
         $node->setParent($parent);
 
@@ -203,23 +209,28 @@ final class DocumentNodeController extends Controller
     }
 
     /**
-     *
      * @param Request $request
      * @param DocumentNodeInterface $node
      * @param DocumentNodeInterface|null $root
+     *
      * @return array|Response
      *
-     * @Route("/{root}/update/{uuid}",
+     * @Route("/{root}/update/{node}",
      *     name="kiboko_dam_node_update",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={
+     *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *     }
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {
+     *             "node": "uuid"
+     *         },
      *         "map_method_signature" = true,
      *     }
-     *)
+     * )
      * @ParamConverter("root",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
@@ -237,9 +248,9 @@ final class DocumentNodeController extends Controller
      * )
      * @Template("KibokoDAMBundle:DocumentNode:update.html.twig")
      */
-    public function editAction(Request $request,DocumentNodeInterface $node,  DocumentNodeInterface $root = null)
+    public function editAction(Request $request, DocumentNodeInterface $node, DocumentNodeInterface $root = null)
     {
-        return $this->update($request,$node,$root);
+        return $this->update($request, $node, $root);
     }
 
     /**
@@ -249,7 +260,7 @@ final class DocumentNodeController extends Controller
      *
      * @return array|Response
      */
-    private function update(Request $request,DocumentNodeInterface $node, DocumentNodeInterface $root = null)
+    private function update(Request $request, DocumentNodeInterface $node, DocumentNodeInterface $root = null)
     {
         return $this->handler->update(
             $node,

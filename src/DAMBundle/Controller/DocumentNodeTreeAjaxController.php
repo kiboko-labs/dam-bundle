@@ -20,16 +20,21 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/node/tree", service="kiboko_dam.controller.document_node_tree_ajax_controller")
  */
-class DocumentNodeTreeAjaxController extends Controller
+final class DocumentNodeTreeAjaxController extends Controller
 {
-
-    /** @var EntityManager */
+    /**
+     * @var EntityManager
+     */
     private $em;
 
-    /** @var LocalizationHelper */
+    /**
+     * @var LocalizationHelper
+     */
     private $localizationHelper;
 
-    /** @var DocumentNodeUpdateTreeHandler */
+    /**
+     * @var DocumentNodeUpdateTreeHandler
+     */
     private $handler;
 
     /**
@@ -41,18 +46,18 @@ class DocumentNodeTreeAjaxController extends Controller
         EntityManager $em,
         LocalizationHelper $localizationHelper,
         DocumentNodeUpdateTreeHandler $handler
-
     ) {
         $this->em = $em;
         $this->localizationHelper = $localizationHelper;
         $this->handler = $handler;
     }
 
-
     /**
-     * @Route("/delete/{uuid}",
+     * @Route("/delete/{node}",
      *     name="kiboko_dam_document_node_tree_ajax_delete",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
      *     options={
      *         "expose"=true,
      *     },
@@ -61,7 +66,7 @@ class DocumentNodeTreeAjaxController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -75,20 +80,19 @@ class DocumentNodeTreeAjaxController extends Controller
         try {
             $this->em->remove($node);
             $this->em->flush();
-        }
-        catch (ORMException $e) {
+        } catch (ORMException $e) {
             return new JsonResponse($e->getMessage(),500);
-
         }
 
         return new JsonResponse('deleted',200);
-
     }
 
-     /**
-     * @Route("/rename/{uuid}",
+    /**
+     * @Route("/rename/{node}",
      *     name="kiboko_dam_document_node_tree_ajax_rename",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
      *     options={
      *         "expose"=true,
      *     },
@@ -97,7 +101,7 @@ class DocumentNodeTreeAjaxController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -123,19 +127,18 @@ class DocumentNodeTreeAjaxController extends Controller
         try {
             $this->em->persist($node);
             $this->em->flush();
-        }
-        catch (ORMException $e) {
+        } catch (ORMException $e) {
             return new JsonResponse($e->getMessage(),500);
         }
 
         return new JsonResponse('renamed',200);
     }
 
-     /**
-     * @Route("/create/{uuid}",
+    /**
+     * @Route("/create/{node}",
      *     name="kiboko_dam_document_node_tree_ajax_create",
      *     requirements={
-     *         "uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
      *     },
      *     options={
      *         "expose"=true,
@@ -156,14 +159,16 @@ class DocumentNodeTreeAjaxController extends Controller
      */
     public function createNodeAction(Request $request, DocumentNodeInterface $node)
     {
-        $name = $request->get('name');
-        return $this->handler->createNode($node, $name);
+        return $this->handler->createNode($node, $request->request->get('name'));
     }
 
     /**
-     * @Route("/move/{uuid}/to/{uuidParent}",
+     * @Route("/move/{node}/to/{parent}",
      *     name="kiboko_dam_document_node_tree_ajax_move",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *         "parent"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *     },
      *     options={
      *         "expose"=true,
      *     },
@@ -172,7 +177,7 @@ class DocumentNodeTreeAjaxController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -181,7 +186,7 @@ class DocumentNodeTreeAjaxController extends Controller
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
      *         "mapping": {
-     *             "uuidParent": "uuid",
+     *             "parent": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -190,10 +195,8 @@ class DocumentNodeTreeAjaxController extends Controller
      *
      * {@inheritdoc}
      */
-    public function moveAction(Request $request, MovableInterface $node,MovableInterface $newParent)
+    public function moveAction(MovableInterface $node, MovableInterface $newParent)
     {
-        return $this->handler->moveNode($node,$newParent);
-
+        return $this->handler->moveNode($node, $newParent);
     }
-
 }

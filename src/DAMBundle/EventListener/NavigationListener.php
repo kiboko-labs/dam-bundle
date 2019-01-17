@@ -105,7 +105,7 @@ final class NavigationListener
                     'label' => $storage->getLocaleName($this->localizationHelper)->getString(),
                     'route' => 'kiboko_dam_node_browse',
                     'routeParameters' => [
-                        'uuid' => $storage->getUuid()->toString(),
+                        'node' => $storage->getUuid()->toString(),
                     ],
                 ]
             );
@@ -158,7 +158,7 @@ final class NavigationListener
                             'label'           => $storageLabel,
                             'route'           => 'kiboko_dam_node_browse',
                             'routeParameters' => [
-                                'uuid' => $storageId,
+                                'node' => $storageId,
                             ],
                         ]
                     );
