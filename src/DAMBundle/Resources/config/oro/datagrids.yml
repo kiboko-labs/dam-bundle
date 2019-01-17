@@ -174,7 +174,7 @@ datagrids:
                 icon:          eye
                 rowAction:     true
             update:
-                acl_resource:  kiboko_project_update
+                acl_resource:  kiboko_dam_document_update
                 type:          navigate
                 label:         oro.grid.action.update
                 link:          update_link
