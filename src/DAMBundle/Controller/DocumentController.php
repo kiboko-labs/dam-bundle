@@ -4,8 +4,8 @@ namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\Document;
 use Kiboko\Bundle\DAMBundle\Form\Handler\DocumentHandler;
-use Kiboko\Bundle\DAMBundle\Form\Type\DocumentType;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,14 +24,19 @@ use Symfony\Component\Translation\TranslatorInterface;
 final class DocumentController extends Controller
 {
     /**
+     * @var DocumentHandler
+     */
+    private $handler;
+
+    /**
      * @var Form
      */
     private $form;
 
     /**
-     * @var DocumentHandler
+     * @var UpdateHandlerFacade
      */
-    private $handler;
+    private $updateHandler;
 
     /**
      * @var TranslatorInterface
@@ -49,21 +54,23 @@ final class DocumentController extends Controller
     private $session;
 
     /**
-     * @param Form                $form
      * @param DocumentHandler     $handler
+     * @param Form                $form
+     * @param UpdateHandlerFacade $updateHandler
      * @param TranslatorInterface $translator
      * @param Router              $router
      * @param Session             $session
      */
     public function __construct(
-        Form $form,
         DocumentHandler $handler,
+        Form $form,
+        UpdateHandlerFacade $updateHandler,
         TranslatorInterface $translator,
         Router $router,
         Session $session
     ) {
-        $this->form = $form;
         $this->handler = $handler;
+        $this->form = $form;
         $this->translator = $translator;
         $this->router = $router;
         $this->session = $session;
@@ -127,6 +134,7 @@ final class DocumentController extends Controller
                 ]
             );
         }
+
         return array_merge(
             $responseData,
             [
@@ -168,7 +176,6 @@ final class DocumentController extends Controller
         ];
     }
 
-
     /**
      * @param Document $document
      * @param Request $request
@@ -202,12 +209,10 @@ final class DocumentController extends Controller
 
     protected function update(Document $document, Request $request)
     {
-        $form =  $this->createForm(DocumentType::class, $document);
-
-        return $this->get('oro_form.update_handler')->update(
+        return $this->updateHandler->update(
             $document,
-            $form,
-            $this->get('translator')->trans('kiboko.dam.views.document.update.save.label'),
+            $this->form,
+            $this->translator->trans('kiboko.dam.views.document.update.save.label'),
             $request,
             null
         );

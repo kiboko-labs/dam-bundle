@@ -22,15 +22,6 @@ services:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
-    kiboko_dam.controller.document:
-        class: Kiboko\Bundle\DAMBundle\Controller\DocumentController
-        arguments:
-            - '@kiboko_dam.form.document'
-            - '@kiboko_dam.form.handler.document'
-            - '@translator'
-            - '@oro_ui.router'
-            - '@session'
-
     kiboko_dam.form.type.document_node:
         class: Kiboko\Bundle\DAMBundle\Form\Type\DocumentNodeType
         arguments:
