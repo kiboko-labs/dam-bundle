@@ -98,7 +98,7 @@ class DocumentNodeUpdateTreeHandler
         $uuidOpenedNode = null;
         foreach ($entities as $entity) {
             if ($entity === $node) {
-                $node = $this->formatEntity($root, $entity, true);
+                $node = $this->formatEntity($root, $entity, true, true);
             } else {
                 $node = $this->formatEntity($root, $entity);
             }
@@ -131,21 +131,27 @@ class DocumentNodeUpdateTreeHandler
      * @param TeamStorageNode       $root
      * @param DocumentNodeInterface $entity
      * @param bool                  $isOpened
+     * @param bool                  $isSelected
      *
      * @return array
      */
-    private function formatEntity(TeamStorageNode $root, DocumentNodeInterface $entity, bool $isOpened = false)
-    {
+    private function formatEntity(
+        TeamStorageNode $root,
+        DocumentNodeInterface $entity,
+        bool $isOpened = false,
+        bool $isSelected = false
+    ) {
         return [
             'id' => $this->buildCode($entity),
             'uuid' => $entity->getUuid()->toString(),
             'storage' => $root->getUuid()->toString(),
+            'parentUuid' => $entity->getParent()->getUuid(),
             'parent' => $entity->getParent() ? $this->buildCode($entity->getParent()) : self::ROOT_PARENT_VALUE,
             'text' => $this->getLabel($entity),
             'state' => [
                 'opened' => $isOpened,
                 'disabled' => false,
-                'selected' => $isOpened,
+                'selected' => $isSelected,
             ],
             //'li_attr' => !$entity->isDisplayed() ? ['class' => 'hidden'] : []
         ];

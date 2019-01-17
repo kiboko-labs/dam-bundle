@@ -68,12 +68,11 @@ define(function (require) {
          * Refresh buttons route with uuid provided
          * @param nodeUuid
          */
-        refreshButtonsRoute: function (nodeUuid) {
+        refreshButtonsRoute: function (nodeUuid, rootUuid) {
             this.createNodeWidget.attr('href', routing.generate('kiboko_dam_node_create', {
                 'parent': nodeUuid,
-                'root': this.rootUuid
+                'root': rootUuid,
             }));
-
         },
 
         /**
@@ -134,17 +133,16 @@ define(function (require) {
          * @param {Object} data
          */
         onNodeOpen: function (e, data) {
+            var url = routing.generate('kiboko_dam_node_browse', {
+                'parent': data.node.parentUuid,
+                'root': data.node.storage
+            });
+            window.history.pushState("", "", url);
 
-            var url = window.location.pathname;
-            var regex = /browse(.*)/g;
-            var newUrl = 'browse/';
-            newUrl += this.formatUuuid(data.node.id);
-            window.history.pushState("", "", url.replace(regex,newUrl));
-
-
-            this.reloadDocumentGrid(this.formatUuuid(data.node.id));
-            this.refreshButtonsRoute(this.formatUuuid(data.node.id));
+            this.reloadDocumentGrid(data.node.uuid);
+            this.refreshButtonsRoute(data.node.uuid);
         },
+
         /**
          * Triggers after node deleted in tree
          *
@@ -158,8 +156,9 @@ define(function (require) {
                 this.tree.jstree("refresh");
                 return;
             }
-            var uuid = this.formatUuuid(data.node.id);
-            var uuidParent = this.formatUuuid(data.parent);
+
+            var uuid = data.node.uuid;
+            var uuidParent = data.node.parentUuid;
 
             if (uuid && uuidParent) {
 
@@ -168,6 +167,7 @@ define(function (require) {
                         node: uuid,
                         parent: uuidParent
                     });
+
                     $.ajax({
                         async: true,
                         type: 'POST',
@@ -186,20 +186,24 @@ define(function (require) {
          */
         onNodeNameChange: function (e, data) {
             var uuid = data.node.original.uuid;
-            if (uuid) {
-                var name = data.text;
-                if (data.node.original.uuid !== '') {
-                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {node: uuid});
-                    $.ajax({
-                        async: true,
-                        type: 'POST',
-                        data: {
-                            'newName': name
-                        },
-                        url: url
-                    });
-                }
+            if (!uuid) {
+                return;
             }
+
+            var name = data.text;
+            if (data.node.original.uuid === '') {
+                return;
+            }
+
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {node: uuid});
+            $.ajax({
+                async: true,
+                type: 'POST',
+                data: {
+                    'newName': name
+                },
+                url: url
+            });
         },
 
         /**
@@ -212,16 +216,18 @@ define(function (require) {
             var parent = data.parent;
             var name = data.node.original.text;
 
-            if (data.node.original.uuid !== '') {
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {node: this.formatUuuid(parent)});
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        'name': name,
-                    },
-                    url: url
-                });
+            if (data.node.original.uuid === '') {
+                return;
             }
+
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {node: this.formatUuuid(parent)});
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'name': name,
+                },
+                url: url
+            });
         },
 
         /**
@@ -268,10 +274,12 @@ define(function (require) {
                     }
                 }
                 return true; // allow everything else
-            }
+            };
+
             config.root = {
                 "valid_children": ["default"],
-            }
+            };
+
             if (this.checkboxEnabled) {
                 // config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
