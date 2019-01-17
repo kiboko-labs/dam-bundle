@@ -2,10 +2,18 @@
 
 namespace Kiboko\Bundle\DAMBundle\JsTree;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
+use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
+use Kiboko\Bundle\DAMBundle\Model\Behavior\MovableInterface;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Oro\Bundle\UIBundle\Model\TreeItem;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class DocumentNodeUpdateTreeHandler
@@ -23,23 +31,32 @@ class DocumentNodeUpdateTreeHandler
     private $localizationHelper;
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * @param TranslatorInterface $translator
-     * @param LocalizationHelper  $localizationHelper
+     * @param LocalizationHelper $localizationHelper
+     * @param EntityManager $entityManager
      */
     public function __construct(
         TranslatorInterface $translator,
-        LocalizationHelper $localizationHelper
+        LocalizationHelper $localizationHelper,
+        EntityManager $entityManager
     ) {
         $this->translator = $translator;
         $this->localizationHelper = $localizationHelper;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param TeamStorageNode $root
      *
+     * @param DocumentNodeInterface $node
      * @return array
      */
-    public function createTree(TeamStorageNode $root): array
+    public function createTree(TeamStorageNode $root, DocumentNodeInterface $node = null): array
     {
         if ($root === null) {
             return [];
@@ -47,7 +64,7 @@ class DocumentNodeUpdateTreeHandler
 
         $tree = $this->getNodes($root);
 
-        return $this->formatTree($tree, $root);
+        return $this->formatTree($tree, $root, $node);
     }
 
     /**
@@ -70,16 +87,21 @@ class DocumentNodeUpdateTreeHandler
 
     /**
      * @param DocumentNodeInterface[] $entities
-     * @param DocumentNodeInterface   $root
+     * @param DocumentNodeInterface $root
      *
+     * @param DocumentNodeInterface $node
      * @return array
      */
-    private function formatTree(array $entities, DocumentNodeInterface $root)
+    private function formatTree(array $entities, DocumentNodeInterface $root, DocumentNodeInterface $node = null)
     {
         $formattedTree = [];
-
+        $uuidOpenedNode = null;
         foreach ($entities as $entity) {
-            $node = $this->formatEntity($root, $entity);
+            if ($entity === $node) {
+                $node = $this->formatEntity($root, $entity, true, true);
+            } else {
+                $node = $this->formatEntity($root, $entity);
+            }
 
             if ($entity->getParent() === $root) {
                 $node['parent'] = self::ROOT_PARENT_VALUE;
@@ -109,20 +131,27 @@ class DocumentNodeUpdateTreeHandler
      * @param TeamStorageNode       $root
      * @param DocumentNodeInterface $entity
      * @param bool                  $isOpened
+     * @param bool                  $isSelected
      *
      * @return array
      */
-    private function formatEntity(TeamStorageNode $root, DocumentNodeInterface $entity, bool $isOpened = false)
-    {
+    private function formatEntity(
+        TeamStorageNode $root,
+        DocumentNodeInterface $entity,
+        bool $isOpened = false,
+        bool $isSelected = false
+    ) {
         return [
             'id' => $this->buildCode($entity),
             'uuid' => $entity->getUuid()->toString(),
             'storage' => $root->getUuid()->toString(),
+            'parentUuid' => $entity->getParent()->getUuid(),
             'parent' => $entity->getParent() ? $this->buildCode($entity->getParent()) : self::ROOT_PARENT_VALUE,
             'text' => $this->getLabel($entity),
             'state' => [
                 'opened' => $isOpened,
                 'disabled' => false,
+                'selected' => $isSelected,
             ],
             //'li_attr' => !$entity->isDisplayed() ? ['class' => 'hidden'] : []
         ];
@@ -131,11 +160,12 @@ class DocumentNodeUpdateTreeHandler
     /**
      * @param DocumentNodeInterface|null $root
      *
+     * @param DocumentNodeInterface|null $node
      * @return TreeItem[]
      */
-    public function getTreeItemList(DocumentNodeInterface $root = null)
+    public function getTreeItemList(DocumentNodeInterface $root = null, DocumentNodeInterface $node = null)
     {
-        $nodes = $this->createTree($root);
+        $nodes = $this->createTree($root,$node);
 
         $items = [];
 
@@ -167,5 +197,54 @@ class DocumentNodeUpdateTreeHandler
                 }
             }
         }
+    }
+
+    public function createNode(DocumentNodeInterface $parent,string $name) {
+
+        $node = new DocumentNode();
+        $node->setParent($parent);
+
+        $nameToApply = new LocalizedFallbackValue();
+        $nameToApply->setString($name);
+        $nameToApply->setLocalization($this->localizationHelper->getCurrentLocalization());
+
+        $names = new ArrayCollection();
+        $names->add($nameToApply);
+
+        $slugs = new ArrayCollection();
+        $slugs->add($nameToApply);
+
+        $node->setNames($names);
+        $node->setSlugs($slugs);
+
+        try {
+            $this->entityManager->persist($node);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+            return new JsonResponse($e->getMessage(),500);
+        }
+
+        return new JsonResponse('created',200);
+
+    }
+
+    public function moveNode(MovableInterface $node, MovableInterface $newParent)
+    {
+        if (!$newParent instanceof DocumentNodeInterface || !$node instanceof DocumentNodeInterface)
+        {
+            return new JsonResponse('Arguments are not an instance of MovableInterface',500);
+
+        }
+        $node->moveTo($newParent);
+
+        try {
+            $this->entityManager->persist($node);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+            return new JsonResponse($e->getMessage(),500);
+        }
+
+        return new JsonResponse('moved folder successfully',200);
+
     }
 }

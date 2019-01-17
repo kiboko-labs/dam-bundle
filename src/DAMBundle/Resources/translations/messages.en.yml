@@ -43,6 +43,14 @@ kiboko:
                         label: Owner
                     thumbnail:
                         label: Thumbnail
+                    extension:
+                        label: Extension
+                    filesize:
+                        label: File size
+                    createdat:
+                        label: Created at
+                    updatedat:
+                        label: Updated At
             upload:
                 ok:
                     label: 'Document uploaded'
@@ -64,6 +72,8 @@ kiboko:
                         label: 'Cancel'
                     save:
                         label: 'Save'
+                    general:
+                        label: General
             teamstorage:
                 index:
                     entity:

@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="kiboko_dam_document")
+ * @ORM\Table(name="kbk_dam_document")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *      defaultValues={
@@ -113,7 +113,7 @@ class Document implements DocumentInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_document_name",
+     *      name="kbk_dam_document_name",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -140,7 +140,7 @@ class Document implements DocumentInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_document_slug",
+     *      name="kbk_dam_document_slug",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -167,7 +167,7 @@ class Document implements DocumentInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_document_metadata",
+     *      name="kbk_dam_document_metadata",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -195,7 +195,7 @@ class Document implements DocumentInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_document_authorization",
+     *      name="kbk_dam_document_authorization",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -450,7 +450,7 @@ class Document implements DocumentInterface,
 
     public function getMimeType(): string
     {
-        $this->file->getMimeType();
+        return $this->file->getMimeType();
     }
 
     public function setFile(File $file): void

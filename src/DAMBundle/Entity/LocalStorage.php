@@ -15,7 +15,7 @@ class LocalStorage extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="kiboko_dam_path", type="string", nullable=true)
+     * @ORM\Column(name="kbk_dam_path", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $path;
@@ -23,7 +23,7 @@ class LocalStorage extends Transport
     /**
      * @var int
      *
-     * @ORM\Column(name="kiboko_dam_local_lock", type="boolean", nullable=true)
+     * @ORM\Column(name="kbk_dam_local_lock", type="boolean", nullable=true)
      */
     private $lock;
 

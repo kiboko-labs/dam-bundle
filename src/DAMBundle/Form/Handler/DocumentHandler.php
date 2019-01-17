@@ -15,14 +15,20 @@ class DocumentHandler
 {
     use RequestHandlerTrait;
 
-    /** @var FormInterface */
-    protected $form;
+    /**
+     * @var FormInterface
+     */
+    private $form;
 
-    /** @var RequestStack */
-    protected $requestStack;
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
-    /** @var EntityManager */
-    protected $manager;
+    /**
+     * @var EntityManager
+     */
+    private $manager;
 
     /**
      * @param FormInterface $form
@@ -44,6 +50,7 @@ class DocumentHandler
      */
     public function process(Document $entity, DocumentNodeInterface $node)
     {
+        //FIXME:: Implement FormHandlerInterface
         $entity->setNode($node);
 
         $this->form->setData($entity);
@@ -64,7 +71,7 @@ class DocumentHandler
      * @param DocumentInterface $entity
      * @param DocumentNodeInterface $node
      */
-    protected function onSuccess(DocumentInterface $entity, DocumentNodeInterface $node)
+    private function onSuccess(DocumentInterface $entity, DocumentNodeInterface $node)
     {
         $this->manager->persist($entity);
         $this->manager->flush();

@@ -19,7 +19,7 @@
                     </div>
                     <div class="pull-right">
                         {{ resetButton({
-                            'dataUrl': path(routePrefix ~ 'ajax_reset', { uuid: entity.uuid }),
+                            'dataUrl': path(routePrefix ~ 'ajax_reset', { node: entity.uuid }),
                             'dataRedirect': path(routePrefix ~ 'view', { node: entity.uuid }),
                             'menuKey': entity.uuid,
                             'data': {
@@ -30,7 +30,7 @@
                         {{ UI.buttonSeparator() }}
 
                         {% set html = UI.button({
-                            'path' : path(routePrefix ~ 'create', { uuid: entity.uuid }),
+                            'path' : path(routePrefix ~ 'create', { node: entity.uuid }),
                             'aCss': 'btn-primary',
                             'label': 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }),
                             'title': 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans })
@@ -42,7 +42,7 @@
                             'title': 'kiboko.dam.updload'|trans({ '%entityName%': 'kiboko.dam.document.entity_label'|trans }),
                             'dataMethod': 'POST',
                             'dataRedirect': app.request.uri,
-                            'dataUrl': path(routePrefix ~ 'ajax_create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
+                            'dataUrl': path(routePrefix ~ 'ajax_create', { node: entity.uuid, parent: entity.names|localized_value, 'isDivider': true }),
                             'successMessage': dividerCreatedMessage|default('kiboko.dam.documentnode.divider_created')|trans({'%reload_link%': reloadLink})
                         }) %}
 
@@ -51,7 +51,7 @@
                             'title': 'kiboko.dam.updload_batch'|trans({ '%entityName%': 'kiboko.dam.document.entity_plural_label'|trans }),
                             'dataMethod': 'POST',
                             'dataRedirect': app.request.uri,
-                            'dataUrl': path(routePrefix ~ 'ajax_create', { uuid: entity.uuid, parentKey: entity.names|localized_value, 'isDivider': true }),
+                            'dataUrl': path(routePrefix ~ 'ajax_create', { node: entity.uuid, parent: entity.names|localized_value, 'isDivider': true }),
                             'successMessage': dividerCreatedMessage|default('kiboko.dam.documentnode.divider_created')|trans({'%reload_link%': reloadLink})
                         }) %}
 
@@ -96,7 +96,7 @@
                                 'move': {
                                     'view': 'oroui/js/app/views/jstree/move-action-view',
                                     'routeName': routePrefix ~ 'move',
-                                    'routeParams': { uuid: entity.uuid }
+                                    'routeParams': { node: entity.uuid }
                                 }
                             }
                         ) }}

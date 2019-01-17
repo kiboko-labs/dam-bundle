@@ -3,7 +3,6 @@
 namespace Kiboko\Bundle\DAMBundle\Controller;
 
 use Kiboko\Bundle\DAMBundle\Entity\TeamStorageNode;
-use Kiboko\Bundle\DAMBundle\JsTree\DocumentNodeUpdateTreeHandler;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -36,12 +35,10 @@ final class TeamStorageNodeController extends Controller
      */
     private $translator;
 
-
     /**
-     * @param Form                          $form
-     * @param UpdateHandlerFacade           $handler
-     * @param TranslatorInterface           $translator
-     * @param DocumentNodeUpdateTreeHandler $treeHandler
+     * @param Form $form
+     * @param UpdateHandlerFacade $handler
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         Form $form,
@@ -58,7 +55,6 @@ final class TeamStorageNodeController extends Controller
      *
      * @Route("/",
      *     name="kiboko_dam_index",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @Acl(
      *      id="kiboko_dam_storage_view",
@@ -98,15 +94,17 @@ final class TeamStorageNodeController extends Controller
      *
      * @return array|Response
      *
-     * @Route("/{uuid}/update",
+     * @Route("/{node}/update",
      *     name="kiboko_dam_storage_update",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={
+     *         "node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
      * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }

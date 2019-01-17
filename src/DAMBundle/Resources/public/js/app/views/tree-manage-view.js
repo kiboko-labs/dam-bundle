@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     'use strict';
 
     var TreeManageView;
@@ -17,81 +17,217 @@ define(function(require) {
      * @class kibokodam.app.components.TreeManageView
      */
     TreeManageView = BaseTreeManageView.extend({
+
+        treeEvents: {
+            'create_node.jstree': 'onNodeCreate',
+            'rename_node.jstree': 'onNodeNameChange',
+            'delete_node.jstree': 'onNodeDelete',
+            'move_node.jstree': 'onNodeMove',
+            'select_node.jstree': 'onNodeOpen',
+            'dnd_stop.vakata': 'onDragStop',
+            'ready.jstree': 'onTreeLoaded',
+        },
+
+        uploadWidget: null,
+        createNodeWidget: null,
+
+        rootUuid: null,
+
         /**
          * @inheritDoc
          */
         constructor: function TreeManageView() {
             TreeManageView.__super__.constructor.apply(this, arguments);
-        },
-
-        treeEvents: {
-            'create_node.jstree': 'onCreate',
-            'rename_node.jstree': 'onNodeNameChange',
-            'delete_node.jstree': 'onNodeDelete',
-            'move_node.jstree': 'onNodeMove',
+            this.rootUuid = arguments[0].menu;
+            this.uploadWidget = $(".upload_button_widget");
+            this.createNodeWidget = $('.pull-right a');
         },
 
         /**
-         * Triggers after node deleted in tree
-         *
-         * @param {Event} e
-         * @param {Object} data
+         * Format uuid
+         * @param chain
+         * @returns {*}
          */
-        onNodeDelete: function(e, data) {
+        formatUuuid: function (chain) {
+            return chain.substr(5).replace(/_/g, '-');
+        },
 
-            var uuid = data.node.original.uuid;
-            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
+        /**
+         * Refresh document datagrid at uuid node provided
+         * @param nodeUuid
+         */
+        reloadDocumentGrid: function (nodeUuid) {
 
-            $.ajax({
-                async: false,
-                type: 'DELETE',
-                url: url
+            $("div[class='grid-views']").ready(function(){
+                mediator.trigger('datagrid:setParam:' + 'kiboko-dam-documents-grid', 'parent', nodeUuid);
+                mediator.trigger('datagrid:doRefresh:' + 'kiboko-dam-documents-grid');
             });
         },
 
         /**
+         * Refresh buttons route with uuid provided
+         * @param nodeUuid
+         */
+        refreshButtonsRoute: function (nodeUuid, rootUuid) {
+            this.createNodeWidget.attr('href', routing.generate('kiboko_dam_node_create', {
+                'parent': nodeUuid,
+                'root': rootUuid,
+            }));
+        },
+
+        /**
+         * Update document grid, buttons route and tree position after page reload
+         * @param event
+         * @param data
+         */
+        onTreeLoaded: function (event, data) {
+
+            var path = window.location.pathname;
+            var regexChildUuid = /(?<=browse\/).*$/g;
+            if(path.match(regexChildUuid)) {
+                var nodeUuid = path.match(regexChildUuid).toString();
+            }
+
+            if (nodeUuid) {
+
+                this.reloadDocumentGrid(nodeUuid);
+                this.refreshButtonsRoute(nodeUuid);
+
+            }
+        },
+
+        /**
          * Triggers after node deleted in tree
          *
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeMove: function(e, data) {
+        onDragStop: function (e, data) {
 
-            var newParent = data.parent;
-            var oldParent = data.old_parent;
-            var uuidParent = this.$tree.jstree(true).get_node(data.parent).original.uuid;
+        },
+
+        /**
+         * Triggers after node deleted in tree
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeDelete: function (e, data) {
 
             var uuid = data.node.original.uuid;
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {uuid: uuid});
-                $.ajax({
-                    async: false,
-                    type: 'POST',
-                    data: {
-                        'newParent': uuidParent
-                    },
-                    url: url
-                });
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {node: uuid});
+
+            $.ajax({
+                async: true,
+                type: 'DELETE',
+                url: url
+            });
+            // Todo: update url correclty
+         //   window.history.pushState("object or string", "Title", "/new-url");
+
         },
+        /**
+         * Triggers after node is opened
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeOpen: function (e, data) {
+            var url = routing.generate('kiboko_dam_node_browse', {
+                'parent': data.node.parentUuid,
+                'root': data.node.storage
+            });
+            window.history.pushState("", "", url);
+
+            this.reloadDocumentGrid(data.node.uuid);
+            this.refreshButtonsRoute(data.node.uuid);
+        },
+
+        /**
+         * Triggers after node deleted in tree
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeMove: function (e, data) {
+
+            if (data.node.parent === "#") {
+                e.stopImmediatePropagation();
+                this.tree.jstree("refresh");
+                return;
+            }
+
+            var uuid = data.node.uuid;
+            var uuidParent = data.node.parentUuid;
+
+            if (uuid && uuidParent) {
+
+                if (uuid !== uuidParent) {
+                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {
+                        node: uuid,
+                        parent: uuidParent
+                    });
+
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: url
+                    });
+                }
+            }
+
+        },
+
         /**
          * Triggers after node change name
          *
          * @param {Event} e
          * @param {Object} data
          */
-        onNodeNameChange: function(e, data) {
+        onNodeNameChange: function (e, data) {
             var uuid = data.node.original.uuid;
-            var name = data.text;
-            if (data.node.original.uuid !== '') {
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
-                $.ajax({
-                    async: false,
-                    type: 'POST',
-                    data: {
-                        'newName': name
-                    },
-                    url: url
-                });
+            if (!uuid) {
+                return;
             }
+
+            var name = data.text;
+            if (data.node.original.uuid === '') {
+                return;
+            }
+
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {node: uuid});
+            $.ajax({
+                async: true,
+                type: 'POST',
+                data: {
+                    'newName': name
+                },
+                url: url
+            });
+        },
+
+        /**
+         * Triggers after node change creation
+         *
+         * @param {Event} e
+         * @param {Object} data
+         */
+        onNodeCreate: function (e, data) {
+            var parent = data.parent;
+            var name = data.node.original.text;
+
+            if (data.node.original.uuid === '') {
+                return;
+            }
+
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {node: this.formatUuuid(parent)});
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'name': name,
+                },
+                url: url
+            });
         },
 
         /**
@@ -100,7 +236,7 @@ define(function(require) {
          * @param {Event} e
          * @param {Object} selected
          */
-        onSelect: function(e, selected) {
+        onSelect: function (e, selected) {
 
             BaseTreeManageView.__super__.onSelect.apply(this, arguments);
 
@@ -110,12 +246,12 @@ define(function(require) {
             let url;
             if (this.onRootSelectRoute && selected.node.parent === '#') {
                 url = routing.generate(this.onRootSelectRoute, {
-                    storage: selected.node.original.storage,
+                    root: selected.node.original.storage,
                     node: selected.node.original.uuid
                 });
             } else {
                 url = routing.generate(this.onSelectRoute, {
-                    storage: selected.node.original.storage,
+                    root: selected.node.original.storage,
                     node: selected.node.original.uuid
                 });
             }
@@ -129,12 +265,28 @@ define(function(require) {
          * @param {Object} config
          * @returns {Object}
          */
-        customizeTreeConfig: function(options, config) {
+        customizeTreeConfig: function (options, config) {
+
+            config.core.check_callback =  function (operation, node, parent, position, more) {
+                if(operation === "copy_node" || operation === "move_node") {
+                    if(parent.id === "#") {
+                        return false; // prevent moving a child above or below the root
+                    }
+                }
+                return true; // allow everything else
+            };
+
+            config.root = {
+                "valid_children": ["default"],
+            };
 
             if (this.checkboxEnabled) {
-                config.plugins.push('checkbox');
+                // config.plugins.push('checkbox');
                 config.plugins.push('contextmenu');
                 config.plugins.push('dnd');
+                config.plugins.push('unique');
+                config.plugins.push('sort');
+                config.plugins.push('state');
 
                 config.checkbox = {
                     whole_node: false,
@@ -174,6 +326,16 @@ define(function(require) {
                             "action": (function (obj) {
                                 this.edit($node);
                             }).bind(tree)
+                        },
+                        "Create Folder": {
+                            "seperator_before": false,
+                            "seperator_after": false,
+                            "label": _.__('kiboko.dam.js.jstree.contextmenu.newfolder.label'),
+                            action: function (data) {
+                                tree.create_node($node, { text: _.__('kiboko.dam.js.jstree.contextmenu.newfolder.label'), type: 'default' });
+                                tree.deselect_all();
+                                tree.select_node($node);
+                            }
                         },
                         "Remove": {
                             "separator_before": false,

@@ -30,7 +30,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Kiboko\Bundle\DAMBundle\Repository\DocumentNodeRepository")
- * @ORM\Table(name="kiboko_dam_node")
+ * @ORM\Table(name="kbk_dam_node")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @Gedmo\Tree(type="nested")
@@ -117,7 +117,7 @@ class DocumentNode implements DocumentNodeInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_node_name",
+     *      name="kbk_dam_node_name",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -144,7 +144,7 @@ class DocumentNode implements DocumentNodeInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_node_slug",
+     *      name="kbk_dam_node_slug",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -171,7 +171,7 @@ class DocumentNode implements DocumentNodeInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_node_metadata",
+     *      name="kbk_dam_node_metadata",
      *      joinColumns={
      *          @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -199,7 +199,7 @@ class DocumentNode implements DocumentNodeInterface,
      *      fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(
-     *      name="kiboko_dam_node_authorization",
+     *      name="kbk_dam_node_authorization",
      *      joinColumns={
      *          @ORM\JoinColumn(name="node_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
@@ -304,6 +304,14 @@ class DocumentNode implements DocumentNodeInterface,
     public function setUuid(UuidInterface $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return DocumentNodeInterface|null
+     */
+    public function getRoot(): ?DocumentNodeInterface
+    {
+        return $this->root;
     }
 
     /**

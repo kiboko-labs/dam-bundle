@@ -10,7 +10,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 /**
  * @ORM\Entity(repositoryClass="Kiboko\Bundle\DAMBundle\Repository\TeamStorageNodeRepository")
  * @Config(
- *      routeName="kiboko_dam_node_browse",
+ *      routeName="kiboko_dam_root_browse",
  *      routeCreate="kiboko_dam_storage_create",
  *      routeUpdate="kiboko_dam_storage_update",
  *      defaultValues={

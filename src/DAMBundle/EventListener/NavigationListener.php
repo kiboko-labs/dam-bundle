@@ -2,6 +2,7 @@
 
 namespace Kiboko\Bundle\DAMBundle\EventListener;
 
+use Doctrine\ORM\Query;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
 use Kiboko\Bundle\DAMBundle\Model\DocumentNodeInterface;
 use Kiboko\Bundle\DAMBundle\Repository\DocumentNodeRepository;
@@ -91,8 +92,11 @@ final class NavigationListener
             ->getEntityRepositoryForClass(DocumentNode::class);
         $qb = $repository->getRootNodesQueryBuilder();
 
+        /** @var Query $query */
+        $query = $this->aclHelper->apply($qb);
+
         /** @var DocumentNodeInterface[] $storages */
-        $storages = $this->aclHelper->apply($qb)->getResult();
+        $storages = $query->getResult();
         if (!$storages) {
             return;
         }
@@ -103,9 +107,9 @@ final class NavigationListener
                 'kiboko_dam_storage_' . $storage->getUuid()->toString(),
                 [
                     'label' => $storage->getLocaleName($this->localizationHelper)->getString(),
-                    'route' => 'kiboko_dam_node_browse',
+                    'route' => 'kiboko_dam_root_browse',
                     'routeParameters' => [
-                        'uuid' => $storage->getUuid()->toString(),
+                        'root' => $storage->getUuid()->toString(),
                     ],
                 ]
             );
@@ -156,9 +160,9 @@ final class NavigationListener
                         $storageLabel . '_report',
                         [
                             'label'           => $storageLabel,
-                            'route'           => 'kiboko_dam_node_browse',
+                            'route'           => 'kiboko_dam_root_browse',
                             'routeParameters' => [
-                                'uuid' => $storageId,
+                                'root' => $storageId,
                             ],
                         ]
                     );

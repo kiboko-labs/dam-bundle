@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  *     "document" = "Kiboko\Bundle\DAMBundle\Entity\DocumentMeta",
  *     "node" = "Kiboko\Bundle\DAMBundle\Entity\DocumentNodeMeta"
  * })
- * @ORM\Table(name="kiboko_dam_metadata")
+ * @ORM\Table(name="kbk_dam_metadata")
  */
 abstract class Meta implements MetaInterface, IdentifiableInterface
 {

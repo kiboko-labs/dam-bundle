@@ -5,18 +5,26 @@
 {% set node = form.vars.value %}
 
 {% if node.id %}
-    {% set formAction = path('kiboko_dam_node_update', { 'uuid': node.uuid }) %}
+    {% set formAction = path('kiboko_dam_node_update', { 'node': node.uuid }) %}
 {% else %}
-        {% set formAction = path('kiboko_dam_node_create', { 'uuid': node.parent.uuid }) %}
+    {% if node.root %}
+        {% set formAction = path('kiboko_dam_node_create', { 'parent': node.uuid, 'root': node.root.uuid }) %}
+    {% else %}
+        {% set formAction = path('kiboko_dam_node_create', { 'root': node.root.uuid }) %}
+    {% endif %}
 {% endif %}
 
 {% block navButtons %}
 
-    {{ UI.cancelButton(path('kiboko_dam_node_browse', {uuid: node.uuid})) }}
+    {% if node.root %}
+        {{ UI.cancelButton(path('kiboko_dam_node_browse', { root: node.root.uuid, node: node.uuid})) }}
+    {% else %}
+        {{ UI.cancelButton(path('kiboko_dam_node_browse', { root: node.uuid})) }}
+    {% endif %}
 
     {% set html = UI.saveAndCloseButton({
-        'route': 'kiboko_dam_node_browse',
-        'params': {'uuid': node.parent.uuid}
+        'route': 'kiboko_dam_root_browse',
+        'params': { root: root.uuid }
     }) %}
 
     {{ UI.dropdownSaveButton({'html': html}) }}
@@ -28,12 +36,12 @@
         {% set breadcrumbs = {
             'entity': node,
             'indexPath': path('kiboko_dam_index'),
-            'indexLabel': 'Team Storage'|trans,
+            'indexLabel': 'kiboko.dam.documentnode.entity_label'|trans,
             'entityTitle': node.names|localized_value
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'Team Storage'|trans }) %}
+        {% set title = 'oro.ui.create_entity'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }) %}
         {{ include('OroUIBundle::page_title_block.html.twig', { title: title }) }}
     {% endif %}
 {% endblock pageHeader %}

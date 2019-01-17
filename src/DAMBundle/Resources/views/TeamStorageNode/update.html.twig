@@ -6,18 +6,17 @@
 {% set node = form.vars.value %}
 
 {% if node.id %}
-    {% set formAction = path('kiboko_dam_storage_update', { 'uuid': node.uuid }) %}
+    {% set formAction = path('kiboko_dam_storage_update', { 'node': node.uuid }) %}
 {% else %}
     {% set formAction = path('kiboko_dam_storage_create') %}
 {% endif %}
 
 {% block navButtons %}
 
-
     {{ UI.cancelButton(path('kiboko_dam_index')) }}
     {% set html = UI.saveAndCloseButton({
         'route': 'kiboko_dam_node_browse',
-        'params': {'uuid': '$uuid'}
+        'params': { 'root': node.root.uuid, 'node': node.uuid }
     }) %}
 
 

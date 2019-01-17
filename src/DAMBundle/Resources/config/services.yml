@@ -20,15 +20,6 @@ services:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
-    kiboko_dam.controller.document:
-        class: Kiboko\Bundle\DAMBundle\Controller\DocumentController
-        arguments:
-            - '@kiboko_dam.form.document'
-            - '@kiboko_dam.form.handler.document'
-            - '@translator'
-            - '@oro_ui.router'
-            - '@session'
-
     kiboko_dam.form.type.document_node:
         class: Kiboko\Bundle\DAMBundle\Form\Type\DocumentNodeType
         arguments:
@@ -48,14 +39,7 @@ services:
         arguments:
             - '@translator'
             - '@oro_locale.helper.localization'
-
-    kiboko_dam.controller.document_node:
-        class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeController
-        arguments:
-            - '@kiboko_dam.form.document_node'
-            - '@oro_form.update_handler'
-            - '@translator'
-            - '@kiboko_dam.tree.document_node_update_tree_handler'
+            - '@doctrine.orm.entity_manager'
 
     kiboko_dam.form.type.team_storage:
         class: Kiboko\Bundle\DAMBundle\Form\Type\TeamStorageNodeType
@@ -71,13 +55,6 @@ services:
             - 'kiboko_dam_document_form'
             - Kiboko\Bundle\DAMBundle\Form\Type\TeamStorageNodeType
 
-    kiboko_dam.controller.team_storage:
-        class: Kiboko\Bundle\DAMBundle\Controller\TeamStorageNodeController
-        arguments:
-            - '@kiboko_dam.form.team_storage'
-            - '@oro_form.update_handler'
-            - '@translator'
-
     kiboko_dam.listener.navigation_listener:
         class: Kiboko\Bundle\DAMBundle\EventListener\NavigationListener
         arguments:
@@ -89,3 +66,11 @@ services:
             - '@oro_featuretoggle.checker.feature_checker'
         tags:
             - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    kiboko_dam.document_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - Kiboko\Bundle\DAMBundle\Entity\Document
+            - '@doctrine.orm.entity_manager'
+

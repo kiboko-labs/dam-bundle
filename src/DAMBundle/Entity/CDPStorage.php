@@ -15,7 +15,7 @@ class CDPStorage extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="kiboko_dam_cdp_url", type="string", nullable=true)
+     * @ORM\Column(name="kbk_dam_cdp_url", type="string", nullable=true)
      * @Assert\NotBlank()
      * @Assert\Url()
      */
@@ -24,7 +24,7 @@ class CDPStorage extends Transport
     /**
      * @var int
      *
-     * @ORM\Column(name="kiboko_dam_cdp_client", type="string", nullable=true)
+     * @ORM\Column(name="kbk_dam_cdp_client", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $client;
@@ -32,7 +32,7 @@ class CDPStorage extends Transport
     /**
      * @var int
      *
-     * @ORM\Column(name="kiboko_dam_cdp_secret", type="string", nullable=true)
+     * @ORM\Column(name="kbk_dam_cdp_secret", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $secret;
