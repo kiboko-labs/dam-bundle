@@ -215,8 +215,7 @@ class DocumentNodeUpdateTreeHandler
         try {
             $this->entityManager->persist($node);
             $this->entityManager->flush();
-        }
-        catch (ORMException $e) {
+        } catch (ORMException $e) {
             return new JsonResponse($e->getMessage(),500);
         }
 
@@ -236,8 +235,7 @@ class DocumentNodeUpdateTreeHandler
         try {
             $this->entityManager->persist($node);
             $this->entityManager->flush();
-        }
-        catch (ORMException $e) {
+        } catch (ORMException $e) {
             return new JsonResponse($e->getMessage(),500);
         }
 

@@ -43,15 +43,6 @@ services:
             - '@oro_locale.helper.localization'
             - '@doctrine.orm.entity_manager'
 
-
-    kiboko_dam.controller.document_node:
-        class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeController
-        arguments:
-            - '@kiboko_dam.form.document_node'
-            - '@oro_form.update_handler'
-            - '@translator'
-            - '@kiboko_dam.tree.document_node_update_tree_handler'
-
     kiboko_dam.form.type.team_storage:
         class: Kiboko\Bundle\DAMBundle\Form\Type\TeamStorageNodeType
         arguments:
@@ -65,13 +56,6 @@ services:
         arguments:
             - 'kiboko_dam_document_form'
             - Kiboko\Bundle\DAMBundle\Form\Type\TeamStorageNodeType
-
-    kiboko_dam.controller.team_storage:
-        class: Kiboko\Bundle\DAMBundle\Controller\TeamStorageNodeController
-        arguments:
-            - '@kiboko_dam.form.team_storage'
-            - '@oro_form.update_handler'
-            - '@translator'
 
     kiboko_dam.listener.navigation_listener:
         class: Kiboko\Bundle\DAMBundle\EventListener\NavigationListener

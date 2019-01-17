@@ -80,12 +80,11 @@ final class AssetWidgetController extends Controller
     }
 
     /**
-     * @param Request               $request
      * @param DocumentNodeInterface $node
      *
-     * @Route("/{uuid}",
+     * @Route("/{node}",
      *     name="kiboko_dam_upload_asset_widget",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      *     options={
      *         "expose"=true,
      *     },
@@ -94,7 +93,7 @@ final class AssetWidgetController extends Controller
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {"node": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -103,16 +102,15 @@ final class AssetWidgetController extends Controller
      *
      * @return array
      */
-    public function widgetAction(Request $request, DocumentNodeInterface $node)
+    public function widgetAction(DocumentNodeInterface $node)
     {
         return [
             'form' => $this->form->createView(),
             'formAction' => $this->generateUrl(
                 'kiboko_dam_upload_asset',
                 [
-                    'uuid' => $node->getUuid()->toString(),
+                    'node' => $node->getUuid()->toString(),
                 ]
-
             )
         ];
     }
@@ -123,16 +121,16 @@ final class AssetWidgetController extends Controller
      *
      * @return Response
      *
-     * @Route("/{uuid}/upload",
+     * @Route("/{node}/upload",
      *     name="kiboko_dam_upload_asset",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
      *
      * )
      * @Method({"POST", "PUT"})
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {"node": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )

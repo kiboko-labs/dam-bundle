@@ -5,7 +5,7 @@
 
 {% set document = form.vars.value %}
 
-{% set formAction = path('kiboko_dam_document_update', { 'uuid': document.uuid }) %}
+{% set formAction = path('kiboko_dam_document_update', { 'node': document.uuid }) %}
 
 
 {% block navButtons %}
@@ -13,7 +13,7 @@
     {{ UI.cancelButton(path('kiboko_dam_index')) }}
     {% set html = UI.saveAndCloseButton({
         'route': 'kiboko_dam_node_browse',
-        'params': {'uuid': '$uuid'}
+        'params': { 'node': node.uuid }
     }) %}
 
 

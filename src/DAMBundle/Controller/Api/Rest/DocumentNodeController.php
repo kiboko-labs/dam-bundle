@@ -1,20 +1,16 @@
 <?php
 
-
 namespace Kiboko\Bundle\DAMBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Util\Codes;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @RouteResource("document_node")
  * @NamePrefix("kiboko_api_")
  */
-class DocumentNodeController extends RestController
+final class DocumentNodeController extends RestController
 {
     public function deleteAction($id)
     {

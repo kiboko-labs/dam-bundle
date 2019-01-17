@@ -4,11 +4,7 @@ namespace Kiboko\Bundle\DAMBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Kiboko\Bundle\DAMBundle\Entity\DocumentNode;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
-
 
 class DocumentDatagridListener
 {
@@ -17,20 +13,17 @@ class DocumentDatagridListener
      */
     private $em;
 
-    public function __construct(
-        EntityManager $em
-    ) {
+    public function __construct(EntityManager $em)
+    {
         $this->em = $em;
     }
 
     /**
-     *
      * @param BuildBefore $event
      */
     public function onBuildBefore(BuildBefore $event)
     {
-            if( $event->getDatagrid()->getParameters()->get('_parameters'))
-        {
+        if ($event->getDatagrid()->getParameters()->get('_parameters')) {
             $uuid = $event->getDatagrid()->getParameters()->get('_parameters');
             $uuid = $uuid['parent'];
 

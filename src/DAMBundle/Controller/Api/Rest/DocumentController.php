@@ -1,23 +1,17 @@
 <?php
 
-
 namespace Kiboko\Bundle\DAMBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Util\Codes;
 use Kiboko\Bundle\DAMBundle\Entity\Document;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @RouteResource("document")
  * @NamePrefix("kiboko_api_")
  */
-class DocumentController extends RestController
+final class DocumentController extends RestController
 {
     public function deleteAction(Document $document)
     {

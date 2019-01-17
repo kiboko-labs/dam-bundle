@@ -83,11 +83,14 @@ final class DocumentController extends Controller
      *
      * @return array|Request
      *
-     * @Route("/{uuid}/upload", name="kiboko_dam_document_upload")
+     * @Route("/{node}/upload",
+     *     name="kiboko_dam_document_upload",
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"},
+     * )
      * @ParamConverter("node",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={
-     *         "mapping": {"uuid": "uuid"},
+     *         "mapping": {"node": "uuid"},
      *         "map_method_signature" = true,
      *     }
      * )
@@ -149,15 +152,15 @@ final class DocumentController extends Controller
      * @param Document $document
      * @return array|Response
      *
-     * @Route("/{uuid}/view",
+     * @Route("/{node}/view",
      *     name="kiboko_dam_document_view",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("document",
      *     class="KibokoDAMBundle:Document",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }
@@ -182,15 +185,15 @@ final class DocumentController extends Controller
      * @param Request $request
      * @return array|Response
      *
-     * @Route("/{uuid}/update",
+     * @Route("/{node}/update",
      *     name="kiboko_dam_document_update",
-     *     requirements={"uuid"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
+     *     requirements={"node"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"}
      * )
      * @ParamConverter("document",
      *     class="KibokoDAMBundle:Document",
      *     options={
      *         "mapping": {
-     *             "uuid": "uuid",
+     *             "node": "uuid",
      *         },
      *         "map_method_signature" = true,
      *     }

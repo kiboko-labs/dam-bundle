@@ -28,3 +28,18 @@ services:
       - '@kiboko_dam.form.handler.document'
       - '@oro_ui.router'
       - '@session'
+
+  kiboko_dam.controller.document_node:
+    class: Kiboko\Bundle\DAMBundle\Controller\DocumentNodeController
+    arguments:
+      - '@kiboko_dam.form.document_node'
+      - '@oro_form.update_handler'
+      - '@translator'
+      - '@kiboko_dam.tree.document_node_update_tree_handler'
+
+  kiboko_dam.controller.team_storage:
+    class: Kiboko\Bundle\DAMBundle\Controller\TeamStorageNodeController
+    arguments:
+      - '@kiboko_dam.form.team_storage'
+      - '@oro_form.update_handler'
+      - '@translator'

@@ -9,7 +9,7 @@
     <div class="btn-group">
         {% if is_granted('kiboko_dam_node_create') %}
             {{ UI.addButton({
-                'path': path('kiboko_dam_node_create', { uuid: node.uuid }),
+                'path': path('kiboko_dam_node_create', { node: node.uuid }),
                 'entity_label': 'kiboko.dam.views.teamstoragenode.browse.entity.label'|trans,
             }) }}
         {% endif %}
