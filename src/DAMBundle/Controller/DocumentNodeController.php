@@ -179,7 +179,7 @@ final class DocumentNodeController extends Controller
         DocumentNodeInterface $root,
         ?DocumentNodeInterface $parent = null
     ) {
-        $node = new DocumentNode();
+        $node = new DocumentNode($root);
         $node->setParent($parent ?? $root);
 
         return $this->update($request, $node,$root);

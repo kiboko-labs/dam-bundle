@@ -10,7 +10,6 @@ kiboko:
 
         documentnode:
             entity_label: "Dossier"
-            create_label: "Créer un %entityName%"
             entity_plural_label: "Dossiers"
             reset: "Reset"
             empty_node: "Ce dossier est vide, de nouvequx fichiers apparaitront une fois que vous aurez envoyé de nouveaux fichiers par lots."

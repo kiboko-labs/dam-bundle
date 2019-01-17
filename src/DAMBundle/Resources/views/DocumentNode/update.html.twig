@@ -7,12 +7,20 @@
 {% if node.id %}
     {% set formAction = path('kiboko_dam_node_update', { 'node': node.uuid }) %}
 {% else %}
+    {% if node.root %}
         {% set formAction = path('kiboko_dam_node_create', { 'parent': node.uuid, 'root': node.root.uuid }) %}
+    {% else %}
+        {% set formAction = path('kiboko_dam_node_create', { 'root': node.root.uuid }) %}
+    {% endif %}
 {% endif %}
 
 {% block navButtons %}
 
-    {{ UI.cancelButton(path('kiboko_dam_node_browse', { root: node.root.uuid, node: node.uuid})) }}
+    {% if node.root %}
+        {{ UI.cancelButton(path('kiboko_dam_node_browse', { root: node.root.uuid, node: node.uuid})) }}
+    {% else %}
+        {{ UI.cancelButton(path('kiboko_dam_node_browse', { root: node.uuid})) }}
+    {% endif %}
 
     {% set html = UI.saveAndCloseButton({
         'route': 'kiboko_dam_root_browse',
