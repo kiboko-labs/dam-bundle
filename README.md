@@ -18,6 +18,9 @@ Installation
 
 Please see the [Quick Start Installation Hints for OroPlatform](https://oroinc.com/doc/orocrm/current/install-upgrade/installation-quick-start-dev/platform) or refer to the online [OroCRM Installation Guide](https://oroinc.com/doc/orocrm/current/install-upgrade) for the detailed installation steps.
 
+
+- `bin/console doctrine:schema:update --force`
+
 License
 -------
 
