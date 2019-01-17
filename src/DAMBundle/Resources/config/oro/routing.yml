@@ -1,4 +1,4 @@
 kiboko_dam_bundle:
     resource: "@KibokoDAMBundle/Controller"
     type:     annotation
-    prefix:   /dam
+    prefix:   %web_backend_prefix%/dam
