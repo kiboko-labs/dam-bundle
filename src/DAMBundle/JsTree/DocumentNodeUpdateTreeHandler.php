@@ -103,10 +103,12 @@ class DocumentNodeUpdateTreeHandler
                 $node = $this->formatEntity($root, $entity);
             }
 
+            if ($entity->getParent() === $root) {
+                $node['parent'] = self::ROOT_PARENT_VALUE;
+            }
+
             $formattedTree[] = $node;
         }
-
-        $topNode['parent'] = self::ROOT_PARENT_VALUE;
 
         return $formattedTree;
     }
