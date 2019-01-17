@@ -139,6 +139,16 @@ final class DocumentNodeController extends Controller
      *         "expose"=true,
      *     }
      * )
+     * @Route("/{root}/create",
+     *     name="kiboko_dam_node_create",
+     *     requirements={
+     *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
+     *         "parent"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
+     *     },
+     *     options={
+     *         "expose"=true,
+     *     }
+     * )
      * @ParamConverter("root",
      *     class="KibokoDAMBundle:DocumentNode",
      *     options={

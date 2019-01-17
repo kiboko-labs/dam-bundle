@@ -69,9 +69,8 @@ define(function (require) {
          * @param nodeUuid
          */
         refreshButtonsRoute: function (nodeUuid) {
-
             this.createNodeWidget.attr('href', routing.generate('kiboko_dam_node_create', {
-                'uuid': nodeUuid,
+                'parent': nodeUuid,
                 'root': this.rootUuid
             }));
 
