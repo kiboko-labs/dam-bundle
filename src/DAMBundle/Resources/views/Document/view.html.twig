@@ -1,6 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%document.name%": entity.names|localized_value} }) %}
 
@@ -27,7 +26,13 @@
     {% set info %}
         {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.owner.label'|trans, entity.owner.username) }}
         {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.name.label'|trans, entity.names|localized_value) }}
-        {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.slug.label'|trans, entity.file.file) }}
+        {{ UI.renderProperty('kiboko.dam.document.datagrid.columns.slug.label'|trans, entity.slugs|localized_value) }}
+    {% endset %}
+
+    {% set fileData %}
+        {{ UI.renderProperty('oro.attachment.file.file.label'|trans, entity.file.filename) }}
+        {{ UI.renderProperty('oro.attachment.file.extension.label'|trans, entity.file.extension) }}
+        {{ UI.renderProperty('oro.attachment.file.file_size.label'|trans, entity.file.filesize) }}
     {% endset %}
 
     {% set info = [
@@ -36,9 +41,20 @@
             'class': 'active',
             'subblocks':
             [
-                { 'data': [ info ] },
+                {
+                    'data': [ info ]
+                },
             ]
         },
+        {
+            'title': 'oro.attachment.file.entity_label'|trans,
+            'subblocks':
+            [
+                {
+                    'data': [ fileData ]
+                },
+            ]
+        }
     ] %}
 
     {% set id = 'editorialView' %}
