@@ -15,6 +15,7 @@ Please see the OroCRM online documentation for the complete list of [system requ
 
 Installation
 ------------
+copy and rename `docker-compose.override.yml.dev`, into `docker-compose.override.yml` and pimp your configuration :) 
 
 Please see the [Quick Start Installation Hints for OroPlatform](https://oroinc.com/doc/orocrm/current/install-upgrade/installation-quick-start-dev/platform) or refer to the online [OroCRM Installation Guide](https://oroinc.com/doc/orocrm/current/install-upgrade) for the detailed installation steps.
 
