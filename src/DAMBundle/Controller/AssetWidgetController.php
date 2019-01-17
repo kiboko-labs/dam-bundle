@@ -20,21 +20,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-
 /**
  * @Route("/asset-widget", service="kiboko_dam.controller.asset_widget")
  */
-class AssetWidgetController extends Controller
+final class AssetWidgetController extends Controller
 {
     /**
-     * @var ContextHelper
+     * @var FormInterface
      */
-    private $helper;
-
-    /**
-     * @var EntityManager $em
-     */
-    private $em;
+    private $form;
 
     /**
      * @var UpdateHandlerFacade
@@ -47,9 +41,14 @@ class AssetWidgetController extends Controller
     private $translator;
 
     /**
-     * @var FormInterface
+     * @var ContextHelper
      */
-    private $form;
+    private $helper;
+
+    /**
+     * @var EntityManager $em
+     */
+    private $em;
 
     /**
      * @var string
@@ -57,25 +56,25 @@ class AssetWidgetController extends Controller
     private $projectDir;
 
     /**
-     * @param ContextHelper $helper
+     * @param FormInterface $form
      * @param UpdateHandlerFacade $formUpdateHandler
      * @param TranslatorInterface $translator
-     * @param FormInterface $form
+     * @param ContextHelper $helper
      * @param EntityManager $em
      * @param string $projectDir
      */
     public function __construct(
-        ContextHelper $helper,
+        FormInterface $form,
         UpdateHandlerFacade $formUpdateHandler,
         TranslatorInterface $translator,
-        FormInterface $form,
+        ContextHelper $helper,
         EntityManager $em,
         string $projectDir
     ) {
-        $this->helper = $helper;
+        $this->form = $form;
         $this->formUpdateHandler = $formUpdateHandler;
         $this->translator = $translator;
-        $this->form = $form;
+        $this->helper = $helper;
         $this->em = $em;
         $this->projectDir = $projectDir;
     }

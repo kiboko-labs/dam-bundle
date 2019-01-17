@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -29,14 +29,14 @@ final class DocumentController extends Controller
     private $handler;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     private $form;
 
     /**
      * @var UpdateHandlerFacade
      */
-    private $updateHandler;
+    private $formUpdateHandler;
 
     /**
      * @var TranslatorInterface
@@ -54,24 +54,25 @@ final class DocumentController extends Controller
     private $session;
 
     /**
-     * @param DocumentHandler     $handler
-     * @param Form                $form
-     * @param UpdateHandlerFacade $updateHandler
+     * @param FormInterface       $form
+     * @param UpdateHandlerFacade $formUpdateHandler
      * @param TranslatorInterface $translator
+     * @param DocumentHandler     $handler
      * @param Router              $router
      * @param Session             $session
      */
     public function __construct(
-        DocumentHandler $handler,
-        Form $form,
-        UpdateHandlerFacade $updateHandler,
+        FormInterface $form,
+        UpdateHandlerFacade $formUpdateHandler,
         TranslatorInterface $translator,
+        DocumentHandler $handler,
         Router $router,
         Session $session
     ) {
-        $this->handler = $handler;
         $this->form = $form;
+        $this->formUpdateHandler = $formUpdateHandler;
         $this->translator = $translator;
+        $this->handler = $handler;
         $this->router = $router;
         $this->session = $session;
     }
@@ -209,7 +210,7 @@ final class DocumentController extends Controller
 
     protected function update(Document $document, Request $request)
     {
-        return $this->updateHandler->update(
+        return $this->formUpdateHandler->update(
             $document,
             $this->form,
             $this->translator->trans('kiboko.dam.views.document.update.save.label'),
