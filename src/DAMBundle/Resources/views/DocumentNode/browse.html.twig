@@ -31,7 +31,7 @@
 
                     <div class="pull-right">
                         {{ UI.button({
-                            'path' : path(routePrefix ~ 'create'   , { parent: teamstorage.uuid, root: teamstorage.uuid}),
+                            'path' : path('kiboko_dam_root_create', { root: teamstorage.uuid}),
                             'iCss': 'fa-folder',
                             'label': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans }),
                             'title': 'kiboko.dam.documentnode.create_label'|trans({ '%entityName%': 'kiboko.dam.documentnode.entity_label'|trans })

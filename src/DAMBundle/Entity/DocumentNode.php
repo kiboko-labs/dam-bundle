@@ -307,9 +307,9 @@ class DocumentNode implements DocumentNodeInterface,
     }
 
     /**
-     * @return DocumentNodeInterface
+     * @return DocumentNodeInterface|null
      */
-    public function getRoot(): DocumentNodeInterface
+    public function getRoot(): ?DocumentNodeInterface
     {
         return $this->root;
     }

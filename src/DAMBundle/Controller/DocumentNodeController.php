@@ -140,17 +140,16 @@ final class DocumentNodeController extends Controller
      *     }
      * )
      * @Route("/{root}/create",
-     *     name="kiboko_dam_node_create",
+     *     name="kiboko_dam_root_create",
      *     requirements={
      *         "root"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}",
-     *         "parent"="[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}"
      *     },
      *     options={
      *         "expose"=true,
      *     }
      * )
      * @ParamConverter("root",
-     *     class="KibokoDAMBundle:DocumentNode",
+     *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
      *             "root": "uuid"
@@ -178,10 +177,10 @@ final class DocumentNodeController extends Controller
     public function createAction(
         Request $request,
         DocumentNodeInterface $root,
-        DocumentNodeInterface $parent
+        ?DocumentNodeInterface $parent = null
     ) {
         $node = new DocumentNode();
-        $node->setParent($parent);
+        $node->setParent($parent ?? $root);
 
         return $this->update($request, $node,$root);
     }
@@ -210,7 +209,7 @@ final class DocumentNodeController extends Controller
      *     }
      * )
      * @ParamConverter("root",
-     *     class="KibokoDAMBundle:DocumentNode",
+     *     class="KibokoDAMBundle:TeamStorageNode",
      *     options={
      *         "mapping": {
      *             "root": "uuid",
