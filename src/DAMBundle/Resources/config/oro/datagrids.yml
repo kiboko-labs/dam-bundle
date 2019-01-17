@@ -108,12 +108,12 @@ datagrids:
                 route: kiboko_dam_node_browse
                 params:
                     root: root
-                    uuid: uuid
+                    node: uuid
             update_link:
                 type: url
                 route: kiboko_dam_node_update
                 params:
-                    uuid: uuid
+                    node: uuid
 
     kiboko-dam-documents-grid:
         options:

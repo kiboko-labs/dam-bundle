@@ -116,7 +116,7 @@ define(function (require) {
         onNodeDelete: function (e, data) {
 
             var uuid = data.node.original.uuid;
-            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {uuid: uuid});
+            var url = routing.generate('kiboko_dam_document_node_tree_ajax_delete', {node: uuid});
 
             $.ajax({
                 async: true,
@@ -165,8 +165,8 @@ define(function (require) {
 
                 if (uuid !== uuidParent) {
                     var url = routing.generate('kiboko_dam_document_node_tree_ajax_move', {
-                        uuid: uuid,
-                        uuidParent: uuidParent
+                        node: uuid,
+                        parent: uuidParent
                     });
                     $.ajax({
                         async: true,
@@ -189,7 +189,7 @@ define(function (require) {
             if (uuid) {
                 var name = data.text;
                 if (data.node.original.uuid !== '') {
-                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {uuid: uuid});
+                    var url = routing.generate('kiboko_dam_document_node_tree_ajax_rename', {node: uuid});
                     $.ajax({
                         async: true,
                         type: 'POST',
@@ -213,7 +213,7 @@ define(function (require) {
             var name = data.node.original.text;
 
             if (data.node.original.uuid !== '') {
-                var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {uuid: this.formatUuuid(parent)});
+                var url = routing.generate('kiboko_dam_document_node_tree_ajax_create', {node: this.formatUuuid(parent)});
                 $.ajax({
                     type: 'POST',
                     data: {
