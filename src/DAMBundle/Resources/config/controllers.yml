@@ -16,3 +16,6 @@ services:
       - '@kiboko_dam.form.document.widget.upload_asset'
       - '@doctrine.orm.entity_manager'
       - %kernel.project_dir%
+
+  kiboko_dam.controller.dashboard:
+    class: Kiboko\Bundle\DAMBundle\Controller\DashboardController

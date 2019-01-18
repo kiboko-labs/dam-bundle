@@ -123,3 +123,11 @@ kiboko:
                     fields:
                         integration:
                             label: Integration
+        dashboard:
+            kiboko_launchpad:
+                title:
+                    label: Dam Quick Launchpad
+                create_team_storage:
+                    label: Créer un Stockage d'équipe
+                create_asset:
+                    label: Créer une Ressource

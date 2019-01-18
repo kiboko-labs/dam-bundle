@@ -1,0 +1,19 @@
+dashboards:
+    widgets:
+        kiboko_dam_launchpad:
+            label:     kiboko.dam.dashboard.kiboko_launchpad.title.label
+            route:      kiboko_dashboard_itemized_widget
+            route_parameters: { bundle: OroDashboardBundle, name: quickLaunchpad }
+            icon:       folder
+            description: kiboko.dam.dashboard.kiboko_launchpad.description.label
+            items:
+                add_team_storage:
+                    label:      kiboko.dam.dashboard.kiboko_launchpad.create_team_storage.label
+                    route:      kiboko_dam_storage_create
+                    icon:       folder
+                    position:   10
+                add_asset:
+                    label:      kiboko.dam.dashboard.kiboko_launchpad.create_asset.label
+                    route:      kiboko_dam_storage_create
+                    icon:       file
+                    position:   20
